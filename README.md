@@ -4,3 +4,4 @@ This application is in development.<br>
 To run the application:
 1. Open docker desktop
 2. Run the following command: <code>docker-compose -f docker-compose.yml up</code>
+3. Go to [http://localhost:8000/](http://localhost:8000/)
