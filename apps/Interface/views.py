@@ -1,8 +1,9 @@
 from django.shortcuts import render
-
+import numpy as np
 
 def main_page(request):
-    return render(request, 'main.html')
+    a = 'hallo'
+    return render(request, 'main.html', {'test': a})
 
 
 def cutoff_page(request):
