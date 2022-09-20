@@ -23,18 +23,28 @@ ENV CONDA_DIR /opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 ENV PATH=$CONDA_DIR/bin:$PATH
-## clustalo
+## clustalo (optional)
 RUN conda install -c bioconda clustalo
-## iqtree
+## iqtree (optional)
 RUN conda install -c bioconda iqtree
-## krona
+## krona (optional)
 RUN conda install -c bioconda krona
 
 # BLAST install
+# For the latest BLAST version see https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/
+ARG BLAST_version='2.13.0'
+RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
-# LARGEVIS install
+# LARGEVIS install (optional)
 
-# DiVE install
+
+# DiVE install (optional)
+
+
+# dnabarcoder install
+## Added via requirements.txt don't know if it works?
 
 # pip installs
 COPY requirements.txt $APP
