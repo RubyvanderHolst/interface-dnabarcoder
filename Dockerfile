@@ -19,32 +19,46 @@ WORKDIR $APP
 
 # conda installs
 ## install miniconda
-ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-     /bin/bash ~/miniconda.sh -b -p /opt/conda
-ENV PATH=$CONDA_DIR/bin:$PATH
-## clustalo (optional)
-RUN conda install -c bioconda clustalo
-## iqtree (optional)
-RUN conda install -c bioconda iqtree
-## krona (optional)
-RUN conda install -c bioconda krona
+#ENV CONDA_DIR /opt/conda
+#RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+#     /bin/bash ~/miniconda.sh -b -p /opt/conda
+#ENV PATH=$CONDA_DIR/bin:$PATH
+### clustalo (optional)
+#RUN conda install -c bioconda clustalo
+### iqtree (optional)
+#RUN conda install -c bioconda iqtree
+### krona (optional)
+#RUN conda install -c bioconda krona
 
 # BLAST install
 # For the latest BLAST version see https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/
-ARG BLAST_version='2.13.0'
-RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
+#ARG BLAST_version='2.13.0'
+#RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+#RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+#ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
 # LARGEVIS install (optional)
 
 
-# DiVE install (optional)
 
+# install node.js and nvm (for DiVE, so optional)
+ENV NODE_VERSION=16.17.0
+RUN apt install -y curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+ENV NVM_DIR=${HOME}/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="${HOME}/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN npm install -g npm
+
+# DiVE install (optional)
+RUN git clone https://github.com/NLeSC/DiVE.git && \
+    cd DiVE && \
+    npm install connect serve-static
 
 # dnabarcoder install
-## Added via requirements.txt don't know if it works?
+RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
 
 # pip installs
 COPY requirements.txt $APP

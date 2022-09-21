@@ -2,4 +2,3 @@ Django>=3.0,<4.0
 numpy>=1.16.2
 scipy>=1.2.1
 scikit-learn>=1.0.2
-dnabarcoder
