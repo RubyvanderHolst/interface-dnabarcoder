@@ -18,28 +18,37 @@ RUN mkdir $APP
 WORKDIR $APP
 
 # conda installs
-## install miniconda
-#ENV CONDA_DIR /opt/conda
-#RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-#     /bin/bash ~/miniconda.sh -b -p /opt/conda
-#ENV PATH=$CONDA_DIR/bin:$PATH
-### clustalo (optional)
-#RUN conda install -c bioconda clustalo
-### iqtree (optional)
-#RUN conda install -c bioconda iqtree
-### krona (optional)
-#RUN conda install -c bioconda krona
+# install miniconda
+ENV CONDA_DIR /opt/conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+     /bin/bash ~/miniconda.sh -b -p /opt/conda
+ENV PATH=$CONDA_DIR/bin:$PATH
+## clustalo (optional)
+RUN conda install -c bioconda clustalo
+## iqtree (optional)
+RUN conda install -c bioconda iqtree
+## krona (optional)
+RUN conda install -c bioconda krona
+
+# pip installs
+COPY requirements.txt $APP
+RUN pip install --no-cache-dir -r requirements.txt
 
 # BLAST install
 # For the latest BLAST version see https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/
-#ARG BLAST_version='2.13.0'
-#RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-#RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-#ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
+ARG BLAST_version='2.13.0'
+RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
+# install gsl (for LARGEVIS, so optional)
+RUN apt-get update
+RUN apt-get install -y libgsl-dev
 # LARGEVIS install (optional)
-
-
+RUN git clone https://github.com/rugantio/LargeVis-python3.git && \
+    cd LargeVis-python3/Linux/ && \
+    g++ LargeVis.cpp main.cpp -o LargeVis -lm -pthread -lgsl -lgslcblas -Ofast -march=native -ffast-math && \
+    python setup.py install
 
 # install node.js and nvm (for DiVE, so optional)
 ENV NODE_VERSION=16.17.0
@@ -59,10 +68,6 @@ RUN git clone https://github.com/NLeSC/DiVE.git && \
 
 # dnabarcoder install
 RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
-
-# pip installs
-COPY requirements.txt $APP
-RUN pip install --no-cache-dir -r requirements.txt
 
 # copy source code to image
 COPY . $APP
