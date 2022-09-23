@@ -1,17 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import numpy as np
 
-def main_page(request):
-    a = 'hallo'
-    return render(request, 'main.html', {'test': a})
+
+def redirect_classification(self):
+    return redirect('/classification')
 
 
 def cutoff_page(request):
     return render(request, 'cutoff.html')
 
 
+def cutoff_settings_page(request):
+    return render(request, 'cutoff_settings.html')
+
+
 def classification_page(request):
-    return render(request, 'classification.html')
+    return render(request, 'classification.html', {
+        'test': request.path,
+    })
+
+
+def classification_settings_page(request):
+    return render(request, 'classification_settings.html')
 
 
 def visualization_page(request):

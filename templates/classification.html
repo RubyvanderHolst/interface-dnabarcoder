@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 
 {% block title %}| Classification{% endblock %}
+{% block nav-classify %}active{% endblock %}
 
 {% block container %}
-    <h1>This is the classification page</h1>
+    <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
+      <li class="nav-item">
+        <a class="nav-link link-dark {% block active_home %}active{% endblock %}" aria-current="page" href="/classification">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-dark {% block active_settings %}{% endblock %}" aria-current="page" href="/classification/settings">Settings</a>
+      </li>
+    </ul>
+    <div class="container">
+    {% block container_classification %}
+        <h1>This is the classification page</h1>
+    {% endblock %}
+    </div>
+
 {% endblock %}

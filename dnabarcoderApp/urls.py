@@ -19,8 +19,11 @@ import apps.Interface.views as views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.main_page),
-    path('cutoff', views.cutoff_page),
-    path('classification', views.classification_page),
-    path('visualization', views.visualization_page),
+    # Main page redirects to classification page:
+    path('', views.redirect_classification),
+    path('cutoff', views.cutoff_page, name='cutoff'),
+    path('cutoff/settings', views.cutoff_settings_page),
+    path('classification', views.classification_page, name='classification'),
+    path('classification/settings', views.classification_settings_page),
+    path('visualization', views.visualization_page, name='visualization'),
 ]
