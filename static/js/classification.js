@@ -15,3 +15,14 @@ function cutoff_input_change() {
         document.getElementById('file_cutoff').style.display = "block";
     }
 }
+
+function single_checkbox(checkbox) {
+    if (checkbox.checked === true) {
+        // Select all checkboxes by class
+        var checkboxesList = document.getElementsByClassName("checkoption");
+        for (var i = 0; i < checkboxesList.length; i++) {
+            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
+        }
+        checkbox.checked = true; // Checked clicked checkbox
+    }
+}
