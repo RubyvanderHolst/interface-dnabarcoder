@@ -4,17 +4,80 @@
 {% block nav-classify %}active{% endblock %}
 
 {% block container %}
+    <head>
+        {% load static %}
+        <link href="{% static 'css/classification.css' %}" rel="stylesheet">
+        <script src="{% static 'js/classification.js' %}"></script>
+    </head>
+
+{#    Tabs #}
     <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
-      <li class="nav-item">
-        <a class="nav-link link-dark {% block active_home %}active{% endblock %}" aria-current="page" href="/classification">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-dark {% block active_settings %}{% endblock %}" aria-current="page" href="/classification/settings">Settings</a>
-      </li>
+        <li class="nav-item">
+            <a class="nav-link link-dark {% block active_home %}active{% endblock %}" aria-current="page" href="/classification">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-dark {% block active_settings %}{% endblock %}" aria-current="page" href="/classification/settings">Settings</a>
+        </li>
     </ul>
+
+{#    Container #}
     <div class="container">
     {% block container_classification %}
-        <h1>This is the classification page</h1>
+        <h3 class="bg-light border text-center">Classification</h3>
+{#        FASTA-file input#}
+        <div class="row">
+            <div class="col">
+                <div class="card h-100">
+                    <h5 class="card-header">Sequence input</h5>
+                    <div class="card-body">
+                        <label for="input_sequences">Select an input file (FASTA):</label>
+                        <input type="file" id="input_sequences" name="input_sequences" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <h5 class="card-header">Reference input</h5>
+                    <div class="card-body">
+                {#        reference dataset#}
+                        <label for="input_reference">Select a reference file (FASTA):</label>
+                        <input type="file" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
+
+                {#        radiobox tax reference#}
+                        <p>Location of taxonomic classification of the reference sequences:</p>
+                        <input type="radio" id="in_fasta" value="in_fasta" name="tax_input" onclick="tax_input_change('none')">
+                        <label for="in_fasta">In the reference FASTA-file</label><br>
+                        <input type="radio" id="other_file" value="other_file" name="tax_input" onclick="tax_input_change('block')" checked>
+                        <label for="other_file">As a separate file</label><br>
+                {#        input tax reference file (only visible with second radio button#}
+                        <input type="file" id="input_tax" name="input_tax">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                {#        radiobox cutoff#}
+                <div class="card h-100">
+                    <h5 class="card-header">Sequence input</h5>
+                    <div class="card-body">
+                        <p>Type of similarity cutoff:</p>
+                        <input type="radio" id="global_cutoff" value="global_cutoff" name="type_cutoff" onclick="cutoff_input_change()" checked>
+                        <label for="global_cutoff">Global cutoff</label><br>
+                        <input type="radio" id="local_cutoffs" value="local_cutoffs" name="type_cutoff" onclick="cutoff_input_change()">
+                        <label for="local_cutoffs">Local cutoffs</label><br>
+                {#        global --> input number#}
+                        <input type="number" id="num_cutoff" name="num_cutoff" min="0" max="1">
+                {#        local --> file input#}
+                        <input type="file" id="file_cutoff" name="file_cutoff" accept=".json" style="display:none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-3 col-2 mx-auto">
+            <button type="submit" class="btn btn-primary">Classify</button>
+        </div>
+
     {% endblock %}
     </div>
 
