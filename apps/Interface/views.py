@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import numpy as np
+import os
 
 
 def redirect_classification(self):
@@ -15,8 +16,11 @@ def cutoff_settings_page(request):
 
 
 def classification_page(request):
+    # This is going to change with server connection
+    path = "/home/app/data"
+    list_files = os.listdir(path)
     return render(request, 'classification.html', {
-        'test': request.path,
+        'test': list_files,
     })
 
 
