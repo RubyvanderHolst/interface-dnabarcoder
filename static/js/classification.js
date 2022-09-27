@@ -1,7 +1,14 @@
-function tax_input_change(var_show) {
+function tax_input_change(bool_show) {
     // Show or hide taxonomy input file based on var_show.
     // This can be "none" (hidden) or "block" (show).
+    let var_show
+    if (bool_show) {
+        var_show = 'block'
+    } else {
+        var_show = 'none'
+    }
     document.getElementById('input_tax').style.display = var_show;
+    document.getElementById('input_tax').required = bool_show;
 }
 
 function cutoff_input_change() {
@@ -13,6 +20,16 @@ function cutoff_input_change() {
     } else {
         document.getElementById('div_num_cutoff').style.display = "none";
         document.getElementById('file_cutoff').style.display = "block";
+    }
+
+    switch_required_cutoff()
+}
+
+function switch_required_cutoff() {
+    const inputs = [document.getElementById('num_cutoff'),
+        document.getElementById('file_cutoff')]
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].required = !inputs[i].required
     }
 }
 
@@ -34,3 +51,17 @@ function deselect_standard() {
         }
 }
 
+// Checks if one of reference file input or checkboxes has input
+document.addEventListener('DOMContentLoaded', function() {
+  const inputs = Array.from(
+    document.querySelectorAll('input[class=checkoption], input[id=input_reference]')
+  );
+
+  const inputListener = e => {
+    inputs
+      .filter(i => i !== e.target)
+      .forEach(i => (i.required = !e.target.value.length));
+  };
+
+  inputs.forEach(i => i.addEventListener('input', inputListener));
+});
