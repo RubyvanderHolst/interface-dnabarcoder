@@ -24,7 +24,8 @@
     <div class="container">
     <h2 class="bg-light border text-center">{% block page_title %}Classification{% endblock %}</h2>
     {% block container_classification %}
-        <form>
+        <form action="/classification/results" method="post">
+            {% csrf_token %}
     {#        FASTA-file input#}
             <div class="row">
                 <div class="col">
