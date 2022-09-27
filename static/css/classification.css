@@ -6,10 +6,15 @@ button {
     margin-top: 30px;
 }
 
-.form-label {
-    font-size: 18px;
+.card {
+    margin-bottom: 20px;
 }
 
-.card-body {
+.container {
     margin-bottom: 50px;
 }
+
+.row{
+    margin-top: 20px;
+}
+
