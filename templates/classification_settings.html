@@ -3,6 +3,56 @@
 {% block active_home %}{% endblock %}
 {% block active_settings %}active{% endblock %}
 
+{% block page_title %}Settings{% endblock %}
 {% block container_classification %}
-    Dit zijn de settings
+{#    minimum sequence alignment length #}
+    <div class="form-floating">
+        <input type="number" min="0" id="min_alignment_length" class="form-control" value="400">
+        <label for="min_alignment_length">Minimum sequence alignment length</label>
+    </div>
+
+{#    minproba #}
+    <div class="form-floating">
+        <input type="number" min="0" max="1" id="min_probability" class="form-control">
+        <label for="min_probability">Minimum probability</label>
+    </div>
+
+{#    maxseqno #}
+    <div class="form-floating">
+        <input type="number" id="max_number_seq" class="form-control">
+        <label for="max_number_seq">Maximum number of sequences to use per taxon name for best match determination</label>
+    </div>
+
+{#    confidence #}
+    <div class="form-floating">
+        <input type="number" min="0" max="1" id="confidence" class="form-control">
+        <label for="confidence">Confidence of the similarity cutoff</label>
+    </div>
+
+{#    rank to classify #}
+    <div class="form-floating">
+        <select id="rank" class="form-select">
+            <option value=""></option>
+            <option value="kingdom">Kingdom</option>
+            <option value="phylum">Phylum</option>
+            <option value="class">Class</option>
+            <option value="order">Order</option>
+            <option value="family">Family</option>
+            <option value="species">Species</option>
+        </select>
+        <label for="rank">Rank</label>
+    </div>
+
+{#    minimum group number #}
+    <div class="form-floating">
+        <input type="number" min="0" id="min_group_number" class="form-control">
+        <label for="min_group_number">Minimum number of groups for prediction</label>
+    </div>
+
+{#    minimum sequence number #}
+    <div class="form-floating">
+        <input type="number" min="0" id="min_seq_number" class="form-control">
+        <label for="min_seq_number">Minimum number of sequences for prediction</label>
+    </div>
+
 {% endblock %}

@@ -22,9 +22,8 @@
 
 {#    Container #}
     <div class="container">
+    <h2 class="bg-light border text-center">{% block page_title %}Classification{% endblock %}</h2>
     {% block container_classification %}
-        <h2 class="bg-light border text-center">Classification</h2>
-
         <form>
     {#        FASTA-file input#}
             <div class="row">
