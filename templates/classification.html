@@ -44,7 +44,7 @@
                         {#        reference dataset#}
                                 <li class="list-group-item">
                                     <label for="input_reference" class="form-label">Select a reference file (FASTA):</label>
-                                    <input type="file" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
+                                    <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
 
                                     <br>
                                     <label class="form-label">Or choose a standard file:</label><br>

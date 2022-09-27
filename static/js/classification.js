@@ -19,10 +19,18 @@ function cutoff_input_change() {
 function single_checkbox(checkbox) {
     if (checkbox.checked === true) {
         // Select all checkboxes by class
-        var checkboxesList = document.getElementsByClassName("checkoption");
-        for (var i = 0; i < checkboxesList.length; i++) {
-            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
-        }
+        deselect_standard()
         checkbox.checked = true; // Checked clicked checkbox
+
+        // empty reference file input
+        document.getElementById('input_reference').value = null;
     }
 }
+
+function deselect_standard() {
+    let checkboxesList = document.getElementsByClassName("checkoption");
+        for (let i = 0; i < checkboxesList.length; i++) {
+            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
+        }
+}
+
