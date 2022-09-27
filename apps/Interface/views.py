@@ -28,5 +28,10 @@ def classification_settings_page(request):
     return render(request, 'classification_settings.html')
 
 
+def classification_results_page(request):
+    return render(request, 'classification_results.html')
+
+
 def visualization_page(request):
     return render(request, 'visualization.html')
+
