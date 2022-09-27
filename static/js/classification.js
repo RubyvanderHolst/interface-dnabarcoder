@@ -8,10 +8,10 @@ function cutoff_input_change() {
     let button_checked = document.querySelector('input[name=type_cutoff]:checked').value;
 
     if (button_checked === "global_cutoff") {
-        document.getElementById('num_cutoff').style.display = "block";
+        document.getElementById('div_num_cutoff').style.display = "block";
         document.getElementById('file_cutoff').style.display = "none";
     } else {
-        document.getElementById('num_cutoff').style.display = "none";
+        document.getElementById('div_num_cutoff').style.display = "none";
         document.getElementById('file_cutoff').style.display = "block";
     }
 }
@@ -19,10 +19,18 @@ function cutoff_input_change() {
 function single_checkbox(checkbox) {
     if (checkbox.checked === true) {
         // Select all checkboxes by class
-        var checkboxesList = document.getElementsByClassName("checkoption");
-        for (var i = 0; i < checkboxesList.length; i++) {
-            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
-        }
+        deselect_standard()
         checkbox.checked = true; // Checked clicked checkbox
+
+        // empty reference file input
+        document.getElementById('input_reference').value = null;
     }
 }
+
+function deselect_standard() {
+    let checkboxesList = document.getElementsByClassName("checkoption");
+        for (let i = 0; i < checkboxesList.length; i++) {
+            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
+        }
+}
+

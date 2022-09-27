@@ -44,7 +44,7 @@
                         {#        reference dataset#}
                                 <li class="list-group-item">
                                     <label for="input_reference" class="form-label">Select a reference file (FASTA):</label>
-                                    <input type="file" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
+                                    <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa">
 
                                     <br>
                                     <label class="form-label">Or choose a standard file:</label><br>
@@ -78,7 +78,10 @@
                             <input type="radio" id="local_cutoffs" value="local_cutoffs" name="type_cutoff" onclick="cutoff_input_change()">
                             <label for="local_cutoffs">Local cut-offs</label><br><br>
                     {#        global --> input number#}
-                            <input type="number" id="num_cutoff" name="num_cutoff" min="0" max="1">
+                            <div id="div_num_cutoff">
+                                <label for="num_cutoff">Cut-off value:</label>
+                                <input type="number" id="num_cutoff" name="num_cutoff" min="0" max="1" step="0.0001">
+                            </div>
                     {#        local --> file input#}
                             <input type="file" class="form-control" id="file_cutoff" name="file_cutoff" accept=".json" style="display:none;">
                         </div>
