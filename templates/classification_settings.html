@@ -1,63 +1,63 @@
-{% extends 'classification.html' %}
-
-{% block active_home %}{% endblock %}
-{% block active_settings %}active{% endblock %}
-
-{% block page_title %}Settings{% endblock %}
-{% block container_classification %}
+{#{% extends 'classification.html' %}#}
+{##}
+{#{% block active_home %}{% endblock %}#}
+{#{% block active_settings %}active{% endblock %}#}
+{##}
+{#{% block page_title %}Settings{% endblock %}#}
+{#{% block container_classification %}#}
 {#    minimum sequence alignment length #}
-    <div class="row align-items-end">
-        <div class="col">
+{#    <div class="row align-items-end">#}
+{#        <div class="col">#}
             {#    minproba #}
-            <label for="min_probability" class="form-label">Minimum probability of similarity cutoff</label>
-            <input type="number" min="0" max="1" step="0.0001" id="min_probability" class="form-control">
-        </div>
-        <div class="col">
-            <label for="min_alignment_length" class="form-label">Minimum sequence alignment length</label>
-            <input type="number" min="0" id="min_alignment_length" class="form-control" value="400">
-        </div>
-    </div>
-    <div class="row align-items-end">
-        <div class="col">
+{#            <label for="min_probability" class="form-label">Minimum probability of similarity cutoff</label>#}
+{#            <input type="number" min="0" max="1" step="0.0001" id="min_probability" class="form-control">#}
+{#        </div>#}
+{#        <div class="col">#}
+{#            <label for="min_alignment_length" class="form-label">Minimum sequence alignment length</label>#}
+{#            <input type="number" min="0" id="min_alignment_length" class="form-control" value="400">#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row align-items-end">#}
+{#        <div class="col">#}
         {#    confidence #}
-            <label for="confidence" class="form-label">Confidence of the similarity cutoff</label>
-            <input type="number" min="0" max="1" step="0.0001" id="confidence" class="form-control">
-        </div>
-        <div class="col">
+{#            <label for="confidence" class="form-label">Confidence of the similarity cutoff</label>#}
+{#            <input type="number" min="0" max="1" step="0.0001" id="confidence" class="form-control">#}
+{#        </div>#}
+{#        <div class="col">#}
             {#    minimum group number #}
-            <label for="min_group_number" class="form-label">Minimum number of groups for prediction</label>
-            <input type="number" min="0" id="min_group_number" class="form-control" value="5">
-        </div>
-    </div>
-    <div class="row align-items-end">
-        <div class="col">
+{#            <label for="min_group_number" class="form-label">Minimum number of groups for prediction</label>#}
+{#            <input type="number" min="0" id="min_group_number" class="form-control" value="5">#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row align-items-end">#}
+{#        <div class="col">#}
             {#    minimum sequence number #}
-            <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction</label>
-            <input type="number" min="0" id="min_seq_number" class="form-control" value="50">
-        </div>
-        <div class="col">
+{#            <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction</label>#}
+{#            <input type="number" min="0" id="min_seq_number" class="form-control" value="50">#}
+{#        </div>#}
+{#        <div class="col">#}
             {#    rank to classify #}
-            <label for="rank" class="form-label">Rank</label>
-                <select id="rank" class="form-select">
-                    <option value=""></option>
-                    <option value="kingdom">Kingdom</option>
-                    <option value="phylum">Phylum</option>
-                    <option value="class">Class</option>
-                    <option value="order">Order</option>
-                    <option value="family">Family</option>
-                    <option value="species">Species</option>
-                </select>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
+{#            <label for="rank" class="form-label">Rank</label>#}
+{#                <select id="rank" class="form-select">#}
+{#                    <option value=""></option>#}
+{#                    <option value="kingdom">Kingdom</option>#}
+{#                    <option value="phylum">Phylum</option>#}
+{#                    <option value="class">Class</option>#}
+{#                    <option value="order">Order</option>#}
+{#                    <option value="family">Family</option>#}
+{#                    <option value="species">Species</option>#}
+{#                </select>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="row">#}
+{#        <div class="col">#}
             {#    maxseqno #}
-            <label for="max_number_seq" class="form-label">Maximum number of sequences per taxon name for best match determination</label>
-            <input type="number" min="0" id="max_number_seq" class="form-control align-bottom">
-        </div>
-        <div class="col"></div>
-    </div>
-
-
-{% endblock %}
+{#            <label for="max_number_seq" class="form-label">Maximum number of sequences per taxon name for best match determination</label>#}
+{#            <input type="number" min="0" id="max_number_seq" class="form-control align-bottom">#}
+{#        </div>#}
+{#        <div class="col"></div>#}
+{#    </div>#}
+{##}
+{##}
+{#{% endblock %}#}

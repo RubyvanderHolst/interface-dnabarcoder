@@ -14,7 +14,10 @@ button {
     margin-bottom: 50px;
 }
 
-.row{
+.row {
     margin-top: 20px;
 }
 
+.nav-link {
+    margin-top: 0;
+}

@@ -11,22 +11,23 @@
     </head>
 
 {#    Tabs #}
+    {% block container_classification %}
     <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
         <li class="nav-item">
-            <a class="nav-link link-dark {% block active_home %}active{% endblock %}" aria-current="page" href="/classification">Home</a>
+            <button id="home_button" onclick="switch_home_settings(this)" class="nav-link link-dark active" aria-current="page">Home</button>
         </li>
         <li class="nav-item">
-            <a class="nav-link link-dark {% block active_settings %}{% endblock %}" aria-current="page" href="/classification/settings">Settings</a>
+            <button id="settings_button" onclick="switch_home_settings(this)" class="nav-link link-dark" aria-current="page">Settings</button>
         </li>
     </ul>
 
 {#    Container #}
     <div class="container">
-    <h2 class="bg-light border text-center">{% block page_title %}Classification{% endblock %}</h2>
-    {% block container_classification %}
-        <form>
-    {#        FASTA-file input#}
-            <div class="row">
+        <form action="/classification/results" method="post" target="_blank">
+            {% csrf_token %}
+            <div id="classification_home">
+                <h2 class="bg-light border text-center">Classification</h2>
+                <div class="row">
                 <div class="col">
                     <div class="card h-100">
                         <h5 class="card-header">Sequence input</h5>
@@ -48,8 +49,8 @@
 
                                     <br>
                                     <label class="form-label">Or choose a standard file:</label><br>
-                                    {% for file in test %}
-                                        <input type="checkbox" class="checkoption" value="{{ file }}" onclick="single_checkbox(this)" required>
+                                    {% for file in list_files %}
+                                        <input type="checkbox" name="{{ file }}" class="checkoption" value="{{ file }}" onclick="single_checkbox(this)" required>
                                         <label for="{{ file }}">{{ file }}</label><br>
                                     {% endfor %}
                                 </li>
@@ -61,7 +62,7 @@
                                     <input type="radio" id="other_file" value="other_file" name="tax_input" onclick="tax_input_change(true)" checked>
                                     <label for="other_file">As a separate file</label><br><br>
                             {#        input tax reference file (only visible with second radio button#}
-                                    <input type="file" class="form-control" id="input_tax" name="input_tax" required>
+                                    <input type="file" class="form-control" id="file_input_tax" name="file_input_tax" required>
                                 </li>
                             </ul>
                     </div>
@@ -88,11 +89,71 @@
                     </div>
                 </div>
             </div>
-            <div class="d-grid gap-3 col-2 mx-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="d-grid gap-3 col-2 mx-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </div>
-        </form>
-    {% endblock %}
-    </div>
 
+
+            <div id="classification_settings" style="display:none">
+                {#    minimum sequence alignment length #}
+                <h2 class="bg-light border text-center">Settings</h2>
+                <div class="row align-items-end">
+                    <div class="col">
+                        {#    minproba #}
+                        <label for="min_probability" class="form-label">Minimum probability of similarity cutoff</label>
+                        <input type="number" min="0" max="1" step="0.0001" id="min_probability" name="min_probability" class="form-control">
+                    </div>
+                    <div class="col">
+                        <label for="min_alignment_length" class="form-label">Minimum sequence alignment length</label>
+                        <input type="number" min="0" id="min_alignment_length" name="min_alignment_length" class="form-control" value="400">
+                    </div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col">
+                    {#    confidence #}
+                        <label for="confidence" class="form-label">Confidence of the similarity cutoff</label>
+                        <input type="number" min="0" max="1" step="0.0001" id="confidence" name="confidence" class="form-control">
+                    </div>
+                    <div class="col">
+                        {#    minimum group number #}
+                        <label for="min_group_number" class="form-label">Minimum number of groups for prediction</label>
+                        <input type="number" min="0" id="min_group_number" name="min_group_number" class="form-control" value="5">
+                    </div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col">
+                        {#    minimum sequence number #}
+                        <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction</label>
+                        <input type="number" min="0" id="min_seq_number" name="min_seq_number" class="form-control" value="50">
+                    </div>
+                    <div class="col">
+                        {#    rank to classify #}
+                        <label for="rank" class="form-label">Rank</label>
+                            <select id="rank" name="rank" class="form-select">
+                                <option value=""></option>
+                                <option value="kingdom">Kingdom</option>
+                                <option value="phylum">Phylum</option>
+                                <option value="class">Class</option>
+                                <option value="order">Order</option>
+                                <option value="family">Family</option>
+                                <option value="species">Species</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {#    maxseqno #}
+                        <label for="max_number_seq" class="form-label">Maximum number of sequences per taxon name for best match determination</label>
+                        <input type="number" min="0" id="max_number_seq" name="max_number_seq" class="form-control align-bottom">
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    {% endblock %}
 {% endblock %}
