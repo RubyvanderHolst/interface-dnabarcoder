@@ -16,20 +16,23 @@ def cutoff_settings_page(request):
 
 
 def classification_page(request):
-    # This is going to change with server connection
     path = "/home/app/data"
     list_files = os.listdir(path)
     return render(request, 'classification.html', {
-        'test': list_files,
+        'list_files': list_files,
     })
 
 
-def classification_settings_page(request):
-    return render(request, 'classification_settings.html')
+# def classification_settings_page(request):
+#     return render(request, 'classification_settings.html')
 
 
 def classification_results_page(request):
-    return render(request, 'classification_results.html')
+
+    test = request.POST
+    return render(request, 'classification_results.html',{
+        'test': test,
+    })
 
 
 def visualization_page(request):
