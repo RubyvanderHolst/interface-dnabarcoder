@@ -20,7 +20,7 @@ def classification_page(request):
     path = "/home/app/data"
     list_files = os.listdir(path)
     return render(request, 'classification.html', {
-        'test': list_files,
+        'list_files': list_files,
     })
 
 
