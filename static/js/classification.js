@@ -32,8 +32,8 @@ function tax_input_change(bool_show) {
     } else {
         var_show = 'none'
     }
-    document.getElementById('input_tax').style.display = var_show;
-    document.getElementById('input_tax').required = bool_show;
+    document.getElementById('file_input_tax').style.display = var_show;
+    document.getElementById('file_input_tax').required = bool_show;
 }
 
 function cutoff_input_change() {
