@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_templates/base.html' %}
 
 {% block title %}| Classification{% endblock %}
 {% block nav-classify %}active{% endblock %}
@@ -12,20 +12,13 @@
 
 {#    Tabs #}
     {% block container_classification %}
-    <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
-        <li class="nav-item">
-            <button id="home_button" onclick="switch_home_settings(this)" class="nav-link link-dark active" aria-current="page">Home</button>
-        </li>
-        <li class="nav-item">
-            <button id="settings_button" onclick="switch_home_settings(this)" class="nav-link link-dark" aria-current="page">Settings</button>
-        </li>
-    </ul>
+    {% include 'base_templates/base_tabs.html' %}
 
 {#    Container #}
     <div class="container">
         <form action="/classification/results" method="post" target="_blank">
             {% csrf_token %}
-            <div id="classification_home">
+            <div id="div_home">
                 <h2 class="bg-light border text-center">Classification</h2>
                 <div class="row">
                 <div class="col">
@@ -48,15 +41,17 @@
                                     <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
 
                                     <br>
-                                    <label class="form-label">Or choose a standard file:</label><br>
+                                    <label>Or choose a standard file:</label><br>
                                     {% for file in list_files %}
-                                        <input type="checkbox" name="{{ file }}" class="checkoption" value="{{ file }}" onclick="single_checkbox(this)" required>
-                                        <label for="{{ file }}">{{ file }}</label><br>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="{{ file }}" value="{{ file }}" onclick="single_checkbox(this)" required>
+                                            <label for="{{ file }}" class="form-check-label">{{ file }}</label>
+                                        </div>
                                     {% endfor %}
                                 </li>
                                 <li class="list-group-item">
                     {#        radiobox tax reference#}
-                                    <label class="form-label">Location of taxonomic classification of the reference sequences:</label>
+                                    <label class="form-label">Location of taxonomic classification of the reference sequences:</label><br>
                                     <input type="radio" id="in_fasta" value="in_fasta" name="tax_input" onclick="tax_input_change(false)">
                                     <label for="in_fasta">In the reference FASTA-file</label><br>
                                     <input type="radio" id="other_file" value="other_file" name="tax_input" onclick="tax_input_change(true)" checked>
@@ -95,7 +90,7 @@
             </div>
 
 
-            <div id="classification_settings" style="display:none">
+            <div id="div_settings" style="display:none">
                 {#    minimum sequence alignment length #}
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">

@@ -11,8 +11,11 @@ def cutoff_page(request):
     return render(request, 'cutoff.html')
 
 
-def cutoff_settings_page(request):
-    return render(request, 'cutoff_settings.html')
+# def cutoff_settings_page(request):
+#     return render(request, 'cutoff_settings.html')
+
+def cutoff_results_page(request):
+    return render(request, 'cutoff_results.html')
 
 
 def classification_page(request):
