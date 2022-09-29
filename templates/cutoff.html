@@ -8,7 +8,6 @@
         {% load static %}
         <link href="{% static 'css/cutoff.css' %}" rel="stylesheet">
         <script src="{% static 'js/cutoff.js' %}"></script>
-        <script src="{% static 'js/classification.js' %}"></script>
     </head>
     {% include 'base_templates/base_tabs.html' %}
 
@@ -26,7 +25,7 @@
                             {#        fasta file#}
                                     <li class="list-group-item">
                                         <label for="input_reference" class="form-label">Select a FASTA file:</label>
-                                        <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
+                                        <input type="file" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
                                     </li>
                                     <li class="list-group-item">
                         {#        radiobox tax#}
@@ -93,23 +92,23 @@
                                         <div id="li_higher_rank">
                                             <label>Higher ranks:</label><br>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="family_higher" id="family_higher" value="family_higher">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="family_higher" id="family_higher" value="family_higher" required>
                                                 <label for="family_higher" class="form-check-label">Family</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="order_higher" id="order_higher" value="order_higher">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="order_higher" id="order_higher" value="order_higher" required>
                                                 <label for="order_higher" class="form-check-label">Order</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="class_higher" id="class_higher" value="class_higher">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="class_higher" id="class_higher" value="class_higher" required>
                                                 <label for="class_higher" class="form-check-label">Class</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="phylum_higher" id="phylum_higher" value="phylum_higher">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="phylum_higher" id="phylum_higher" value="phylum_higher" required>
                                                 <label for="phylum_higher" class="form-check-label">Phylum</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="kingdom_higher" id="kingdom_higher" value="kingdom_higher">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="kingdom_higher" id="kingdom_higher" value="kingdom_higher" required>
                                                 <label for="kingdom_higher" class="form-check-label">Kingdom</label>
                                             </div>
                                         </div>
