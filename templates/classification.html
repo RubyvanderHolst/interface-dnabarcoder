@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_templates/base.html' %}
 
 {% block title %}| Classification{% endblock %}
 {% block nav-classify %}active{% endblock %}
@@ -12,20 +12,13 @@
 
 {#    Tabs #}
     {% block container_classification %}
-    <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
-        <li class="nav-item">
-            <button id="home_button" onclick="switch_home_settings(this)" class="nav-link link-dark active" aria-current="page">Home</button>
-        </li>
-        <li class="nav-item">
-            <button id="settings_button" onclick="switch_home_settings(this)" class="nav-link link-dark" aria-current="page">Settings</button>
-        </li>
-    </ul>
+    {% include 'base_templates/base_tabs.html' %}
 
 {#    Container #}
     <div class="container">
         <form action="/classification/results" method="post" target="_blank">
             {% csrf_token %}
-            <div id="classification_home">
+            <div id="div_home">
                 <h2 class="bg-light border text-center">Classification</h2>
                 <div class="row">
                 <div class="col">
@@ -95,7 +88,7 @@
             </div>
 
 
-            <div id="classification_settings" style="display:none">
+            <div id="div_settings" style="display:none">
                 {#    minimum sequence alignment length #}
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">

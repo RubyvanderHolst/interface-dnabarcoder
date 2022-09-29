@@ -22,7 +22,7 @@ urlpatterns = [
     # Main page redirects to classification page:
     path('', views.redirect_classification),
     path('cutoff', views.cutoff_page, name='cutoff'),
-    path('cutoff/settings', views.cutoff_settings_page),
+    path('cutoff/results', views.cutoff_results_page),
     path('classification', views.classification_page, name='classification'),
     path('classification/results', views.classification_results_page),
     path('visualization', views.visualization_page, name='visualization'),
