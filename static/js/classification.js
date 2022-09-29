@@ -56,7 +56,7 @@ function deselect_standard() {
 // Checks if one of reference file input or checkboxes has input
 document.addEventListener('DOMContentLoaded', function() {
   const inputs = Array.from(
-    document.querySelectorAll('input[class=checkoption], input[id=input_reference]')
+    document.querySelectorAll('input[class=form-check-input], input[id=input_reference]')
   );
 
   const inputListener = e => {

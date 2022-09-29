@@ -26,9 +26,6 @@ def classification_page(request):
     })
 
 
-# def classification_settings_page(request):
-#     return render(request, 'classification_settings.html')
-
 
 def classification_results_page(request):
 
