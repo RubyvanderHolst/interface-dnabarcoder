@@ -25,3 +25,10 @@ function disable_rank(clicked_radio) {
     }
 }
 
+function disable_field(checkbox, field_id) {
+    if (checkbox.checked) {
+        document.getElementById(field_id).disabled = false;
+    } else {
+        document.getElementById(field_id).disabled = true;
+    }
+}
