@@ -47,7 +47,7 @@ function single_checkbox(checkbox) {
 }
 
 function deselect_standard() {
-    let checkboxesList = document.getElementsByClassName("checkoption");
+    let checkboxesList = document.getElementsByClassName("form-check-input");
         for (let i = 0; i < checkboxesList.length; i++) {
             checkboxesList.item(i).checked = false; // Uncheck all checkboxes
         }

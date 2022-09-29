@@ -41,15 +41,17 @@
                                     <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
 
                                     <br>
-                                    <label class="form-label">Or choose a standard file:</label><br>
+                                    <label>Or choose a standard file:</label><br>
                                     {% for file in list_files %}
-                                        <input type="checkbox" name="{{ file }}" class="checkoption" value="{{ file }}" onclick="single_checkbox(this)" required>
-                                        <label for="{{ file }}">{{ file }}</label><br>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="{{ file }}" value="{{ file }}" onclick="single_checkbox(this)" required>
+                                            <label for="{{ file }}" class="form-check-label">{{ file }}</label>
+                                        </div>
                                     {% endfor %}
                                 </li>
                                 <li class="list-group-item">
                     {#        radiobox tax reference#}
-                                    <label class="form-label">Location of taxonomic classification of the reference sequences:</label>
+                                    <label class="form-label">Location of taxonomic classification of the reference sequences:</label><br>
                                     <input type="radio" id="in_fasta" value="in_fasta" name="tax_input" onclick="tax_input_change(false)">
                                     <label for="in_fasta">In the reference FASTA-file</label><br>
                                     <input type="radio" id="other_file" value="other_file" name="tax_input" onclick="tax_input_change(true)" checked>
