@@ -1,0 +1,13 @@
+<head>
+    {% load static %}
+    <script src="{% static 'js/base_tabs.js' %}"></script>
+</head>
+
+<ul class="nav nav-tabs" style="background-color: #e3f2fd;">
+    <li class="nav-item">
+        <button id="home_button" onclick="switch_home_settings(this)" class="nav-link link-dark active" aria-current="page">Home</button>
+    </li>
+    <li class="nav-item">
+        <button id="settings_button" onclick="switch_home_settings(this)" class="nav-link link-dark" aria-current="page">Settings</button>
+    </li>
+</ul>

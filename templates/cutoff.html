@@ -1,20 +1,191 @@
-{% extends 'base.html' %}
+{% extends 'base_templates/base.html' %}
 
 {% block title %}| Cutoff prediction{% endblock %}
 {% block nav-cutoff %}active{% endblock %}
 
 {% block container %}
-    <ul class="nav nav-tabs" style="background-color: #e3f2fd;">
-      <li class="nav-item">
-        <a class="nav-link link-dark {% block active_home %}active{% endblock %}" aria-current="page" href="/cutoff">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-dark {% block active_settings %}{% endblock %}" aria-current="page" href="/cutoff/settings">Settings</a>
-      </li>
-    </ul>
-    <div class="container">
+    <head>
+        {% load static %}
+        <link href="{% static 'css/cutoff.css' %}" rel="stylesheet">
+        <script src="{% static 'js/cutoff.js' %}"></script>
+        <script src="{% static 'js/classification.js' %}"></script>
+    </head>
+    {% include 'base_templates/base_tabs.html' %}
+
     {% block container_cutoff %}
-        <h1>This is the cutoff page</h1>
+        <div class="container">
+        <form>
+            {% csrf_token %}
+            <div id="div_home">
+                <h2 class="bg-light border text-center">Cut-off calculation</h2>
+                <div class="row">
+                    <div class="col">
+                        <div class="card h-100">
+                            <h5 class="card-header">FASTA input</h5>
+                                <ul class="list-group list-group-flush">
+                            {#        fasta file#}
+                                    <li class="list-group-item">
+                                        <label for="input_reference" class="form-label">Select a FASTA file:</label>
+                                        <input type="file" onchange="deselect_standard()" class="form-control" id="input_reference" name="input_reference" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
+                                    </li>
+                                    <li class="list-group-item">
+                        {#        radiobox tax#}
+                                        <label class="form-label">Location of taxonomic classification of the reference sequences:</label><br>
+                                        <input type="radio" id="in_fasta" value="in_fasta" name="tax_input" onclick="tax_input_change(false)">
+                                        <label for="in_fasta">In the reference FASTA-file</label><br>
+                                        <input type="radio" id="other_file" value="other_file" name="tax_input" onclick="tax_input_change(true)" checked>
+                                        <label for="other_file">As a separate file</label><br><br>
+                                {#        input tax file (only visible with second radio button#}
+                                        <input type="file" class="form-control" id="file_input_tax" name="file_input_tax" required>
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+{#                choice cutoff option #}
+                        <div class="card h-100">
+                            <h5 class="card-header">Type of cut-off</h5>
+                            <div class="card-body">
+                                <label class="form-label">Local or global cut-off calculation:</label><br>
+                                <input type="radio" id="local_choice" value="local" name="local_global_choice" onclick="disable_rank(this)" checked>
+                                <label for="local_choice">Local cut-off value</label><br>
+                                <input type="radio" id="global_choice" value="global" name="local_global_choice" onclick="disable_rank(this)">
+                                <label for="global_choice">Global cut-off value</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+{#                rank #}
+                        <div class="card h-100">
+                            <h5 class="card-header">Rank</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <label>Calculation for ranks:</label><br>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="species" id="species" value="species" disabled checked>
+                                            <label for="species" class="form-check-label">Species</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="family" id="family" value="family" disabled>
+                                            <label for="family" class="form-check-label">Family</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="order" id="order" value="order" disabled>
+                                            <label for="order" class="form-check-label">Order</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="class" id="class" value="class" disabled>
+                                            <label for="class" class="form-check-label">Class</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="phylum" id="phylum" value="phylum" disabled>
+                                            <label for="phylum" class="form-check-label">Phylum</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input checks_rank" name="kingdom" id="kingdom" value="kingdom" disabled>
+                                            <label for="kingdom" class="form-check-label">Kingdom</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div id="li_higher_rank">
+                                            <label>Higher ranks:</label><br>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="family_higher" id="family_higher" value="family_higher">
+                                                <label for="family_higher" class="form-check-label">Family</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="order_higher" id="order_higher" value="order_higher">
+                                                <label for="order_higher" class="form-check-label">Order</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="class_higher" id="class_higher" value="class_higher">
+                                                <label for="class_higher" class="form-check-label">Class</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="phylum_higher" id="phylum_higher" value="phylum_higher">
+                                                <label for="phylum_higher" class="form-check-label">Phylum</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checks_higher_rank" name="kingdom_higher" id="kingdom_higher" value="kingdom_higher">
+                                                <label for="kingdom_higher" class="form-check-label">Kingdom</label>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                        </div>
+
+{#                higher rank input (only global) #}
+                    </div>
+
+
+                </div>
+                <div class="d-grid gap-3 col-2 mx-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+            <div id="div_settings" style="display: none">
+                <h2 class="bg-light border text-center">Settings</h2>
+                <div class="row align-items-end">
+                    {#                sim file #}
+                    <div class="col">
+                        <label for="input_reference" class="form-label">Select a similarity matrix file:</label>
+                        <input type="file" class="form-control" id="input_reference" name="input_reference">
+                    </div>
+                    <div class="col">
+{#                min group number #}
+                        <label for="min_group_number" class="form-label">Minimum number of groups for prediction:</label>
+                        <input type="number" min="0" id="min_group_number" name="min_group_number" class="form-control" value="5">
+                    </div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col">
+{#                min alignment length #}
+                        <label for="min_alignment_length" class="form-label">Minimum sequence alignment length</label>
+                        <input type="number" min="0" id="min_alignment_length" name="min_alignment_length" class="form-control" value="400">
+                    </div>
+                    <div class="col">
+                        {#                min seq number #}
+                        <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction:</label>
+                        <input type="number" min="0" id="min_seq_number" name="min_seq_number" class="form-control" value="50">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                         {#                start end step #}
+                        <label class="form-label">Thresholds and step size of prediction:</label>
+                        <div class="input-group">
+                            <input type="number" min="1" class="form-control" placeholder="Starting threshold">
+                            <input type="number" min="1" class="form-control" placeholder="Ending threshold">
+                            <input type="number" min="1" class="form-control" placeholder="Step size">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                               {#                choice remove same complexes #}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="remove_comp" name="remove_comp" onclick="disable_field(this, 'cutoff_remove')">
+                                        <label class="form-check-label" for="remove_comp">Remove sequences of the same complexes</label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <label for="cutoff_remove">Similarity cut-off for removal:</label>
+                                    <input type="number" min="0" max="1" step="0.0001" default="0.97" id="cutoff_remove" name="cutoff_remove" class="form-control" disabled>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        </div>
     {% endblock %}
-    </div>
+
 {% endblock %}
