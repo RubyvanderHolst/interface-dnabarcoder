@@ -56,14 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('input[class="form-check-input checks_rank"],' +
             'input[class="form-check-input checks_higher_rank"]')
     )
-
      const inputListener = e => {
              checkboxes_all
-                 .filter(i => !i.disabled)
                  .filter(i => i !== e.target)
                  .forEach(i => (i.required = !e.target.value.length));
          };
-
+    checkboxes_all.forEach(i => i.addEventListener('load', inputListener));
     checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
 })
 

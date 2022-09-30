@@ -1,7 +1,8 @@
 {% extends 'cutoff.html' %}
 
 {% block page_title %}Results{% endblock %}
-{% block container_classification %}
-    {% include 'base_templates/base_results.html' %}
+{% block container_cutoff %}
+{#    {% include 'base_templates/base_results.html' %}#}
     Hier komen de cut-off resultaten.
+    {{ test }}
 {% endblock %}

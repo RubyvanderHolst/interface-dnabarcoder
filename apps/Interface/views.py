@@ -12,10 +12,14 @@ def cutoff_page(request):
 
 
 def cutoff_results_page(request):
-    return render(request, 'cutoff_results.html')
+    test = request.POST
+    return render(request, 'cutoff_results.html', {
+        'test': test,
+    })
 
 
 def classification_page(request):
+    # Get the already available reference files
     path = "/home/app/data"
     list_files = os.listdir(path)
     return render(request, 'classification.html', {

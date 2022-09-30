@@ -13,7 +13,7 @@
 
     {% block container_cutoff %}
         <div class="container">
-        <form>
+        <form action="/cutoff/results" method="post" target="_blank">
             {% csrf_token %}
             <div id="div_home">
                 <h2 class="bg-light border text-center">Cut-off calculation</h2>
@@ -71,9 +71,10 @@
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input checks_rank"
                                                    name="species" id="species" value="species"
-                                                   oninvalid="this.setCustomValidity('Check on of these boxes')" oninput="this.setCustomValidity('')"
+                                                   oninvalid="this.setCustomValidity('Check on of these boxes')"
+                                                   oninput="this.setCustomValidity('')"
                                                    required disabled checked>
-                                            <label for="species" class="form-check-label">Species</label>
+                                            <label for="species" class="form-check-label checks_rank">Species</label>
                                         </div>
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input checks_rank"
