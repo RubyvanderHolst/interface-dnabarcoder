@@ -49,32 +49,23 @@ function disable_field(checkbox, field_id) {
 }
 
 
-// Checks if one of the rank checkboxes has input
+// Checks if one of the enabled rank checkboxes has input
 document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes_higher = Array.from(
-    document.querySelectorAll('input[class="form-check-input checks_higher_rank"]')
-    );
+    let checkboxes_all = Array.from(
+        document.querySelectorAll('input[class="form-check-input checks_rank"],' +
+            'input[class="form-check-input checks_higher_rank"]')
+    )
 
-    if (checkboxes_higher[0].disabled === false) {
-        const inputListener = e => {
-        checkboxes_higher
-          .filter(i => i !== e.target)
-          .forEach(i => (i.required = !e.target.value.length));
-        };
+     const inputListener = e => {
+             checkboxes_all
+                 .filter(i => !i.disabled)
+                 .filter(i => i !== e.target)
+                 .forEach(i => (i.required = !e.target.value.length));
+         };
 
-        // let error_message = 'At least one checkbox must be selected.';
-        // for (let i = 0; i < checkboxes_higher.length; i++) {
-        //     console.log(checkboxes_higher[i].checked)
-        //     if (checkboxes_higher[i].checked) {
-        //         error_message = "";
-        //     }
-        // }
 
-        checkboxes_higher.forEach(i => i.addEventListener('input', inputListener));
-        checkboxes_higher[0].setCustomValidity(error_message)
-    //    TODO: change required error message
-    //    TODO: add required for ranks
-    }
-});
+    checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
+})
+
 
 
