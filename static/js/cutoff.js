@@ -1,7 +1,22 @@
+// Keep in mind that cutoff.html also uses functions from classification.js
+
+// duplicate from classification.js
+function tax_input_change(bool_show) {
+    // Show or hide taxonomy input file based on var_show.
+    // This can be "none" (hidden) or "block" (show).
+    let var_show
+    if (bool_show) {
+        var_show = 'block'
+    } else {
+        var_show = 'none'
+    }
+    document.getElementById('file_input_tax').style.display = var_show;
+    document.getElementById('file_input_tax').required = bool_show;
+}
+
 
 function disable_rank(clicked_radio) {
     // Disables higher rank checkboxes
-
     let checkboxes_list_higher = document.getElementsByClassName("checks_higher_rank");
     let checkboxes_list = document.getElementsByClassName("checks_rank")
 
@@ -26,9 +41,31 @@ function disable_rank(clicked_radio) {
 }
 
 function disable_field(checkbox, field_id) {
+    // Enable field when checkbox is checked
     if (checkbox.checked) {
         document.getElementById(field_id).disabled = false;
     } else {
         document.getElementById(field_id).disabled = true;
     }
 }
+
+
+// Checks if one of the enabled rank checkboxes has input
+document.addEventListener('DOMContentLoaded', function() {
+    let checkboxes_all = Array.from(
+        document.querySelectorAll('input[class="form-check-input checks_rank"],' +
+            'input[class="form-check-input checks_higher_rank"]')
+    )
+
+     const inputListener = e => {
+             checkboxes_all
+                 .filter(i => !i.disabled)
+                 .filter(i => i !== e.target)
+                 .forEach(i => (i.required = !e.target.value.length));
+         };
+
+    checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
+})
+
+
+
