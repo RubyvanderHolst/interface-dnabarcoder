@@ -41,6 +41,7 @@ function disable_rank(clicked_radio) {
 }
 
 function disable_field(checkbox, field_id) {
+    // Enable field when checkbox is checked
     if (checkbox.checked) {
         document.getElementById(field_id).disabled = false;
     } else {
@@ -62,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
                  .filter(i => i !== e.target)
                  .forEach(i => (i.required = !e.target.value.length));
          };
-
 
     checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
 })
