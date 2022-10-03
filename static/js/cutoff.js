@@ -34,14 +34,19 @@ function disable_rank(clicked_radio) {
         checkboxes_to_disable.item(i).checked = false;
         checkboxes_to_disable.item(i).disabled = true;
     }
-    document.getElementById('species').checked = true;
     for (let i = 0; i < checkboxes_to_enable.length; i++) {
         checkboxes_to_enable.item(i).disabled = false;
+    }
+
+    if (document.getElementById('species').disabled) {
+        document.getElementById('species').checked = true;
+    } else {
+        document.getElementById('species').checked = false;
     }
 }
 
 function disable_field(checkbox, field_id) {
-    // Enable field when checkbox is checked
+    // Enable field when checkbox is checked (used for remove complexes)
     if (checkbox.checked) {
         document.getElementById(field_id).disabled = false;
     } else {
@@ -56,12 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('input[class="form-check-input checks_rank"],' +
             'input[class="form-check-input checks_higher_rank"]')
     )
-     const inputListener = e => {
-             checkboxes_all
-                 .filter(i => i !== e.target)
-                 .forEach(i => (i.required = !e.target.value.length));
-         };
-    checkboxes_all.forEach(i => i.addEventListener('load', inputListener));
+    const inputListener = e => {
+        checkboxes_all
+            .filter(i => i !== e.target)
+            .forEach(i => (i.required = false))
+    };
+    checkboxes_all.forEach(i => i.addEventListener('transitionend', inputListener));
     checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
 })
 
