@@ -34,19 +34,20 @@ function disable_rank(clicked_radio) {
         checkboxes_to_disable.item(i).checked = false;
         checkboxes_to_disable.item(i).disabled = true;
     }
-    document.getElementById('species').checked = true;
     for (let i = 0; i < checkboxes_to_enable.length; i++) {
         checkboxes_to_enable.item(i).disabled = false;
+    }
+
+    if (document.getElementById('species').disabled) {
+        document.getElementById('species').checked = true;
+    } else {
+        document.getElementById('species').checked = true;
     }
 }
 
 function disable_field(checkbox, field_id) {
-    // Enable field when checkbox is checked
-    if (checkbox.checked) {
-        document.getElementById(field_id).disabled = false;
-    } else {
-        document.getElementById(field_id).disabled = true;
-    }
+    // Enable field when checkbox is checked (used for remove complexes)
+    document.getElementById(field_id).disabled = !checkbox.checked;
 }
 
 
@@ -59,9 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
      const inputListener = e => {
              checkboxes_all
                  .filter(i => i !== e.target)
+                 .filter(i => i.disabled === false)
                  .forEach(i => (i.required = !e.target.value.length));
          };
-    checkboxes_all.forEach(i => i.addEventListener('load', inputListener));
     checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
 })
 
