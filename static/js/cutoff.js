@@ -41,17 +41,13 @@ function disable_rank(clicked_radio) {
     if (document.getElementById('species').disabled) {
         document.getElementById('species').checked = true;
     } else {
-        document.getElementById('species').checked = false;
+        document.getElementById('species').checked = true;
     }
 }
 
 function disable_field(checkbox, field_id) {
     // Enable field when checkbox is checked (used for remove complexes)
-    if (checkbox.checked) {
-        document.getElementById(field_id).disabled = false;
-    } else {
-        document.getElementById(field_id).disabled = true;
-    }
+    document.getElementById(field_id).disabled = !checkbox.checked;
 }
 
 
@@ -61,12 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('input[class="form-check-input checks_rank"],' +
             'input[class="form-check-input checks_higher_rank"]')
     )
-    const inputListener = e => {
-        checkboxes_all
-            .filter(i => i !== e.target)
-            .forEach(i => (i.required = false))
-    };
-    checkboxes_all.forEach(i => i.addEventListener('transitionend', inputListener));
+     const inputListener = e => {
+             checkboxes_all
+                 .filter(i => i !== e.target)
+                 .filter(i => i.disabled === false)
+                 .forEach(i => (i.required = !e.target.value.length));
+         };
     checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
 })
 

@@ -27,7 +27,7 @@
                                         <label for="input_reference" class="form-label">Select a FASTA file:</label>
                                         <input type="file" class="form-control" id="input_reference" name="input_reference"
                                                accept=".fasta,.fna,.ffn,.faa,.frn,.fa"
-{#                                               required#}
+                                               required
                                         >
                                     </li>
                                     <li class="list-group-item">
@@ -35,17 +35,16 @@
                                         <label class="form-label">Location of taxonomic classification of the reference sequences:</label><br>
                                         <input type="radio" id="in_fasta" value="in_fasta" name="tax_input"
                                                onclick="tax_input_change(false)"
-                                               checked
                                         >
                                         <label for="in_fasta">In the reference FASTA-file</label><br>
                                         <input type="radio" id="other_file" value="other_file" name="tax_input"
                                                onclick="tax_input_change(true)"
-{#                                               checked#}
+                                               checked
                                         >
                                         <label for="other_file">As a separate file</label><br><br>
                                 {#        input tax file (only visible with second radio button#}
                                         <input type="file" class="form-control" id="file_input_tax" name="file_input_tax"
-{#                                               required#}
+                                               required
                                         >
                                     </li>
                                 </ul>
