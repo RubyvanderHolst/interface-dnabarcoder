@@ -17,6 +17,8 @@ ENV APP /home/app
 RUN mkdir $APP
 WORKDIR $APP
 
+RUN apt-get update
+
 # conda installs
 # install miniconda
 #ENV CONDA_DIR /opt/conda
@@ -36,13 +38,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # BLAST install
 # For the latest BLAST version see https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/
-ARG BLAST_version='2.13.0'
-RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
+#ARG BLAST_version='2.13.0'
+#RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+#RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+#RUN rm 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
+#ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
 ## install gsl (for LARGEVIS, so optional)
-#RUN apt-get update
 #RUN apt-get install -y libgsl-dev
 ## LARGEVIS install (optional)
 #RUN git clone https://github.com/rugantio/LargeVis-python3.git && \
@@ -66,7 +68,7 @@ ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 #    npm install connect serve-static
 
 # dnabarcoder install
-RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
+#RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
 
 # copy source code to image
 COPY . $APP
