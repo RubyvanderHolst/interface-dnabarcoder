@@ -2,6 +2,9 @@
 
 {% block page_title %}Results{% endblock %}
 {% block container_classification %}
-    {% include 'base_templates/base_results.html' %}
-    {{ test }}
+    <div class="container">
+        {% include 'base_templates/base_results.html' %}
+        <br>
+        {{ test }}
+    </div>
 {% endblock %}

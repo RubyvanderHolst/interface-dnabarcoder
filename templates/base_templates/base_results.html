@@ -1,1 +1,17 @@
-here will be results from classification
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="70"
+         aria-valuemin="0" aria-valuemax="100" style="width:100%">
+        100%
+    </div>
+</div>
+
+<p>File size: <span id="file_size">?</span></p>
+
+<button type="button" class="btn btn-success">
+    {% load static %}
+    <a href="{% static 'results/testbestand.txt' %}"
+       class="link-dark text-decoration-none"
+       download>
+        Download
+    </a>
+</button>
