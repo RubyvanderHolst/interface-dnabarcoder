@@ -20,34 +20,13 @@
                 <div class="row">
                     <div class="col">
                         <div class="card h-100">
-                            <h5 class="card-header">FASTA input</h5>
-                                <ul class="list-group list-group-flush">
-                            {#        fasta file#}
-                                    <li class="list-group-item">
-                                        <label for="input_reference" class="form-label">Select a FASTA file:</label>
-                                        <input type="file" class="form-control" id="input_reference" name="input_reference"
-                                               accept=".fasta,.fna,.ffn,.faa,.frn,.fa"
-                                               required
-                                        >
-                                    </li>
-                                    <li class="list-group-item">
-                        {#        radiobox tax#}
-                                        <label class="form-label">Location of taxonomic classification of the reference sequences:</label><br>
-                                        <input type="radio" id="in_fasta" value="in_fasta" name="tax_input"
-                                               onclick="tax_input_change(false)"
-                                        >
-                                        <label for="in_fasta">In the reference FASTA-file</label><br>
-                                        <input type="radio" id="other_file" value="other_file" name="tax_input"
-                                               onclick="tax_input_change(true)"
-                                               checked
-                                        >
-                                        <label for="other_file">As a separate file</label><br><br>
-                                {#        input tax file (only visible with second radio button#}
-                                        <input type="file" class="form-control" id="file_input_tax" name="file_input_tax"
-                                               required
-                                        >
-                                    </li>
-                                </ul>
+                            <h5 class="card-header">Reference data input</h5>
+                                <div class="card-body">
+                                    <label for="input_reference" class="form-label">Select a FASTA file:</label>
+                                    <input type="file" class="form-control" id="input_reference" name="input_reference"
+                                           accept=".fasta,.fna,.ffn,.faa,.frn,.fa"
+                                           required>
+                                </div>
                         </div>
                     </div>
 
@@ -75,86 +54,30 @@
 {#                rank #}
                         <div class="card h-100">
                             <h5 class="card-header">Rank</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <label>Calculation for ranks:</label><br>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="species" id="species" value="species"
-                                                   required disabled checked>
-                                            <label for="species" class="form-check-label">Species</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="family" id="family" value="family"
-                                                   required disabled>
-                                            <label for="family" class="form-check-label">Family</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="order" id="order" value="order"
-                                                   required disabled>
-                                            <label for="order" class="form-check-label">Order</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="class" id="class" value="class"
-                                                   required disabled>
-                                            <label for="class" class="form-check-label">Class</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="phylum" id="phylum" value="phylum"
-                                                   required disabled>
-                                            <label for="phylum" class="form-check-label">Phylum</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checks_rank"
-                                                   name="kingdom" id="kingdom" value="kingdom"
-                                                   required disabled>
-                                            <label for="kingdom" class="form-check-label">Kingdom</label>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div id="li_higher_rank">
-                                            <label>Higher ranks:</label><br>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank"
-                                                       name="family_higher" id="family_higher" value="family_higher"
-                                                       required>
-                                                <label for="family_higher" class="form-check-label">Family</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank"
-                                                       name="order_higher" id="order_higher" value="order_higher"
-                                                       required>
-                                                <label for="order_higher" class="form-check-label">Order</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank"
-                                                       name="class_higher" id="class_higher" value="class_higher"
-                                                       required>
-                                                <label for="class_higher" class="form-check-label">Class</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank"
-                                                       name="phylum_higher" id="phylum_higher" value="phylum_higher"
-                                                       required>
-                                                <label for="phylum_higher" class="form-check-label">Phylum</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input checks_higher_rank"
-                                                       name="kingdom_higher" id="kingdom_higher" value="kingdom_higher"
-                                                       required>
-                                                <label for="kingdom_higher" class="form-check-label">Kingdom</label>
-                                            </div>
-                                        </div>
+                            <div class="card-body">
+                                <label for="rank">Identification rank:</label><br>
+                                <select class="form-select" id="rank" name="rank" onchange="hide_higher_options()">
+                                    <option value="species" id="species_rank">Species</option>
+                                    <option value="genus" id="genus_rank">Genus</option>
+                                    <option value="family" id="family_rank">Family</option>
+                                    <option value="order" id="order_rank">Order</option>
+                                    <option value="class" id="class_rank">Class</option>
+                                    <option value="phylum" id="phylum_rank">Phylum</option>
+                                    <option value="kingdom" id="kingdom_rank" hidden>Kingdom</option>
+                                </select>
 
-                                    </li>
-                                </ul>
+                                <br>
+                                <label for="higher_rank">Higher rank:</label><br>
+                                <select class="form-select" id="higher_rank" name="higher_rank">
+                                    <option value="genus" id="genus_higher">Genus</option>
+                                    <option value="family" id="family_higher">Family</option>
+                                    <option value="order" id="order_higher">Order</option>
+                                    <option value="class" id="class_higher">Class</option>
+                                    <option value="phylum" id="phylum_higher">Phylum</option>
+                                    <option value="kingdom" id="kingdom_higher">Kingdom</option>
+                                </select>
+                            </div>
                         </div>
-
-{#                higher rank input (only global) #}
                     </div>
 
 
