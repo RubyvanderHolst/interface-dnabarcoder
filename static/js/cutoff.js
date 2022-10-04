@@ -1,18 +1,3 @@
-// Keep in mind that cutoff.html also uses functions from classification.js
-
-// duplicate from classification.js
-function tax_input_change(bool_show) {
-    // Show or hide taxonomy input file based on var_show.
-    // This can be "none" (hidden) or "block" (show).
-    let var_show
-    if (bool_show) {
-        var_show = 'block'
-    } else {
-        var_show = 'none'
-    }
-    document.getElementById('file_input_tax').style.display = var_show;
-    document.getElementById('file_input_tax').required = bool_show;
-}
 
 
 function disable_rank(clicked_radio) {
