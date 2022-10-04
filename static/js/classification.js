@@ -34,17 +34,17 @@ function show_ref_file_input(dropdown) {
 }
 
 
-// Checks if one of reference file input or checkboxes has input
+// Checks if one of sequence file inputs has input
 document.addEventListener('DOMContentLoaded', function() {
-  const inputs = Array.from(
-    document.querySelectorAll('input[class=form-check-input], input[id=input_reference]')
-  );
+    const inputs = Array.from(
+        document.querySelectorAll('#file_input_sequences, #text_input_sequences')
+    );
+    console.log(inputs)
+    const inputListener = e => {
+        inputs
+          .filter(i => i !== e.target)
+          .forEach(i => (i.required = false));
+    };
 
-  const inputListener = e => {
-    inputs
-      .filter(i => i !== e.target)
-      .forEach(i => (i.required = !e.target.value.length));
-  };
-
-  inputs.forEach(i => i.addEventListener('input', inputListener));
+    inputs.forEach(i => i.addEventListener('input', inputListener));
 });

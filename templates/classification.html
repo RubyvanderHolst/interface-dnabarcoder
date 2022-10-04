@@ -25,8 +25,17 @@
                     <div class="card h-100">
                         <h5 class="card-header">Unidentified sequences input</h5>
                         <div class="card-body">
-                            <label for="input_sequences" class="form-label">Select a FASTA-file:</label>
-                            <input type="file" class="form-control" id="input_sequences" name="input_sequences" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
+                            <label for="file_input_sequences" class="form-label">Select a FASTA-file:</label>
+                            <input type="file" class="form-control" id="file_input_sequences" name="file_input_sequences" accept=".fasta,.fna,.ffn,.faa,.frn,.fa" required>
+
+                            <br>
+                            <label for="text_input_sequences" class="form-label">Or paste the sequences:</label>
+                            <textarea class="form-control" id="text_input_sequences" name="text_input_sequences"
+                                      rows="5" placeholder=
+">ID k__kingdom;p__phylum;c__class;o__order;f__family;g__genus;s__species
+TCGTAACAAGGTCTCCGTTGGTGAACCAGCGGAGGGATCATTACCGAGTTTACAACTCCC
+AAACCCCTGTGAACATACCTATACGTTGCCTCGGCGGATCAGCCCGCGCCCCGTAAAACG
+GGACGGCCCGCCCGAGGACCCTAAACTCTGTTTTTAGTGGAACTTCTGAGTAAAACAAAC" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -36,7 +45,7 @@
                         <h5 class="card-header">Reference data input</h5>
                         {#        reference dataset#}
                         <div class="card-body">
-                            <label>Choose a reference file:</label><br>
+                            <label for="reference_options">Choose a reference file:</label><br>
                             <select class="form-select" id="reference_options" name="reference_options"
                                     onchange="show_ref_file_input(this)">
                                 <option value="" selected>Use own file</option>
