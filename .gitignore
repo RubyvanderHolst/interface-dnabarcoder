@@ -3,3 +3,6 @@ db.sqlite3
 
 # Pycharm
 .idea
+
+# Result file
+static/results/testbestand.txt
