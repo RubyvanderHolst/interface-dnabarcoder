@@ -1,18 +1,5 @@
 
 
-function tax_input_change(bool_show) {
-    // Show or hide taxonomy input file based on var_show.
-    // This can be "none" (hidden) or "block" (show).
-    let var_show
-    if (bool_show) {
-        var_show = 'block'
-    } else {
-        var_show = 'none'
-    }
-    document.getElementById('file_input_tax').style.display = var_show;
-    document.getElementById('file_input_tax').required = bool_show;
-}
-
 function cutoff_input_change() {
     let button_checked = document.querySelector('input[name=type_cutoff]:checked').value;
 
