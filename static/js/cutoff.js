@@ -1,32 +1,34 @@
 
 
 function disable_rank(clicked_radio) {
-    // Disables higher rank checkboxes
-    let checkboxes_list_higher = document.getElementsByClassName("checks_higher_rank");
-    let checkboxes_list = document.getElementsByClassName("checks_rank")
+    // Disables higher rank dropdown and shows/hides kingdom in rank
+    let rank = document.getElementById('rank')
+    let higher_rank = document.getElementById('higher_rank')
 
-    let checkboxes_to_disable
-    let checkboxes_to_enable
     if (clicked_radio.id === 'local_choice') {
-        checkboxes_to_disable = checkboxes_list
-        checkboxes_to_enable = checkboxes_list_higher
+        higher_rank.disabled = false;
+        document.getElementById('kingdom_rank').hidden = true;
     } else if (clicked_radio.id === 'global_choice'){
-        checkboxes_to_disable = checkboxes_list_higher
-        checkboxes_to_enable = checkboxes_list
+        higher_rank.disabled = true;
+        higher_rank.value = "";
+        document.getElementById('kingdom_rank').hidden = false;
     }
+}
 
-    for (let i = 0; i < checkboxes_to_disable.length; i++) {
-        checkboxes_to_disable.item(i).checked = false;
-        checkboxes_to_disable.item(i).disabled = true;
-    }
-    for (let i = 0; i < checkboxes_to_enable.length; i++) {
-        checkboxes_to_enable.item(i).disabled = false;
-    }
-
-    if (document.getElementById('species').disabled) {
-        document.getElementById('species').checked = true;
-    } else {
-        document.getElementById('species').checked = true;
+function hide_higher_options() {
+    if (!document.getElementById('higher_rank').disabled) {
+        let all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
+        let selected_rank = document.getElementById('rank').value
+        let index = all_rank.findIndex(object => {
+            return object === selected_rank
+        })
+        document.getElementById('higher_rank').value = all_rank[index + 1]
+        for (let i = 1; i < index + 1; i++) {
+            document.getElementById(all_rank[i] + "_higher").hidden = true;
+        }
+        for (let i = index + 1; i < all_rank.length; i++) {
+            document.getElementById(all_rank[i] + "_higher").hidden = false;
+        }
     }
 }
 
