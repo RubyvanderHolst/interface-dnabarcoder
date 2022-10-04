@@ -22,23 +22,17 @@ function switch_required_cutoff() {
     }
 }
 
-function single_checkbox(checkbox) {
-    if (checkbox.checked === true) {
-        // Select all checkboxes by class
-        deselect_standard()
-        checkbox.checked = true; // Checked clicked checkbox
-
-        // empty reference file input
-        document.getElementById('input_reference').value = null;
+function show_ref_file_input(dropdown) {
+    if (dropdown.value === "") {
+        document.getElementById('div_file_input_reference').style.display = "block";
+        document.getElementById('input_reference').required = true;
+    } else {
+        document.getElementById('div_file_input_reference').style.display = "none";
+        document.getElementById('input_reference').required = false;
+        document.getElementById('input_reference').value = '';
     }
 }
 
-function deselect_standard() {
-    let checkboxesList = document.getElementsByClassName("form-check-input");
-        for (let i = 0; i < checkboxesList.length; i++) {
-            checkboxesList.item(i).checked = false; // Uncheck all checkboxes
-        }
-}
 
 // Checks if one of reference file input or checkboxes has input
 document.addEventListener('DOMContentLoaded', function() {
