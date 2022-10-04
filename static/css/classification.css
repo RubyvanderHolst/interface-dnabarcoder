@@ -6,6 +6,11 @@ button {
     margin-top: 30px;
 }
 
+textarea {
+    font-size: 12px !important;
+    width: 480px !important;
+}
+
 .card {
     margin-bottom: 20px;
 }
