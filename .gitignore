@@ -6,3 +6,6 @@ db.sqlite3
 
 # Result file
 static/results/testbestand.txt
+
+
+.env
