@@ -7,3 +7,4 @@ keras
 spicy
 Theano
 Biopython
+python-dotenv

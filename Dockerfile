@@ -44,6 +44,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 #RUN rm 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
 #ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
+# Downloads version 2.11.0 (two version behind newest)
+# (wget download doesn't save after build)
+RUN apt-get install -y ncbi-blast+
+RUN blastn -h
+
 ## install gsl (for LARGEVIS, so optional)
 #RUN apt-get install -y libgsl-dev
 ## LARGEVIS install (optional)
@@ -66,9 +71,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 #RUN git clone https://github.com/NLeSC/DiVE.git && \
 #    cd DiVE && \
 #    npm install connect serve-static
-
-# dnabarcoder install
-#RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
 
 # copy source code to image
 COPY . $APP
