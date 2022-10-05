@@ -72,8 +72,5 @@ RUN blastn -h
 #    cd DiVE && \
 #    npm install connect serve-static
 
-# dnabarcoder install
-#RUN git clone https://github.com/vuthuyduong/dnabarcoder.git
-
 # copy source code to image
 COPY . $APP
