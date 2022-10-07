@@ -2,7 +2,9 @@ version: "3.9"
    
 services:
   web:
-    build: .
+    build:
+      context: ../
+      dockerfile: interface-dnabarcoder/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/home/app

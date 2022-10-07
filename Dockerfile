@@ -12,9 +12,11 @@ ENV PYTHONUNBUFFERED=1
 # create environments
 ENV HOME /home
 ENV APP /home/app
+ENV TOOL /home/tool
 
 # set working directory
 RUN mkdir $APP
+RUN mkdir $TOOL
 WORKDIR $APP
 
 RUN apt-get update
@@ -33,7 +35,7 @@ RUN apt-get update
 #RUN conda install -c bioconda krona
 
 # pip installs
-COPY requirements.txt $APP
+COPY interface-dnabarcoder/requirements.txt $APP
 RUN pip install --no-cache-dir -r requirements.txt
 
 # BLAST install
@@ -47,7 +49,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Downloads version 2.11.0 (two version behind newest)
 # (wget download doesn't save after build)
 RUN apt-get install -y ncbi-blast+
-RUN blastn -h
 
 ## install gsl (for LARGEVIS, so optional)
 #RUN apt-get install -y libgsl-dev
@@ -72,5 +73,10 @@ RUN blastn -h
 #    cd DiVE && \
 #    npm install connect serve-static
 
-# copy source code to image
-COPY . $APP
+# copy interface code to image
+COPY interface-dnabarcoder $APP
+
+# copy dnabarcoder (necessary) code to image
+COPY ./dnabarcoder.py $TOOL
+COPY ./classification $TOOL/classification
+COPY ./prediction $TOOL/prediction

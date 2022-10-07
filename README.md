@@ -6,6 +6,5 @@ To install and run the application:
 2. <code>cd dnabarcoder </code>
 3. <code>git clone https://github.com/RubyvanderHolst/interface-dnabarcoder.git </code>
 4. Start docker desktop
-5. <code>cd interface-dnabarcoder </code>
-6. <code>docker-compose -f docker-compose.yml up</code>
-7. Go to [http://localhost:8000/](http://localhost:8000/)
+5. <code>docker-compose -f interface-dnabarcoder/docker-compose.yml up</code>
+6. Go to [http://localhost:8000/](http://localhost:8000/)
