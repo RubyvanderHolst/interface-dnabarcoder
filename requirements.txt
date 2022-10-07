@@ -8,3 +8,4 @@ spicy
 Theano
 Biopython
 python-dotenv
+celery

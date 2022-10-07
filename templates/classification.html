@@ -16,7 +16,7 @@
 
 {#    Container #}
     <div class="container">
-        <form action="/classification/results" method="post" target="_blank">
+        <form action="/classification/results" method="post" enctype="multipart/form-data" target="_blank">
             {% csrf_token %}
             <div id="div_home">
                 <h2 class="bg-light border text-center">Classification</h2>

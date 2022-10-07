@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import numpy as np
+import celery
 import os
 
 
@@ -13,8 +14,27 @@ def cutoff_page(request):
 
 def cutoff_results_page(request):
     test = request.POST
+
+    dnabarcoder_path = "/home/tool/dnabarcoder.py"
+    input_bestand_path = request.FILES['input_reference'].temporary_file_path()
+    rank = request.POST['rank']
+    higher_rank = request.POST['higher_rank']
+    min_alignment_length = request.POST['min_alignment_length']
+
+    output = os.popen(f"python {dnabarcoder_path} "
+                      f"predict "
+                      f"--input {input_bestand_path} "
+                      # f"--startingthreshold 0.7 "
+                      # f"--endthreshold 1 "
+                      # f"--step 0.001 "
+                      f"-rank {rank} "
+                      f"-higherrank {higher_rank} "
+                      f"--minalignmentlength {min_alignment_length} "
+                      f"-prefix cutoff_result "
+                      f"-o /home/app/static/results ").read()
     return render(request, 'cutoff_results.html', {
         'test': test,
+        'output': output,
     })
 
 
@@ -39,4 +59,3 @@ def classification_results_page(request):
 
 def visualization_page(request):
     return render(request, 'visualization.html')
-

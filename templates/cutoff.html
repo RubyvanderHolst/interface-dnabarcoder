@@ -9,11 +9,11 @@
         <link href="{% static 'css/cutoff.css' %}" rel="stylesheet">
         <script src="{% static 'js/cutoff.js' %}"></script>
     </head>
-    {% include 'base_templates/base_tabs.html' %}
 
     {% block container_cutoff %}
+    {% include 'base_templates/base_tabs.html' %}
         <div class="container">
-        <form action="/cutoff/results" method="post" target="_blank">
+        <form action="/cutoff/results" method="post" enctype="multipart/form-data" target="_blank">
             {% csrf_token %}
             <div id="div_home">
                 <h2 class="bg-light border text-center">Cut-off calculation</h2>
