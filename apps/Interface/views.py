@@ -70,8 +70,11 @@ def cutoff_results_page(request):
               f"-prefix cutoff_result "\
               f"--out /home/app/static/results "
 
-
     output = os.popen(command).read()
+    os.system("cd /home/app/static/results/ && "
+              "rm tmp*")
+    os.system("cd /home/app/ && "
+              "rm db.n*")
     return render(request, 'cutoff_results.html', {
         'test': output2,
         'output': output,
