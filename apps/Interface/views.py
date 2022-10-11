@@ -13,27 +13,47 @@ def cutoff_page(request):
 
 
 def cutoff_results_page(request):
-    test = request.POST
-
     dnabarcoder_path = "/home/tool/dnabarcoder.py"
-    input_bestand_path = request.FILES['input_reference'].temporary_file_path()
-    rank = request.POST['rank']
-    higher_rank = request.POST['higher_rank']
+
+    input_file_path = request.FILES['input_reference'].temporary_file_path()
+
+    sim_file_path = None
+    if 'sim_file' in request.FILES:
+        sim_file_path = request.FILES['sim_file'].temporary_file_path()
+
     min_alignment_length = request.POST['min_alignment_length']
 
-    output = os.popen(f"python {dnabarcoder_path} "
-                      f"predict "
-                      f"--input {input_bestand_path} "
-                      # f"--startingthreshold 0.7 "
-                      # f"--endthreshold 1 "
-                      # f"--step 0.001 "
-                      f"-rank {rank} "
-                      f"-higherrank {higher_rank} "
-                      f"--minalignmentlength {min_alignment_length} "
-                      f"-prefix cutoff_result "
-                      f"-o /home/app/static/results ").read()
+    rank = request.POST['rank']
+
+    higher_rank = None
+    if 'higher_rank' in request.POST:
+        higher_rank = request.POST['higher_rank']
+
+    starting_threshold = request.POST['starting_threshold']
+    end_threshold = request.POST['end_threshold']
+    step = request.POST['step']
+
+    min_group_number = request.POST['min_group_number']
+    min_seq_number = request.POST['min_seq_number']
+
+    command = f"python {dnabarcoder_path} "\
+              f"predict "\
+              f"--input {input_file_path} "\
+              f"--simfilename {sim_file_path} "\
+              f"--minalignmentlength {min_alignment_length} "\
+              f"-rank {rank} "\
+              f"-higherrank {higher_rank} "\
+              f"--startingthreshold {starting_threshold} "\
+              f"--endthreshold {end_threshold} "\
+              f"--step {step} "\
+              f"-mingroupno {min_group_number} "\
+              f"-minseqno {min_seq_number} "\
+              f"-prefix cutoff_result "\
+              f"-o /home/app/static/results "
+
+    output = os.popen(command).read()
     return render(request, 'cutoff_results.html', {
-        'test': test,
+        'test': command,
         'output': output,
     })
 
