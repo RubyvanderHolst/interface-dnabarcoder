@@ -98,19 +98,25 @@
                     <div class="col">
 {#                min group number #}
                         <label for="min_group_number" class="form-label">Minimum number of groups for prediction:</label>
-                        <input type="number" min="0" id="min_group_number" name="min_group_number" class="form-control" value="5">
+                        <input type="number" min="0" value="5"
+                               id="min_group_number" name="min_group_number"
+                               class="form-control" required>
                     </div>
                 </div>
                 <div class="row align-items-end">
                     <div class="col">
 {#                min alignment length #}
                         <label for="min_alignment_length" class="form-label">Minimum sequence alignment length:</label>
-                        <input type="number" min="0" id="min_alignment_length" name="min_alignment_length" class="form-control" value="400">
+                        <input type="number" min="0" value="400"
+                               id="min_alignment_length" name="min_alignment_length"
+                               class="form-control" required>
                     </div>
                     <div class="col">
                         {#                min seq number #}
                         <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction:</label>
-                        <input type="number" min="0" id="min_seq_number" name="min_seq_number" class="form-control" value="50">
+                        <input type="number" min="0" value="50"
+                               id="min_seq_number" name="min_seq_number"
+                               class="form-control" required>
                     </div>
                 </div>
                 <div class="row">
@@ -122,21 +128,24 @@
                                 <input type="number" min="0" max="1" step="0.0001"
                                        class="form-control"
                                        id="starting_threshold" name="starting_threshold"
-                                       placeholder="Starting threshold" value="0.7">
+                                       placeholder="Starting threshold" value="0.7"
+                                       required>
                                 <label for="starting_threshold">Starting threshold</label>
                             </div>
                             <div class="form-floating flex-grow-1">
                                 <input type="number" min="0" max="1" step="0.0001"
                                        class="form-control"
                                        id="end_threshold" name="end_threshold"
-                                       placeholder="Ending threshold" value="1">
+                                       placeholder="Ending threshold" value="1"
+                                       required>
                                 <label for="end_threshold">Ending threshold</label>
                             </div>
                             <div class="form-floating flex-grow-1">
                                 <input type="number" min="0" max="1" step="0.0001"
                                        class="form-control"
                                        id="step" name="step"
-                                       placeholder="Step size" value="0.001">
+                                       placeholder="Step size" value="0.001"
+                                       required>
                                 <label for="step">Step size</label>
                             </div>
                         </div>
@@ -145,7 +154,8 @@
                     <div class="col">
                         <label for="max_seq_number" class="form-label">Maximum number of sequences per taxon name:</label>
                         <input type="number" min="0" value="20000"
-                               id="max_seq_number" name="max_seq_number" class="form-control align-bottom">
+                               id="max_seq_number" name="max_seq_number"
+                               class="form-control align-bottom" required>
                     </div>
                 </div>
                 <div class="row">
@@ -165,7 +175,7 @@
                                     <input type="number" class="form-control"
                                            min="0" max="1" step="0.0001" value="0.97"
                                            id="cutoff_remove" name="cutoff_remove"
-                                           disabled>
+                                           disabled required>
                                 </li>
                             </ul>
                         </div>
