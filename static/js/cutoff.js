@@ -16,6 +16,7 @@ function disable_rank(clicked_radio) {
 }
 
 function hide_higher_options() {
+    // Hides higher rank option that are the same or lower than the selected rank
     if (!document.getElementById('higher_rank').disabled) {
         let all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
         let selected_rank = document.getElementById('rank').value
@@ -37,21 +38,6 @@ function disable_field(checkbox, field_id) {
     document.getElementById(field_id).disabled = !checkbox.checked;
 }
 
-
-// Checks if one of the enabled rank checkboxes has input
-document.addEventListener('DOMContentLoaded', function() {
-    let checkboxes_all = Array.from(
-        document.querySelectorAll('input[class="form-check-input checks_rank"],' +
-            'input[class="form-check-input checks_higher_rank"]')
-    )
-     const inputListener = e => {
-             checkboxes_all
-                 .filter(i => i !== e.target)
-                 .filter(i => i.disabled === false)
-                 .forEach(i => (i.required = !e.target.value.length));
-         };
-    checkboxes_all.forEach(i => i.addEventListener('input', inputListener));
-})
 
 
 

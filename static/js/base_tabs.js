@@ -19,15 +19,11 @@ function switch_home_settings(button) {
 // Checks if settings have correct input
 function check_settings(){
     let number_inputs = document.querySelectorAll('#div_settings input')
-    let correct = true
     for (let i = 0; i < number_inputs.length; i++) {
-        if (!number_inputs[i].checkValidity()){
-
-        }
-        correct = number_inputs[i].reportValidity()
+        let correct = number_inputs[i].checkValidity()
         if (!correct) {
-            return correct
+            return false
         }
     }
-    return correct
+    return true
 }
