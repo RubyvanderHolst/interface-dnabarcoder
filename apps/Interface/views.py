@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CutoffForm
+from .forms import CutoffForm, ClassificationForm
 import numpy as np
 import celery
 import os
@@ -91,11 +91,9 @@ def cutoff_results_page(request):
 
 
 def classification_page(request):
-    # Get the already available reference files
-    path = "/home/app/data"
-    list_files = os.listdir(path)
+    form = ClassificationForm
     return render(request, 'classification.html', {
-        'list_files': list_files,
+        'form': form,
     })
 
 
