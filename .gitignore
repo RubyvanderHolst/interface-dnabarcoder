@@ -5,7 +5,6 @@ db.*
 .idea
 
 # Result file
-static/results/
-
+results/
 
 .env

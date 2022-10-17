@@ -9,9 +9,9 @@
         <link href="{% static 'css/cutoff.css' %}" rel="stylesheet">
         <script src="{% static 'js/cutoff.js' %}"></script>
     </head>
-
     {% block container_cutoff %}
     {% include 'base_templates/base_tabs.html' %}
+    {% load crispy_forms_filters %}
         <div class="container">
         <form action="/cutoff/results" method="post" enctype="multipart/form-data" target="_blank">
             {% csrf_token %}
@@ -22,60 +22,26 @@
                         <div class="card h-100">
                             <h5 class="card-header">Reference data input</h5>
                                 <div class="card-body">
-                                    <label for="input_reference" class="form-label">Select a FASTA file:</label>
-                                    <input type="file" class="form-control" id="input_reference" name="input_reference"
-                                           accept=".fasta,.fna,.ffn,.faa,.frn,.fa"
-                                           required>
+                                    {{ form.input_file|as_crispy_field }}
                                 </div>
                         </div>
                     </div>
 
-
                     <div class="col">
-{#                choice cutoff option #}
                         <div class="card h-100">
                             <h5 class="card-header">Type of cut-off</h5>
                             <div class="card-body">
-                                <label class="form-label">Local or global cut-off calculation:</label><br>
-                                <input type="radio"
-                                       id="local_choice" value="local" name="local_global_choice"
-                                       onclick="disable_rank(this)"
-                                       checked>
-                                <label for="local_choice">Local cut-off value</label><br>
-                                <input type="radio"
-                                       id="global_choice" value="global" name="local_global_choice"
-                                       onclick="disable_rank(this)">
-                                <label for="global_choice">Global cut-off value</label>
+                                {{ form.cutoff_type|as_crispy_field }}
                             </div>
                         </div>
                     </div>
 
                     <div class="col">
-{#                rank #}
                         <div class="card h-100">
                             <h5 class="card-header">Rank</h5>
                             <div class="card-body">
-                                <label for="rank">Identification rank:</label><br>
-                                <select class="form-select" id="rank" name="rank" onchange="hide_higher_options()">
-                                    <option value="species" id="species_rank">Species</option>
-                                    <option value="genus" id="genus_rank">Genus</option>
-                                    <option value="family" id="family_rank">Family</option>
-                                    <option value="order" id="order_rank">Order</option>
-                                    <option value="class" id="class_rank">Class</option>
-                                    <option value="phylum" id="phylum_rank">Phylum</option>
-                                    <option value="kingdom" id="kingdom_rank" hidden>Kingdom</option>
-                                </select>
-
-                                <br>
-                                <label for="higher_rank">Higher rank:</label><br>
-                                <select class="form-select" id="higher_rank" name="higher_rank">
-                                    <option value="genus" id="genus_higher">Genus</option>
-                                    <option value="family" id="family_higher">Family</option>
-                                    <option value="order" id="order_higher">Order</option>
-                                    <option value="class" id="class_higher">Class</option>
-                                    <option value="phylum" id="phylum_higher">Phylum</option>
-                                    <option value="kingdom" id="kingdom_higher">Kingdom</option>
-                                </select>
+                                {{ form.rank|as_crispy_field }}
+                                {{ form.higher_rank|as_crispy_field }}
                             </div>
                         </div>
                     </div>
@@ -90,72 +56,33 @@
             <div id="div_settings" style="display: none">
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">
-                    {#                sim file #}
                     <div class="col">
-                        <label for="sim_file" class="form-label">Select a similarity matrix file:</label>
-                        <input type="file" class="form-control" id="sim_file" name="sim_file">
+                        {{ form.sim_file|as_crispy_field }}
                     </div>
                     <div class="col">
-{#                min group number #}
-                        <label for="min_group_number" class="form-label">Minimum number of groups for prediction:</label>
-                        <input type="number" min="0" value="5"
-                               id="min_group_number" name="min_group_number"
-                               class="form-control" required>
+                        {{ form.min_group_number|as_crispy_field }}
                     </div>
                 </div>
                 <div class="row align-items-end">
                     <div class="col">
-{#                min alignment length #}
-                        <label for="min_alignment_length" class="form-label">Minimum sequence alignment length:</label>
-                        <input type="number" min="0" value="400"
-                               id="min_alignment_length" name="min_alignment_length"
-                               class="form-control" required>
+                        {{ form.min_alignment_length|as_crispy_field }}
                     </div>
                     <div class="col">
-                        {#                min seq number #}
-                        <label for="min_seq_number" class="form-label">Minimum number of sequences for prediction:</label>
-                        <input type="number" min="0" value="50"
-                               id="min_seq_number" name="min_seq_number"
-                               class="form-control" required>
+                        {{ form.min_seq_number|as_crispy_field }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                         {#                start end step #}
                         <label class="form-label">Thresholds and step size of prediction:</label>
-                        <div class="input-group">
-                            <div class="form-floating flex-grow-1">
-                                <input type="number" min="0" max="1" step="0.0001"
-                                       class="form-control"
-                                       id="starting_threshold" name="starting_threshold"
-                                       placeholder="Starting threshold" value="0.7"
-                                       required>
-                                <label for="starting_threshold">Starting threshold</label>
-                            </div>
-                            <div class="form-floating flex-grow-1">
-                                <input type="number" min="0" max="1" step="0.0001"
-                                       class="form-control"
-                                       id="end_threshold" name="end_threshold"
-                                       placeholder="Ending threshold" value="1"
-                                       required>
-                                <label for="end_threshold">Ending threshold</label>
-                            </div>
-                            <div class="form-floating flex-grow-1">
-                                <input type="number" min="0" max="1" step="0.0001"
-                                       class="form-control"
-                                       id="step" name="step"
-                                       placeholder="Step size" value="0.001"
-                                       required>
-                                <label for="step">Step size</label>
-                            </div>
+                        <div class="input-group d-flex flex-nowrap">
+                                {{ form.starting_threshold|as_crispy_field }}
+                                {{ form.end_threshold|as_crispy_field }}
+                                {{ form.step|as_crispy_field }}
                         </div>
 
                     </div>
                     <div class="col">
-                        <label for="max_seq_number" class="form-label">Maximum number of sequences per taxon name:</label>
-                        <input type="number" min="0" value="20000"
-                               id="max_seq_number" name="max_seq_number"
-                               class="form-control align-bottom" required>
+                        {{ form.max_seq_number|as_crispy_field }}
                     </div>
                 </div>
                 <div class="row">
@@ -164,25 +91,18 @@
                         <div class="card">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
-                               {#                choice remove same complexes #}
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="remove_comp" name="remove_comp" onclick="disable_field(this, 'cutoff_remove')">
-                                        <label class="form-check-label" for="remove_comp">Remove sequences of the same complexes</label>
+                                        {{ form.remove_comp|as_crispy_field }}
                                     </div>
                                 </li>
                                 <li class="list-group-item">
-                                    <label for="cutoff_remove">Similarity cut-off for removal:</label>
-                                    <input type="number" class="form-control"
-                                           min="0" max="1" step="0.0001" value="1"
-                                           id="cutoff_remove" name="cutoff_remove"
-                                           disabled required>
+                                    {{ form.cutoff_remove|as_crispy_field }}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
         </form>
         </div>
     {% endblock %}

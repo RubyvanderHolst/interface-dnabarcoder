@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .forms import CutoffForm
 import numpy as np
 import celery
 import os
@@ -9,12 +10,15 @@ def redirect_classification(self):
 
 
 def cutoff_page(request):
-    return render(request, 'cutoff.html')
+    form = CutoffForm
+    return render(request, 'cutoff.html', {
+        'form': form,
+    })
 
 
 def cutoff_results_page(request):
     dnabarcoder_path = "/home/tool/dnabarcoder.py"
-    input_file_path = request.FILES['input_reference'].temporary_file_path()
+    input_file_path = request.FILES['input_file'].temporary_file_path()
     sim_file_path = None
     if 'sim_file' in request.FILES:
         sim_file_path = request.FILES['sim_file'].temporary_file_path()
@@ -32,6 +36,7 @@ def cutoff_results_page(request):
 
 
     # Remove sequences of the same complex
+    output_dir = "/home/app/results/cutoff"
     output2 = "..."
     rem_comp_1 = "no"
     if 'remove_comp' in request.POST:
@@ -45,11 +50,11 @@ def cutoff_results_page(request):
                              f"--cutoff {end_threshold} "\
                              f"--minalignmentlength {min_alignment_length} "\
                              f"--classificationrank {rank} "\
-                             f"--out /home/app/static/results "
+                             f"--out {output_dir} "
             if sim_file_path != None:
                 remove_command += f"--simfilename {sim_file_path} "
             output2 = os.popen(remove_command).read()
-            input_file_path = "/home/app/static/results/" +\
+            input_file_path = output_dir +\
                                input_file_path.split('/')[-1].\
                                    replace('fasta', 'diff.fasta')
 
@@ -68,16 +73,20 @@ def cutoff_results_page(request):
               f"-maxseqno {max_seq_number} " \
               f"-removecomplexes {rem_comp_1} "\
               f"-prefix cutoff_result "\
-              f"--out /home/app/static/results "
+              f"--out {output_dir} "
 
     output = os.popen(command).read()
-    os.system("cd /home/app/static/results/ && "
+    os.system(f"cd {output_dir} && "
               "rm tmp*")
     os.system("cd /home/app/ && "
               "rm db.n*")
+
+    dict_files = get_file_sizes(output_dir)
+
     return render(request, 'cutoff_results.html', {
         'test': output2,
         'output': output,
+        'files': dict_files,
     })
 
 
@@ -92,7 +101,7 @@ def classification_page(request):
 
 def classification_results_page(request):
     test = request.POST
-    file = open('/home/app/static/results/testbestand.txt', 'w')
+    file = open('/home/app/results/testbestand.txt', 'w')
     file.write(str(test))
     file.close()
     return render(request, 'classification_results.html', {
@@ -100,5 +109,14 @@ def classification_results_page(request):
     })
 
 
+def get_file_sizes(dir_path):
+    # Get the sizes of all files in a directory
+    # Return dictionary: {file_name: [file_path, file_size]}
+    paths_list = [os.path.join(dir_path, file) for file in os.listdir(dir_path)]
+    dict_files = {os.path.basename(file_path):[file_path, os.stat(file_path).st_size] for file_path in paths_list}
+    return dict_files
+
+
 def visualization_page(request):
     return render(request, 'visualization.html')
+
