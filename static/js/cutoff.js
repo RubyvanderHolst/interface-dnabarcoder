@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Enable/disable cutoff_remove field based on remove_comp field
     let remove_comp_check = document.getElementById('id_remove_comp')
     remove_comp_check.addEventListener('change', function() {
-        document.getElementById('id_cutoff_remove').disabled = !remove_comp_check.checked
+        let cutoff_value = document.getElementById('id_cutoff_remove')
+        cutoff_value.disabled = !remove_comp_check.checked
+        cutoff_value.required = remove_comp_check.checked
     })
 })
