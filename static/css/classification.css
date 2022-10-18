@@ -7,6 +7,7 @@ button {
 }
 
 textarea {
+    font-family: Consolas, monospace;
     font-size: 12px !important;
     width: 480px !important;
 }
