@@ -1,5 +1,15 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    // empty file or textarea input when other is filled in (seq input)
+    let seq_file_input = document.getElementById('id_file_input_sequences')
+    let seq_text_input = document.getElementById('id_text_input_sequences')
+    seq_file_input.addEventListener('input', function() {
+        seq_text_input.value = ''
+    })
+    seq_text_input.addEventListener('input', function() {
+        seq_file_input.value = ''
+    })
+
     // Show/hide reference file input
     let reference_dropdown = document.getElementById('id_reference_options')
     reference_dropdown.addEventListener('change', function() {
