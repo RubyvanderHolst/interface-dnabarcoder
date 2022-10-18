@@ -43,12 +43,12 @@ class CutoffForm(forms.Form):
         initial=('genus', 'Genus'),
     )
     sim_file = forms.FileField(
-        label='Select a similarity matrix file:',
+        label='Select a similarity matrix file',
         widget=forms.FileInput(),
         required=False,
     )
     min_group_number = forms.IntegerField(
-        label='Minimum number of groups for prediction:',
+        label='Minimum number of groups for prediction',
         widget=forms.NumberInput(
             attrs={
                 'min': 1,
@@ -57,7 +57,7 @@ class CutoffForm(forms.Form):
         initial=5,
     )
     min_alignment_length = forms.IntegerField(
-        label='Minimum sequence alignment length:',
+        label='Minimum sequence alignment length',
         widget=forms.NumberInput(
             attrs={
                 'min': 1,
@@ -66,7 +66,7 @@ class CutoffForm(forms.Form):
         initial=400,
     )
     min_seq_number = forms.IntegerField(
-        label='Minimum number of sequences for prediction:',
+        label='Minimum number of sequences for prediction',
         widget=forms.NumberInput(
             attrs={
                 'min': 1,
@@ -104,7 +104,7 @@ class CutoffForm(forms.Form):
     )
 
     max_seq_number = forms.IntegerField(
-        label='Maximum number of sequences per prediction:',
+        label='Maximum number of sequences per prediction',
         widget=forms.NumberInput(attrs={
             'min': 1,
         }),
@@ -119,25 +119,26 @@ class CutoffForm(forms.Form):
         required=False,
     )
     cutoff_remove = forms.FloatField(
-        label='Similarity cut-off for removal:',
+        label='Similarity cut-off for removal',
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
         }),
         initial=1,
         disabled=True,
+        required=False,
     )
 
 
 class ClassificationForm(forms.Form):
     file_input_sequences = forms.FileField(
-        label='Select a FASTA file:',
+        label='Select a FASTA file',
         widget=forms.FileInput(
             attrs={'accept': ".fasta,.fna,.ffn,.faa,.frn,.fa"}
         )
     )
     text_input_sequences = forms.CharField(
-        label='Or paste the sequences:',
+        label='Or paste the sequences',
         widget=forms.Textarea(attrs={
             'placeholder': """>MH854572 k__Fungi;p__Mucoromycota;c__Mucoromycetes;o__Mucorales;
 f__Mucoraceae;g__Mucor;s__Mucor_plumbeus
@@ -169,21 +170,21 @@ TCTTTTAAATTTGATCTGAAATCAGG
         required=False,
     )
     input_reference = forms.FileField(
-        label='Select a reference file (FASTA):',
+        label='Select a reference file (FASTA)',
         widget=forms.FileInput(
             attrs={'accept': ".fasta,.fna,.ffn,.faa,.frn,.fa"}
         )
     )
 
     cutoff_type = forms.CharField(
-        label='Type of similarity cutoff:',
+        label='Type of similarity cutoff',
         widget=forms.RadioSelect(
             choices=[('local', 'Local'),
                      ('global', 'Global')]),
         initial='local',
     )
     num_cutoff = forms.FloatField(
-        label='Global cutoff value:',
+        label='Global cutoff value',
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
@@ -191,14 +192,14 @@ TCTTTTAAATTTGATCTGAAATCAGG
         required=False,
     )
     file_cutoff = forms.FileField(
-        label='Local cutoff file:',
+        label='Local cutoff file',
         widget=forms.FileInput(
             attrs={'accept': ".json"}
         )
     )
 
     min_probability = forms.FloatField(
-        label='Minimum probability of similarity cutoff:',
+        label='Minimum probability of similarity cutoff',
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
@@ -206,14 +207,14 @@ TCTTTTAAATTTGATCTGAAATCAGG
         required=False,
     )
     min_alignment_length = forms.IntegerField(
-        label='Minimum sequence alignment length:',
+        label='Minimum sequence alignment length',
         widget=forms.NumberInput(attrs={
             'min': 1,
         }),
         initial=400,
     )
     confidence = forms.FloatField(
-        label='Confidence of the similarity cutoff:',
+        label='Confidence of the similarity cutoff',
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
@@ -221,14 +222,14 @@ TCTTTTAAATTTGATCTGAAATCAGG
         required=False,
     )
     min_group_number = forms.IntegerField(
-        label='Minimum number of groups for prediction:',
+        label='Minimum number of groups for prediction',
         widget=forms.NumberInput(attrs={
             'min': 1,
         }),
         initial=5,
     )
     min_seq_number = forms.IntegerField(
-        label='Minimum number of sequences for prediction:',
+        label='Minimum number of sequences for prediction',
         widget=forms.NumberInput(attrs={
             'min': 1,
         }),
@@ -249,7 +250,7 @@ TCTTTTAAATTTGATCTGAAATCAGG
         required=False,
     )
     max_seq_number = forms.IntegerField(
-        label='Maximum number of sequences per taxon name for best match determination:',
+        label='Maximum number of sequences per taxon name for best match determination',
         widget=forms.NumberInput(attrs={
             'min': 1,
         }),

@@ -24,6 +24,7 @@
                             <h5 class="card-header">Reference data input</h5>
                                 <div class="card-body">
                                     {{ form.input_file|as_crispy_field }}
+                                    {{ form.sim_file|as_crispy_field }}
                                 </div>
                         </div>
                     </div>
@@ -58,7 +59,7 @@
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">
                     <div class="col">
-                        {{ form.sim_file|as_crispy_field }}
+                        {{ form.max_seq_number|as_crispy_field }}
                     </div>
                     <div class="col">
                         {{ form.min_group_number|as_crispy_field }}
@@ -82,12 +83,6 @@
                         </div>
 
                     </div>
-                    <div class="col">
-                        {{ form.max_seq_number|as_crispy_field }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
                     <div class="col">
                         <div class="card">
                             <ul class="list-group list-group-flush">
