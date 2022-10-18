@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
 import os
 
+
 class CutoffForm(forms.Form):
     input_file = forms.FileField(
         label='Select a FASTA file',
@@ -48,53 +49,81 @@ class CutoffForm(forms.Form):
     )
     min_group_number = forms.IntegerField(
         label='Minimum number of groups for prediction:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(
+            attrs={
+                'min': 1,
+            }
+        ),
         initial=5,
     )
     min_alignment_length = forms.IntegerField(
         label='Minimum sequence alignment length:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(
+            attrs={
+                'min': 1,
+            }
+        ),
         initial=400,
     )
     min_seq_number = forms.IntegerField(
         label='Minimum number of sequences for prediction:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(
+            attrs={
+                'min': 1,
+            }
+        ),
         initial=50,
     )
 
     starting_threshold = forms.FloatField(
         label='Starting threshold',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
         initial=0.7,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': 0,
+            'max': 1,
+        })
     )
     end_threshold = forms.FloatField(
         label='Ending threshold',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
         initial=1,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': 0,
+            'max': 1,
+        })
     )
     step = forms.FloatField(
         label='Step size',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
         initial=0.001,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': 0,
+            'max': 1,
+        })
     )
 
     max_seq_number = forms.IntegerField(
         label='Maximum number of sequences per prediction:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={
+            'min': 1,
+        }),
         initial=20000,
     )
 
     remove_comp = forms.BooleanField(
         label='Remove sequences of the same complexes',
-        widget=forms.CheckboxInput(attrs={'class': "form-check-input"}),
+        widget=forms.CheckboxInput(attrs={
+            'class': "form-check-input"
+        }),
         required=False,
     )
     cutoff_remove = forms.FloatField(
         label='Similarity cut-off for removal:',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
+        widget=forms.NumberInput(attrs={
+            'min': 0,
+            'max': 1,
+        }),
         initial=1,
         disabled=True,
     )
@@ -155,7 +184,10 @@ TCTTTTAAATTTGATCTGAAATCAGG
     )
     num_cutoff = forms.FloatField(
         label='Global cutoff value:',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
+        widget=forms.NumberInput(attrs={
+            'min': 0,
+            'max': 1,
+        }),
         required=False,
     )
     file_cutoff = forms.FileField(
@@ -167,27 +199,39 @@ TCTTTTAAATTTGATCTGAAATCAGG
 
     min_probability = forms.FloatField(
         label='Minimum probability of similarity cutoff:',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
+        widget=forms.NumberInput(attrs={
+            'min': 0,
+            'max': 1,
+        }),
         required=False,
     )
     min_alignment_length = forms.IntegerField(
         label='Minimum sequence alignment length:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={
+            'min': 1,
+        }),
         initial=400,
     )
     confidence = forms.FloatField(
         label='Confidence of the similarity cutoff:',
-        validators=[MinValueValidator(0), MaxValueValidator(1)],
+        widget=forms.NumberInput(attrs={
+            'min': 0,
+            'max': 1,
+        }),
         required=False,
     )
     min_group_number = forms.IntegerField(
         label='Minimum number of groups for prediction:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={
+            'min': 1,
+        }),
         initial=5,
     )
     min_seq_number = forms.IntegerField(
         label='Minimum number of sequences for prediction:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={
+            'min': 1,
+        }),
         initial=50,
     )
     rank = forms.CharField(
@@ -206,6 +250,8 @@ TCTTTTAAATTTGATCTGAAATCAGG
     )
     max_seq_number = forms.IntegerField(
         label='Maximum number of sequences per taxon name for best match determination:',
-        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={
+            'min': 1,
+        }),
         required=False,
     )
