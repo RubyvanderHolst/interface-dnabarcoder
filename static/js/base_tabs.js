@@ -6,6 +6,8 @@ function switch_home_settings(button) {
 
             document.getElementById("div_home").style.display = "block";
             document.getElementById("div_settings").style.display = "none";
+        } else {
+            document.getElementById('id_form').reportValidity()
         }
     } else if (button.id === "settings_button") {
         document.getElementById("home_button").classList.remove("active");
