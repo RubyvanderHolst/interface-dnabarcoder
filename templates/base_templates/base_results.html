@@ -37,5 +37,7 @@
 {% load static %}
 {% for file_name in images %}
     <img src="{% get_media_prefix %}/cutoff/{{ file_name }}" class="img-fluid">
+{% empty %}
+    <p>No results could be generated. Change the settings or use another input file.</p>
 {% endfor %}
 
