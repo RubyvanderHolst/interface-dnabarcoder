@@ -5,6 +5,7 @@
 {#    </div>#}
 {#</div>#}
 
+{% load static %}
 <table class="table">
     <thead>
         <tr class="table-success">
@@ -14,13 +15,13 @@
         </tr>
     </thead>
     <tbody>
-    {% for name, info in files.items %}
+    {% for name, size in files.items %}
         <tr scope="row">
             <th>{{ name }}</th>
-            <th>{{ info.1 }} bytes</th>
+            <th>{{ size }}</th>
             <th>
                 <button type="button" class="btn btn-success">
-                    <a href="{{ info.0 }}"
+                    <a href="{% get_media_prefix %}/cutoff/{{ name }}"
                        class="link-light text-decoration-none"
                        download>
                         Download
@@ -34,10 +35,4 @@
     </tbody>
 </table>
 
-{% load static %}
-{% for file_name in images %}
-    <img src="{% get_media_prefix %}/cutoff/{{ file_name }}" class="img-fluid">
-{% empty %}
-    <p>No results could be generated. Change the settings or use another input file.</p>
-{% endfor %}
 
