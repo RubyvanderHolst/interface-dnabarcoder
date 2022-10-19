@@ -9,3 +9,5 @@ Theano
 Biopython
 python-dotenv
 celery
+django-crispy-forms
+crispy-bootstrap5

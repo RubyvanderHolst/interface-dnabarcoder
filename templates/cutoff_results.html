@@ -2,8 +2,10 @@
 
 {% block page_title %}Results{% endblock %}
 {% block container_cutoff %}
-{#    {% include 'base_templates/base_results.html' %}#}
-    {{ test }}<br>
+    <div class="container">
+        {% include 'base_templates/base_results.html' %}
+    </div>
+
     ----------------------<br>
     {{ output }}<br>
 {% endblock %}

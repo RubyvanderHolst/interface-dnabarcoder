@@ -6,6 +6,8 @@ function switch_home_settings(button) {
 
             document.getElementById("div_home").style.display = "block";
             document.getElementById("div_settings").style.display = "none";
+        } else {
+            document.getElementById('id_form').reportValidity()
         }
     } else if (button.id === "settings_button") {
         document.getElementById("home_button").classList.remove("active");
@@ -16,7 +18,7 @@ function switch_home_settings(button) {
     }
 }
 
-// Checks if settings have correct input
+// Check if settings have correct input
 function check_settings(){
     let number_inputs = document.querySelectorAll('#div_settings input')
     for (let i = 0; i < number_inputs.length; i++) {

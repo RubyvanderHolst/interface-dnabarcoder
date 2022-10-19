@@ -1,43 +1,67 @@
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Enable/disable higher rank
+        let rank_dropdown = document.getElementById('id_rank')
+    let higher_rank_dropdown = document.getElementById('id_higher_rank')
+    let all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
 
-function disable_rank(clicked_radio) {
-    // Disables higher rank dropdown and shows/hides kingdom in rank
-    let rank = document.getElementById('rank')
-    let higher_rank = document.getElementById('higher_rank')
+    let cutoff_radio = Array.from(
+        document.querySelectorAll('input[name="cutoff_type"]')
+    )
 
-    if (clicked_radio.id === 'local_choice') {
-        higher_rank.disabled = false;
-        document.getElementById('kingdom_rank').hidden = true;
-    } else if (clicked_radio.id === 'global_choice'){
-        higher_rank.disabled = true;
-        higher_rank.value = "";
-        document.getElementById('kingdom_rank').hidden = false;
-    }
-}
-
-function hide_higher_options() {
-    // Hides higher rank option that are the same or lower than the selected rank
-    if (!document.getElementById('higher_rank').disabled) {
-        let all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
-        let selected_rank = document.getElementById('rank').value
-        let index = all_rank.findIndex(object => {
-            return object === selected_rank
+    for (let i = 0; i < cutoff_radio.length; i++) {
+        let radiobutton = cutoff_radio[i]
+        radiobutton.addEventListener('click', function () {
+            if (radiobutton.value === 'local') {
+                higher_rank_dropdown.disabled = false;
+                higher_rank_dropdown[higher_rank_dropdown.length-1].hidden = true
+                set_higher(rank_dropdown, higher_rank_dropdown, all_rank)
+            } else if (radiobutton.value === 'global') {
+                higher_rank_dropdown.disabled = true;
+                higher_rank_dropdown[higher_rank_dropdown.length-1].hidden = false
+                higher_rank_dropdown.value = 'all';
+            }
         })
-        document.getElementById('higher_rank').value = all_rank[index + 1]
-        for (let i = 1; i < index + 1; i++) {
-            document.getElementById(all_rank[i] + "_higher").hidden = true;
-        }
-        for (let i = index + 1; i < all_rank.length; i++) {
-            document.getElementById(all_rank[i] + "_higher").hidden = false;
-        }
     }
+
+    // Hide higher rank option that are the same or lower than the selected rank
+    rank_dropdown.addEventListener('change', function() {
+        if (!higher_rank_dropdown.disabled) {
+
+            let index = set_higher(rank_dropdown, higher_rank_dropdown, all_rank)
+
+            for (let i = 0; i < index; i++) {
+                higher_rank_dropdown[i].hidden = true
+            }
+            for (let i = index; i < all_rank.length; i++) {
+                higher_rank_dropdown[i].hidden = false
+            }
+        }
+    })
+
+    // Enable/disable cutoff_remove field based on remove_comp field
+    let remove_comp_check = document.getElementById('id_remove_comp')
+    remove_comp_check.addEventListener('change', function() {
+        let cutoff_value = document.getElementById('id_cutoff_remove')
+        cutoff_value.disabled = !remove_comp_check.checked
+        cutoff_value.required = remove_comp_check.checked
+    })
+})
+
+// Sets higher_rank to one higher than selected at rank
+// Returns index of selected rank in all_rank array
+function set_higher(rank_dropdown, higher_rank_dropdown, all_rank) {
+    let selected_rank = rank_dropdown.value
+
+    let index = all_rank.findIndex(object => {
+        return object === selected_rank
+    })
+
+    if (index === all_rank.length-1) {
+        higher_rank_dropdown.value = all_rank[index]
+    } else {
+        higher_rank_dropdown.value = all_rank[index + 1]
+    }
+
+    return index
 }
-
-function disable_field(checkbox, field_id) {
-    // Enable field when checkbox is checked (used for remove complexes)
-    document.getElementById(field_id).disabled = !checkbox.checked;
-}
-
-
-
-

@@ -1,17 +1,43 @@
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="70"
-         aria-valuemin="0" aria-valuemax="100" style="width:100%">
-        100%
-    </div>
-</div>
+{#<div class="progress">#}
+{#    <div class="progress-bar" role="progressbar" aria-valuenow="70"#}
+{#         aria-valuemin="0" aria-valuemax="100" style="width:100%">#}
+{#        100%#}
+{#    </div>#}
+{#</div>#}
 
-<p>File size: <span id="file_size">?</span></p>
+<table class="table">
+    <thead>
+        <tr class="table-success">
+            <th scope="col">File name</th>
+            <th scope="col">File size</th>
+            <th scope="col">Download</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for name, info in files.items %}
+        <tr scope="row">
+            <th>{{ name }}</th>
+            <th>{{ info.1 }} bytes</th>
+            <th>
+                <button type="button" class="btn btn-success">
+                    <a href="{{ info.0 }}"
+                       class="link-light text-decoration-none"
+                       download>
+                        Download
+                    </a>
+                </button>
+            </th>
+        </tr>
+    {% empty %}
+        <p>No files were generated</p>
+    {% endfor %}
+    </tbody>
+</table>
 
-<button type="button" class="btn btn-success">
-    {% load static %}
-    <a href="{% static 'results/testbestand.txt' %}"
-       class="link-dark text-decoration-none"
-       download>
-        Download
-    </a>
-</button>
+{% load static %}
+{% for file_name in images %}
+    <img src="{% get_media_prefix %}/cutoff/{{ file_name }}" class="img-fluid">
+{% empty %}
+    <p>No results could be generated. Change the settings or use another input file.</p>
+{% endfor %}
+
