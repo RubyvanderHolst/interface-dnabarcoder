@@ -19,7 +19,6 @@
             <th>{{ name }}</th>
             <th>{{ info.1 }} bytes</th>
             <th>
-                {{ info.0 }}
                 <button type="button" class="btn btn-success">
                     <a href="{{ info.0 }}"
                        class="link-light text-decoration-none"
@@ -29,20 +28,14 @@
                 </button>
             </th>
         </tr>
-
-    {#    <button type="button" class="btn btn-success">#}
-    {##}
-    {##}
-    {#        <a href="{% static 'results/testbestand.txt' %}"#}
-    {#           class="link-dark text-decoration-none"#}
-    {#           download>#}
-    {#            Download#}
-    {#        </a>#}
-    {#    </button>#}
-
     {% empty %}
         <p>No files were generated</p>
     {% endfor %}
     </tbody>
 </table>
+
+{% load static %}
+{% for file_name in images %}
+    <img src="{% get_media_prefix %}/cutoff/{{ file_name }}" class="img-fluid">
+{% endfor %}
 

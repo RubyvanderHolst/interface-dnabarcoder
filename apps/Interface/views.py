@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import CutoffForm, ClassificationForm
+from django.core.files.storage import FileSystemStorage
 import numpy as np
 import celery
 import os
@@ -17,11 +18,24 @@ def cutoff_page(request):
 
 
 def cutoff_results_page(request):
+    input_dir = "media/uploaded"
+    fs = FileSystemStorage(input_dir)
+    output_dir = "media/cutoff"
+    os.system(f"rm {input_dir}/* &&"
+              f"rm {output_dir}/*")
+
+
     dnabarcoder_path = "/home/tool/dnabarcoder.py"
-    input_file_path = request.FILES['input_file'].temporary_file_path()
+    input_file = request.FILES['input_file']
+    file = fs.save(input_file.name, input_file)
+    input_file_path = os.path.join(input_dir, input_file.name)
+
     sim_file_path = None
     if 'sim_file' in request.FILES:
-        sim_file_path = request.FILES['sim_file'].temporary_file_path()
+        sim_file = request.FILES['sim_file']
+        file = fs.save(sim_file.name, sim_file)
+        sim_file_path = os.path.join(input_dir, sim_file.name)
+
     min_alignment_length = request.POST['min_alignment_length']
     rank = request.POST['rank']
     higher_rank = None
@@ -36,8 +50,6 @@ def cutoff_results_page(request):
 
 
     # Remove sequences of the same complex
-    output_dir = "/home/app/results/cutoff"
-    output2 = "..."
     rem_comp_1 = "no"
     if 'remove_comp' in request.POST:
         end_threshold = request.POST['cutoff_remove']
@@ -53,7 +65,6 @@ def cutoff_results_page(request):
                              f"--out {output_dir} "
             if sim_file_path != None:
                 remove_command += f"--simfilename {sim_file_path} "
-            output2 = os.popen(remove_command).read()
             input_file_path = output_dir +\
                                input_file_path.split('/')[-1].\
                                    replace('fasta', 'diff.fasta')
@@ -81,12 +92,17 @@ def cutoff_results_page(request):
     os.system("cd /home/app/ && "
               "rm db.n*")
 
-    dict_files = get_file_sizes(output_dir)
+
+    dict_files = get_file_sizes(output_dir)  # {file_name: [file_path, file_size]}
+    image_files = []
+    for file_name in dict_files.keys():
+        if file_name[-4:] == '.png':
+            image_files.append(file_name)
 
     return render(request, 'cutoff_results.html', {
-        'test': output2,
         'output': output,
         'files': dict_files,
+        'images': image_files,
     })
 
 
@@ -99,19 +115,22 @@ def classification_page(request):
 
 def classification_results_page(request):
     test = request.POST
-    file = open('/home/app/results/testbestand.txt', 'w')
+    file = open('/media/testbestand.txt', 'w')
     file.write(str(test))
     file.close()
     return render(request, 'classification_results.html', {
         'test': test,
     })
 
-
 def get_file_sizes(dir_path):
     # Get the sizes of all files in a directory
     # Return dictionary: {file_name: [file_path, file_size]}
     paths_list = [os.path.join(dir_path, file) for file in os.listdir(dir_path)]
-    dict_files = {os.path.basename(file_path):[file_path, os.stat(file_path).st_size] for file_path in paths_list}
+    dict_files = {}
+    for path in paths_list:
+        name = os.path.basename(path)
+        size = os.stat(path).st_size
+        dict_files[name] = [path, size]
     return dict_files
 
 
