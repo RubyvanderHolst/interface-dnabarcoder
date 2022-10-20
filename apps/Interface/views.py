@@ -29,13 +29,13 @@ def cutoff_results_page(request):
     input_file = request.FILES['input_file']
     file = fs.save(input_file.name, input_file)
     input_file_path = os.path.join(input_dir, input_file.name)
+    prefix = input_file.name.split('.')[0]
 
     sim_file_path = None
     if 'sim_file' in request.FILES:
         sim_file = request.FILES['sim_file']
         file = fs.save(sim_file.name, sim_file)
         sim_file_path = os.path.join(input_dir, sim_file.name)
-
     min_alignment_length = request.POST['min_alignment_length']
     rank = request.POST['rank']
     higher_rank = None
@@ -83,7 +83,7 @@ def cutoff_results_page(request):
               f"-minseqno {min_seq_number} " \
               f"-maxseqno {max_seq_number} " \
               f"-removecomplexes {rem_comp_1} "\
-              f"-prefix cutoff_result "\
+              f"-prefix {prefix} "\
               f"--out {output_dir} "
 
     output = os.popen(command).read()
@@ -92,17 +92,13 @@ def cutoff_results_page(request):
     os.system("cd /home/app/ && "
               "rm db.n*")
 
-
-    dict_files = get_file_sizes(output_dir)  # {file_name: [file_path, file_size]}
-    image_files = []
-    for file_name in dict_files.keys():
-        if file_name[-4:] == '.png':
-            image_files.append(file_name)
+    dict_files, dict_images = get_file_sizes(output_dir)
 
     return render(request, 'cutoff_results.html', {
-        'output': output,
+        # 'output': output,
         'files': dict_files,
-        'images': image_files,
+        'images': dict_images,
+        'media_dir': 'cutoff',
     })
 
 
@@ -124,15 +120,28 @@ def classification_results_page(request):
 
 def get_file_sizes(dir_path):
     # Get the sizes of all files in a directory
-    # Return dictionary: {file_name: [file_path, file_size]}
-    paths_list = [os.path.join(dir_path, file) for file in os.listdir(dir_path)]
+    # Return two dictionaries: {file_name: file_size}
+    # one for images and one for all other files
+    file_list = os.listdir(dir_path)
     dict_files = {}
-    for path in paths_list:
-        name = os.path.basename(path)
-        size = os.stat(path).st_size
-        dict_files[name] = [path, size]
-    return dict_files
+    dict_images = {}
+    for name in file_list:
+        size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
+        if name[-4:] == '.png':
+            dict_images[name] = size
+        else:
+            dict_files[name] = size
+    return dict_files, dict_images
 
+
+def bytes_to_larger(size_b):
+    sizes = ['TB', 'GB', 'MB', 'KB', 'B']
+    x = 10**((len(sizes) - 1) * 3)
+    for size in sizes:
+        if size_b > x:
+            return f"{int(size_b / x)} {size}"
+        else:
+            x *= 10**-3
 
 def visualization_page(request):
     return render(request, 'visualization.html')
