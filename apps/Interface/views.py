@@ -29,13 +29,13 @@ def cutoff_results_page(request):
     input_file = request.FILES['input_file']
     file = fs.save(input_file.name, input_file)
     input_file_path = os.path.join(input_dir, input_file.name)
+    prefix = input_file.name.split('.')[0]
 
     sim_file_path = None
     if 'sim_file' in request.FILES:
         sim_file = request.FILES['sim_file']
         file = fs.save(sim_file.name, sim_file)
         sim_file_path = os.path.join(input_dir, sim_file.name)
-
     min_alignment_length = request.POST['min_alignment_length']
     rank = request.POST['rank']
     higher_rank = None
@@ -83,7 +83,7 @@ def cutoff_results_page(request):
               f"-minseqno {min_seq_number} " \
               f"-maxseqno {max_seq_number} " \
               f"-removecomplexes {rem_comp_1} "\
-              f"-prefix cutoff_result "\
+              f"-prefix {prefix} "\
               f"--out {output_dir} "
 
     output = os.popen(command).read()
