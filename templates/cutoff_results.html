@@ -5,10 +5,9 @@
     <div class="container">
         {% include 'base_templates/base_results.html' %}
 
-
         {% load static %}
         {% for name, info in images.items %}
-            <div class="card mx-auto w-75">
+            <div class="card mx-auto w-50">
                 <h5 class="card-header text-center">{{ name }}</h5>
                 <div class="card-body text-center">
                     <img src="{% get_media_prefix %}/cutoff/{{ name }}" class="img-fluid">
@@ -23,7 +22,7 @@
             </div>
 
         {% empty %}
-            <p>No results could be generated. Change the settings or use another input file.</p>
+            <p>No results could be generated. Please change the settings.</p>
         {% endfor %}
     </div>
 {% endblock %}

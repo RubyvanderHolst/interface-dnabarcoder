@@ -98,6 +98,7 @@ def cutoff_results_page(request):
         # 'output': output,
         'files': dict_files,
         'images': dict_images,
+        'media_dir': 'cutoff',
     })
 
 

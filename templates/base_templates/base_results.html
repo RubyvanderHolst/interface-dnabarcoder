@@ -6,28 +6,28 @@
 {#</div>#}
 
 {% load static %}
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr class="table-success">
             <th scope="col">File name</th>
             <th scope="col">File size</th>
-            <th scope="col">Download</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
     {% for name, size in files.items %}
-        <tr scope="row">
-            <th>{{ name }}</th>
-            <th>{{ size }}</th>
-            <th>
-                <button type="button" class="btn btn-success">
-                    <a href="{% get_media_prefix %}/cutoff/{{ name }}"
+        <tr>
+            <td>{{ name }}</td>
+            <td>{{ size }}</td>
+            <td>
+                <button type="button" class="btn btn-success w-100">
+                    <a href="{% get_media_prefix %}{{ media_dir }}/{{ name }}"
                        class="link-light text-decoration-none"
                        download>
                         Download
                     </a>
                 </button>
-            </th>
+            </td>
         </tr>
     {% empty %}
         <p>No files were generated</p>
