@@ -1,28 +1,37 @@
 {% extends 'cutoff.html' %}
 
+<head>
+    {% load static %}
+    <script src="{% static 'js/cutoff_results.js' %}"></script>
+</head>
+
 {% block page_title %}Results{% endblock %}
 {% block container_cutoff %}
     <div class="container">
-        {% include 'base_templates/base_results.html' %}
+        <div id="loading" style="display: none">
+            <p>Is loading...</p>
+        </div>
+        <div id="done">
+            {% include 'base_templates/base_results.html' %}
 
-        {% load static %}
-        {% for name, info in images.items %}
-            <div class="card mx-auto w-50">
-                <h5 class="card-header text-center">{{ name }}</h5>
-                <div class="card-body text-center">
-                    <img src="{% get_media_prefix %}/cutoff/{{ name }}" class="img-fluid">
-                    <button type="button" class="btn btn-success">
-                        <a href="{% get_media_prefix %}/cutoff/{{ name }}"
-                           class="link-light text-decoration-none"
-                           download>
-                            Download
-                        </a>
-                    </button>
+            {% for name, info in images.items %}
+                <div class="card mx-auto w-50">
+                    <h5 class="card-header text-center">{{ name }}</h5>
+                    <div class="card-body text-center">
+                        <img src="{% get_media_prefix %}/cutoff/{{ name }}" class="img-fluid">
+                        <button type="button" class="btn btn-success">
+                            <a href="{% get_media_prefix %}/cutoff/{{ name }}"
+                               class="link-light text-decoration-none"
+                               download>
+                                Download
+                            </a>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-        {% empty %}
-            <p>No results could be generated. Please change the settings.</p>
-        {% endfor %}
+            {% empty %}
+                <p>No results could be generated. Please change the settings.</p>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

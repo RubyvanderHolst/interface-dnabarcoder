@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .forms import CutoffForm, ClassificationForm
 from django.core.files.storage import FileSystemStorage
 import numpy as np
-import celery
 import os
 
 
@@ -18,6 +17,7 @@ def cutoff_page(request):
 
 
 def cutoff_results_page(request):
+    # Retrieve data from request
     input_dir = "media/uploaded"
     fs = FileSystemStorage(input_dir)
     output_dir = "media/cutoff"
@@ -69,28 +69,10 @@ def cutoff_results_page(request):
                                input_file_path.split('/')[-1].\
                                    replace('fasta', 'diff.fasta')
 
-    command = f"python {dnabarcoder_path} "\
-              f"predict "\
-              f"--input {input_file_path} "\
-              f"--simfilename {sim_file_path} "\
-              f"--minalignmentlength {min_alignment_length} "\
-              f"-rank {rank} "\
-              f"-higherrank {higher_rank} "\
-              f"--startingthreshold {starting_threshold} "\
-              f"--endthreshold {end_threshold} "\
-              f"--step {step} "\
-              f"-mingroupno {min_group_number} "\
-              f"-minseqno {min_seq_number} " \
-              f"-maxseqno {max_seq_number} " \
-              f"-removecomplexes {rem_comp_1} "\
-              f"-prefix {prefix} "\
-              f"--out {output_dir} "
-
-    output = os.popen(command).read()
-    os.system(f"cd {output_dir} && "
-              "rm tmp*")
-    os.system("cd /home/app/ && "
-              "rm db.n*")
+    calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
+                     min_alignment_length, rank, higher_rank, starting_threshold,
+                     end_threshold, step, min_group_number, min_seq_number,
+                     max_seq_number, rem_comp_1, prefix, output_dir)
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
@@ -100,6 +82,35 @@ def cutoff_results_page(request):
         'images': dict_images,
         'media_dir': 'cutoff',
     })
+
+
+def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
+                     min_alignment_length, rank, higher_rank, starting_threshold,
+                     end_threshold, step, min_group_number, min_seq_number,
+                     max_seq_number, rem_comp_1, prefix, output_dir):
+    command = f"python {dnabarcoder_path} " \
+              f"predict " \
+              f"--input {input_file_path} " \
+              f"--simfilename {sim_file_path} " \
+              f"--minalignmentlength {min_alignment_length} " \
+              f"-rank {rank} " \
+              f"-higherrank {higher_rank} " \
+              f"--startingthreshold {starting_threshold} " \
+              f"--endthreshold {end_threshold} " \
+              f"--step {step} " \
+              f"-mingroupno {min_group_number} " \
+              f"-minseqno {min_seq_number} " \
+              f"-maxseqno {max_seq_number} " \
+              f"-removecomplexes {rem_comp_1} " \
+              f"-prefix {prefix} " \
+              f"--out {output_dir} "
+
+    os.system(command)
+
+    os.system(f"cd {output_dir} && "
+              "rm tmp*")
+    os.system("cd /home/app/ && "
+              "rm db.n*")
 
 
 def classification_page(request):
