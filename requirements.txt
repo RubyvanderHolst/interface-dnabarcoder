@@ -8,5 +8,6 @@ Theano==1.0.5
 Biopython==1.79
 python-dotenv==0.21.0
 celery==5.2.7
+redis==4.3.4
 django-crispy-forms==1.14.0
 crispy-bootstrap5==0.7
