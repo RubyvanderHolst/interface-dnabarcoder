@@ -17,18 +17,25 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-import apps.Interface.views as views
+import apps.Cutoff.views as cutoff_views
+import apps.Classification.views as class_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Main page redirects to classification page:
-    path('', views.redirect_classification),
-    path('cutoff', views.cutoff_page, name='cutoff'),
-    path('cutoff/results', views.cutoff_results_page, name='cutoff_results'),
-    path('cutoff/<task_id>', views.load_progress, name='load_progress'),
-    path('classification', views.classification_page, name='classification'),
-    path('classification/results', views.classification_results_page),
-    path('visualization', views.visualization_page, name='visualization'),
+    path('', class_views.redirect_classification),
+    path('cutoff', cutoff_views.cutoff_page,
+         name='cutoff'),
+    path('cutoff/results', cutoff_views.cutoff_results_page,
+         name='cutoff_results'),
+    path('cutoff/<task_id>', cutoff_views.load_progress,
+         name='load_progress'),
+    path('classification', class_views.classification_page,
+         name='classification'),
+    path('classification/results', class_views.classification_results_page,
+         name='classification_results'),
+    path('visualization', cutoff_views.visualization_page,
+         name='visualization'),
 ]
 
 # only in development

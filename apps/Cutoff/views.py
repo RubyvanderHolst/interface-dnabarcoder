@@ -1,15 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import CutoffForm, ClassificationForm
+from .forms import CutoffForm
 from .tasks import calculate_cutoff
 from celery.result import AsyncResult
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, JsonResponse
-import numpy as np
+from django.http import JsonResponse
 import os
-
-
-def redirect_classification(self):
-    return redirect('/classification')
 
 
 def cutoff_page(request):
@@ -65,8 +60,8 @@ def cutoff_results_page(request):
 
         task_id = task.id
 
-        # result = AsyncResult(task_id)
-        return render(request, 'cutoff_results.html', {
+    # result = AsyncResult(task_id)
+    return render(request, 'cutoff_results.html', {
             # 'output': result,
             'media_dir': 'cutoff',
             'task_id': task_id,
@@ -85,23 +80,6 @@ def load_progress(request, task_id):
         'state': result.state,
         'files': files,
         'images': images,
-    })
-
-
-def classification_page(request):
-    form = ClassificationForm
-    return render(request, 'classification.html', {
-        'form': form,
-    })
-
-
-def classification_results_page(request):
-    test = request.POST
-    file = open('/media/testbestand.txt', 'w')
-    file.write(str(test))
-    file.close()
-    return render(request, 'classification_results.html', {
-        'test': test,
     })
 
 
