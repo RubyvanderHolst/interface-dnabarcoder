@@ -5,8 +5,25 @@ services:
     build:
       context: ../
       dockerfile: interface-dnabarcoder/Dockerfile
+    image: interface-dnabarcoder-web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/home/app
     ports:
       - "8000:8000"
+
+  redis:
+    image: redis:7-alpine
+
+  celery:
+    build:
+      context: ../
+      dockerfile: interface-dnabarcoder/Dockerfile
+    image: celery-worker
+    command: celery -A interface-dnabarcoder worker -l INFO
+    volumes:
+      - .:/home/app
+    env_file:
+      - .env
+    depends_on:
+      - redis

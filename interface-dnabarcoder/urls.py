@@ -1,4 +1,4 @@
-"""dnabarcoderApp URL Configuration
+"""interface-dnabarcoder URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -24,7 +24,8 @@ urlpatterns = [
     # Main page redirects to classification page:
     path('', views.redirect_classification),
     path('cutoff', views.cutoff_page, name='cutoff'),
-    path('cutoff/results', views.cutoff_results_page),
+    path('cutoff/results', views.cutoff_results_page, name='cutoff_results'),
+    path('cutoff/<task_id>', views.load_progress, name='load_progress'),
     path('classification', views.classification_page, name='classification'),
     path('classification/results', views.classification_results_page),
     path('visualization', views.visualization_page, name='visualization'),
@@ -32,4 +33,4 @@ urlpatterns = [
 
 # only in development
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
