@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 import apps.Cutoff.views as cutoff_views
 import apps.Classification.views as class_views
+import apps.Visualization.views as vis_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,7 +35,7 @@ urlpatterns = [
          name='classification'),
     path('classification/results', class_views.classification_results_page,
          name='classification_results'),
-    path('visualization', cutoff_views.visualization_page,
+    path('visualization', vis_views.visualization_page,
          name='visualization'),
 ]
 

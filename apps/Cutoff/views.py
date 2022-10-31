@@ -81,8 +81,3 @@ def load_progress(request, task_id):
         'files': files,
         'images': images,
     })
-
-
-def visualization_page(request):
-    return render(request, 'visualization.html')
-
