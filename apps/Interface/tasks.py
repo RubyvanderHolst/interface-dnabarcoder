@@ -59,6 +59,9 @@ def remove_complexes(dnabarcoder_path, input_file_path, threshold,
 
     os.system(command)
 
+    os.system("cd /home/app/ && "
+              "rm db.n*")
+
 
 def get_file_sizes(dir_path):
     # Get the sizes of all files in a directory
