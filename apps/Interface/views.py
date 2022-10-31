@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import CutoffForm, ClassificationForm
-from .tasks import calculate_cutoff as cal_cut
+from .tasks import calculate_cutoff
 from celery.result import AsyncResult
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
@@ -52,42 +52,25 @@ def cutoff_results_page(request):
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
 
-
-        # Remove sequences of the same complex
-        rem_comp_1 = "no"
         if 'remove_comp' in request.POST:
-            end_threshold = request.POST['cutoff_remove']
-            if end_threshold == "1":
-                rem_comp_1 = "yes"
-            else:
-                remove_command = f"python {dnabarcoder_path} "\
-                                 f"remove "\
-                                 f"--input {input_file_path} "\
-                                 f"--cutoff {end_threshold} "\
-                                 f"--minalignmentlength {min_alignment_length} "\
-                                 f"--classificationrank {rank} "\
-                                 f"--out {output_dir} "
-                if sim_file_path != None:
-                    remove_command += f"--simfilename {sim_file_path} "
-                input_file_path = output_dir +\
-                                   input_file_path.split('/')[-1].\
-                                       replace('fasta', 'diff.fasta')
-        #
-        task = cal_cut.delay(dnabarcoder_path, input_file_path,
-                                           sim_file_path, min_alignment_length,
-                                           rank, higher_rank, starting_threshold,
-                                           end_threshold, step, min_group_number,
-                                           min_seq_number, max_seq_number,
-                                           rem_comp_1, prefix, output_dir)
+            threshold = request.POST['cutoff_remove']
+        else:
+            threshold = None
+
+        task = calculate_cutoff.delay(dnabarcoder_path, input_file_path,
+                             sim_file_path, min_alignment_length, rank,
+                             higher_rank, starting_threshold, end_threshold,
+                             step, min_group_number, min_seq_number,
+                             max_seq_number, threshold, prefix, output_dir)
 
         task_id = task.id
 
-    # result = AsyncResult(task_id)
-    return render(request, 'cutoff_results.html', {
-        # 'output': result,
-        'media_dir': 'cutoff',
-        'task_id': task_id,
-        })
+        # result = AsyncResult(task_id)
+        return render(request, 'cutoff_results.html', {
+            # 'output': result,
+            'media_dir': 'cutoff',
+            'task_id': task_id,
+            })
 
 def load_progress(request, task_id):
     result = AsyncResult(task_id)
