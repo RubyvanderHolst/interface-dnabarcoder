@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>DNA barcoder {% block title %}{% endblock %}</title>
-    {% load static %}
+    {# The following imports can also be used in all pages which extend this page (which are all pages) #}
+    {# Import bootstrap #}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    {# Import jquery for ajax #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    {# Import styling file from static folder #}
+    {% load static %}
+    <link href="{% static 'css/styling.css' %}" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand navbar-light light-blue-background">
     <div class="container-fluid">
         <span class="navbar-brand">DNA barcoder</span>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse">
             <div class="navbar-nav">
                 <a class="nav-item nav-link {% block nav-classify %}{% endblock %}" href="{% url 'classification' %}">Classify</a>
                 <a class="nav-item nav-link {% block nav-cutoff %}{% endblock %}" href="{% url 'cutoff' %}">Calculate cutoff</a>

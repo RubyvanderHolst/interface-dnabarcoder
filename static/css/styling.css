@@ -1,0 +1,42 @@
+/* HTML tags */
+h2 {
+    padding: 10px;
+}
+
+textarea {
+    font-family: Consolas, monospace;
+    font-size: 12px !important;
+}
+
+
+/* Bootstrap classes */
+.active {
+    font-weight: 500;
+}
+
+.container {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.row {
+    margin-top: 20px;
+}
+
+
+/* Custom classes */
+.hidden {
+    display: none;
+}
+
+.light-blue-background {
+    background-color: #e3f2fd;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.w-475 {
+    width: 475px;
+}

@@ -6,7 +6,6 @@
 {% block container %}
     <head>
         {% load static %}
-        <link href="{% static 'css/classification.css' %}" rel="stylesheet">
         <script src="{% static 'js/classification.js' %}"></script>
     </head>
 
@@ -50,7 +49,7 @@
                         <h5 class="card-header">Similarity cut-off</h5>
                         <div class="card-body">
                             {{ form.cutoff_type|as_crispy_field }}
-                            <div id="div_num_cutoff" style="display: none;">
+                            <div id="div_num_cutoff" class="hidden">
                                 {{ form.num_cutoff|as_crispy_field }}
                             </div>
                             <div id="div_file_cutoff">
@@ -60,13 +59,13 @@
                     </div>
                 </div>
             </div>
-                <div class="d-grid gap-3 col-2 mx-auto">
+                <div class="d-grid gap-3 col-2 mx-auto mt-30">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
 
 
-            <div id="div_settings" style="display:none">
+            <div id="div_settings" class="hidden">
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">
                     <div class="col">
