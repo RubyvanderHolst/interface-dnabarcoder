@@ -6,7 +6,6 @@
 {% block container %}
     <head>
         {% load static %}
-        <link href="{% static 'css/cutoff.css' %}" rel="stylesheet">
         <script src="{% static 'js/cutoff.js' %}"></script>
     </head>
     {% block container_cutoff %}
@@ -50,12 +49,12 @@
 
 
                 </div>
-                <div class="d-grid gap-3 col-2 mx-auto">
-                    <button type="submit" class="btn btn-primary margin-top">Submit</button>
+                <div class="d-grid gap-3 col-2 mx-auto mt-30">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
 
-            <div id="div_settings" style="display: none">
+            <div id="div_settings" class="hidden">
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">
                     <div class="col">
