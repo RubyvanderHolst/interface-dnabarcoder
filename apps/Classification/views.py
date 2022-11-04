@@ -15,9 +15,6 @@ def classification_page(request):
 
 def classification_results_page(request):
     test = request.POST
-    file = open('/media/testbestand.txt', 'w')
-    file.write(str(test))
-    file.close()
     return render(request, 'classification_results.html', {
         'test': test,
     })

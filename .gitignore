@@ -4,7 +4,9 @@ db.*
 # Pycharm
 .idea
 
-# Result file
-media/*
+# Result files
+media/classification/*
+media/cutoff/*
+media/uploaded/*
 
 #.env
