@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import ClassificationForm
+from .tasks import classify_blast
 from django.core.files.storage import FileSystemStorage
 import os
 
@@ -24,8 +25,6 @@ def classification_results_page(request):
         output_dir = "media/classification"
         os.system(f"rm /home/app/{input_dir}/* &&"
                   f"rm /home/app/{output_dir}/*")
-
-        dnabarcoder_path = "/home/tool/dnabarcoder.py"
 
         if 'file_input_sequences' in request.FILES:
             file_input_sequences = request.FILES['file_input_sequences']
@@ -68,6 +67,13 @@ def classification_results_page(request):
         rank = request.POST['rank']
         max_seq_number = request.POST['max_seq_number']
 
+        task = classify_blast.delay(input_sequences_path, reference_path,
+                                    num_cutoff, file_cutoff_path,
+                                    min_probability,
+                                    min_alignment_length, confidence,
+                                    min_group_number, min_seq_number, rank,
+                                    max_seq_number, output_dir)
+        task_id = task.id
 
     return render(request, 'classification_results.html', {
         'test': test,

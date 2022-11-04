@@ -5,9 +5,9 @@ import os
 @shared_task
 def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
                      min_alignment_length, rank, higher_rank,
-                     starting_threshold,
-                     end_threshold, step, min_group_number, min_seq_number,
-                     max_seq_number, threshold, prefix, output_dir):
+                     starting_threshold, end_threshold, step, min_group_number,
+                     min_seq_number, max_seq_number, threshold, prefix,
+                     output_dir):
 
     rem_comp_1 = "no"
     if threshold == "1":
