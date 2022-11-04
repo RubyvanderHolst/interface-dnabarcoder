@@ -18,7 +18,7 @@ function switch_home_settings(button) {
     }
 }
 
-// Check if settings have correct input
+// Checks if settings have correct input
 function check_settings(){
     let number_inputs = document.querySelectorAll('#div_settings input')
     for (let i = 0; i < number_inputs.length; i++) {

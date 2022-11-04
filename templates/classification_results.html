@@ -1,7 +1,9 @@
-{% extends 'classification.html' %}
+{% extends 'base_templates/base.html' %}
 
-{% block page_title %}Results{% endblock %}
-{% block container_classification %}
+{% block title %}| Classification | Results{% endblock %}
+{% block nav-classify %}active{% endblock %}
+
+{% block container %}
     <div class="container">
         {% include 'base_templates/base_results.html' %}
         <br>

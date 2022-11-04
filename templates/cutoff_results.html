@@ -1,7 +1,9 @@
-{% extends 'cutoff.html' %}
+{% extends 'base_templates/base.html' %}
 
-{% block page_title %}Results{% endblock %}
-{% block container_cutoff %}
+{% block title %}| Cutoff calculation | Results{% endblock %}
+{% block nav-cutoff %}active{% endblock %}
+
+{% block container %}
     <head>
         {% load static %}
         <script src="{% static 'js/cutoff_results.js' %}"></script>
