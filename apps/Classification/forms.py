@@ -87,7 +87,7 @@ TCTTTTAAATTTGATCTGAAATCAGG
         initial=400,
     )
     confidence = forms.FloatField(
-        label='Confidence of the similarity cutoff',
+        label='Confidence of the global similarity cutoff',
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
