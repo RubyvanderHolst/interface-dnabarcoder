@@ -8,7 +8,7 @@ db.*
 media/classification/*
 !media/classification/.gitkeep
 media/cutoff/*
-#!media/cutoff/.gitkeep
+!media/cutoff/.gitkeep
 media/uploaded/*
 !media/uploaded/.gitkeep
 

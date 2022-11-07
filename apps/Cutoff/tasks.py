@@ -76,7 +76,7 @@ def get_file_sizes(dir_path):
         size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
         if name[-4:] == '.png':
             dict_images[name] = size
-        else:
+        elif name[0] != '.':
             dict_files[name] = size
     return dict_files, dict_images
 
