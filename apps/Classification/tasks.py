@@ -1,5 +1,6 @@
 from celery import shared_task
 import os
+from apps.Cutoff.tasks import bytes_to_larger
 
 
 @shared_task
@@ -8,18 +9,39 @@ def classify_blast(input_sequences_path, reference_path,
                    min_alignment_length, confidence, min_group_number,
                    min_seq_number, rank, max_seq_number, output_dir):
     # calculate best matches
+    prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
+                        os.path.basename(reference_path).split('.')[0]
     command_search = f"python /home/tool/dnabarcoder.py search " \
                      f"--input {input_sequences_path} " \
                      f"--reference {reference_path} " \
                      f"--minalignmentlength {min_alignment_length} " \
                      f"--out {output_dir} "
     os.system(command_search)
-    # TODO gives error:
-    #  Error: (803.7) [makeblastdb] Blast-def-line-set.E.title
-    #  Bad char [0xC3] in string at byte 123
-    #  (waarschijnlijk ë)
 
     # classify based on the best matches
+    classify_input = os.path.join(output_dir, prefix + '_BLAST.bestmatch')
+    command_classify = f"python /home/tool/dnabarcoder.py classify " \
+                       f"--input {classify_input} " \
+                       f"--reference {reference_path} " \
+                       f"-prefix {prefix} " \
+                       f"--minalignmentlength {min_alignment_length} " \
+                       f"--out {output_dir} "
+    if rank != "":
+        command_classify += f"-rank {rank} "
+
+    # Global cutoff
+    if num_cutoff is not None:
+        command_classify += f"--globalcutoff {num_cutoff} "
+        if confidence != "":
+            command_classify += f"--globalconfidence {confidence} "
+    # Local cutoffs
+    else:
+        command_classify += f"-cutoffs {file_cutoff_path} " \
+                            f"-minseqno {min_seq_number} " \
+                            f"=mingroupno {min_group_number} "
+
+    os.system(command_classify)
+
     return get_file_sizes(output_dir)
 
 

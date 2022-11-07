@@ -17,8 +17,10 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
                          min_alignment_length, rank, output_dir,
                          sim_file_path)
 
-        input_file_path = output_dir + "/" + input_file_path.split('/')[-1].\
-            replace('fasta', 'diff.fasta')
+        input_file_path = os.path.join(output_dir,
+                                       input_file_path.split('/')[-1].replace('fasta', 'diff.fasta'))
+        # input_file_path = output_dir + "/" + input_file_path.split('/')[-1].\
+        #     replace('fasta', 'diff.fasta')
 
     command = f"python {dnabarcoder_path} " \
               f"predict " \
