@@ -59,20 +59,19 @@ def classification_results_page(request):
             file_cutoff_path = os.path.join(input_dir,
                                             file_cutoff.name)
 
-        min_probability = request.POST['min_probability']
+        # min_probability = request.POST['min_probability']
         min_alignment_length = request.POST['min_alignment_length']
         confidence = request.POST['confidence']
         min_group_number = request.POST['min_group_number']
         min_seq_number = request.POST['min_seq_number']
         rank = request.POST['rank']
-        max_seq_number = request.POST['max_seq_number']
+        # max_seq_number = request.POST['max_seq_number']
 
         task = classify_blast.delay(input_sequences_path, reference_path,
                                     num_cutoff, file_cutoff_path,
-                                    min_probability,
                                     min_alignment_length, confidence,
                                     min_group_number, min_seq_number, rank,
-                                    max_seq_number, output_dir)
+                                    output_dir)
         task_id = task.id
 
     return render(request, 'classification_results.html', {

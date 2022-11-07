@@ -5,9 +5,9 @@ from apps.Cutoff.tasks import bytes_to_larger
 
 @shared_task
 def classify_blast(input_sequences_path, reference_path,
-                   num_cutoff, file_cutoff_path, min_probability,
+                   num_cutoff, file_cutoff_path,
                    min_alignment_length, confidence, min_group_number,
-                   min_seq_number, rank, max_seq_number, output_dir):
+                   min_seq_number, rank, output_dir):
     # calculate best matches
     prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
                         os.path.basename(reference_path).split('.')[0]
@@ -26,6 +26,8 @@ def classify_blast(input_sequences_path, reference_path,
                        f"-prefix {prefix} " \
                        f"--minalignmentlength {min_alignment_length} " \
                        f"--out {output_dir} "
+    #                  f"--minproba {min_probability} " \
+    #                  f"--maxseqno {max_seq_number} " \
     if rank != "":
         command_classify += f"-rank {rank} "
 

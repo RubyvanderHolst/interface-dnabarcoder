@@ -69,7 +69,7 @@
                 <h2 class="bg-light border text-center">Settings</h2>
                 <div class="row align-items-end">
                     <div class="col">
-                        {{ form.min_probability|as_crispy_field }}
+                        {{ form.min_seq_number|as_crispy_field }}
                     </div>
                     <div class="col">
                         {{ form.min_alignment_length|as_crispy_field }}
@@ -85,19 +85,19 @@
                 </div>
                 <div class="row align-items-end">
                     <div class="col">
-                        {{ form.min_seq_number|as_crispy_field }}
+                        {#{{ form.min_probability|as_crispy_field }}#}
                     </div>
                     <div class="col">
                         {{ form.rank|as_crispy_field }}
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        {{ form.max_seq_number|as_crispy_field }}
-                    </div>
-                    <div class="col"></div>
-                </div>
+{#                <div class="row">#}
+{#                    <div class="col">#}
+{#                        {{ form.max_seq_number|as_crispy_field }}#}
+{#                    </div>#}
+{#                    <div class="col"></div>#}
+{#                </div>#}
             </div>
 
         </form>
