@@ -6,7 +6,10 @@ db.*
 
 # Result files
 media/classification/*
+!media/classification/.gitkeep
 media/cutoff/*
+!media/cutoff/.gitkeep
 media/uploaded/*
+!media/uploaded/.gitkeep
 
 #.env

@@ -30,7 +30,6 @@ def cutoff_results_page(request):
         input_file_path = os.path.join(input_dir, input_file.name)
         prefix = input_file.name.split('.')[0]
 
-        # Retrieve form data
         sim_file_path = None
         if 'sim_file' in request.FILES:
             sim_file = request.FILES['sim_file']
