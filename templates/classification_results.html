@@ -4,9 +4,11 @@
 {% block nav-classify %}active{% endblock %}
 
 {% block container %}
+    <head>
+        {% load static %}
+        <script type="module" src="{% static 'js/classification_results.js' %}"></script>
+    </head>
     <div class="container">
         {% include 'base_templates/base_results.html' %}
-        <br>
-        {{ test }}
     </div>
 {% endblock %}

@@ -53,6 +53,7 @@ def get_file_sizes(dir_path):
     file_list = os.listdir(dir_path)
     dict_files = {}
     for name in file_list:
-        size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
-        dict_files[name] = size
+        if name[0] != '.':
+            size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
+            dict_files[name] = size
     return dict_files

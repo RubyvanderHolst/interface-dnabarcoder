@@ -6,7 +6,7 @@
 {% block container %}
     <head>
         {% load static %}
-        <script src="{% static 'js/cutoff_results.js' %}"></script>
+        <script type="module" src="{% static 'js/cutoff_results.js' %}"></script>
     </head>
     <div class="container">
         {% include 'base_templates/base_results.html' %}
