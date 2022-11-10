@@ -47,7 +47,7 @@ def classification_results_page(request):
             reference_path = os.path.join(input_dir,
                                           reference_file.name)
         else:
-            reference_path = os.path.join("data", reference_choice)
+            reference_path = os.path.join("reference_files", reference_choice)
 
         cutoff_type = request.POST['cutoff_type']
         num_cutoff = None

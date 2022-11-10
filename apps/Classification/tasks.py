@@ -44,6 +44,9 @@ def classify_blast(input_sequences_path, reference_path,
 
     os.system(command_classify)
 
+    # Remove blast db files
+    os.system(f"cd {'/'.join(reference_path.split('/')[:-1])} && "
+              f"find -type f -name '*.blastdb.*' -delete")
     return get_file_sizes(output_dir)
 
 

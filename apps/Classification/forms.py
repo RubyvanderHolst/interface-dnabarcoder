@@ -30,7 +30,7 @@ TCTTTTAAATTTGATCTGAAATCAGG
         })
     )
 
-    path = "/home/app/data"
+    path = "/home/app/reference_files"
     list_files = os.listdir(path)
     reference_choices = [('', 'Use own file')]
     for file in list_files:
