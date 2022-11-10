@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import ClassificationForm
 from .tasks import classify_blast
+from celery.result import AsyncResult
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 import os
 
 
@@ -17,7 +19,6 @@ def classification_page(request):
 
 
 def classification_results_page(request):
-    test = request.POST
     if request.method == 'POST':
         # Retrieve data from request
         input_dir = "media/uploaded"
@@ -74,6 +75,21 @@ def classification_results_page(request):
                                     output_dir)
         task_id = task.id
 
-    return render(request, 'classification_results.html', {
-        'test': test,
+        return render(request, 'classification_results.html', {
+            'media_dir': 'classification',
+            'task_id': task_id,
+        })
+
+
+def load_progress(request, task_id):
+    result = AsyncResult(task_id)
+    if result.state == 'SUCCESS':
+        print(result.info)
+        files = result.info
+    else:
+        files = None
+    return JsonResponse({
+        'task_id': task_id,
+        'state': result.state,
+        'files': files,
     })
