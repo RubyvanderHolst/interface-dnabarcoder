@@ -91,6 +91,7 @@ TCTTTTAAATTTGATCTGAAATCAGG
         widget=forms.NumberInput(attrs={
             'min': 0,
             'max': 1,
+            'disabled': True,
         }),
         required=False,
     )

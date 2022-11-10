@@ -1,4 +1,4 @@
-
+//TODO change display change to class change
 document.addEventListener('DOMContentLoaded', function() {
     // empty file or textarea input when other is filled in (seq input)
     let seq_file_input = document.getElementById('id_file_input_sequences')
@@ -38,9 +38,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('div_num_cutoff').style.display = "block";
                 document.getElementById('div_file_cutoff').style.display = "none";
                 document.getElementById('id_file_cutoff').value = '';
+
+                document.getElementById('id_confidence').disabled = false;
+                // TODO make empty?
+                document.getElementById('id_min_seq_number').disabled = true;
+                document.getElementById('id_min_seq_number').required = false;
+
+                document.getElementById('id_min_group_number').disabled = true;
+                document.getElementById('id_min_group_number').required = false;
             } else {
                 document.getElementById('div_num_cutoff').style.display = "none";
                 document.getElementById('div_file_cutoff').style.display = "block";
+
+                document.getElementById('id_confidence').disabled = true;
+                // TODO make empty?
+                document.getElementById('id_min_seq_number').disabled = false;
+                document.getElementById('id_min_seq_number').required = true;
+
+                document.getElementById('id_min_group_number').disabled = false;
+                document.getElementById('id_min_group_number').required = true;
             }
             for (let i = 0; i < cutoff_inputs.length; i++) {
                 cutoff_inputs[i].required = !cutoff_inputs[i].required
