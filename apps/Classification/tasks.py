@@ -40,7 +40,7 @@ def classify_blast(input_sequences_path, reference_path,
     else:
         command_classify += f"-cutoffs {file_cutoff_path} " \
                             f"-minseqno {min_seq_number} " \
-                            f"=mingroupno {min_group_number} "
+                            f"-mingroupno {min_group_number} "
 
     os.system(command_classify)
 

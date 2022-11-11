@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
-    // Switch between number and file input for cutoff
+    // Change inputs based on selected cutoff type
     let cutoff_radio = Array.from(
         document.querySelectorAll('input[name="cutoff_type"]')
     )
@@ -40,23 +40,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('id_file_cutoff').value = '';
 
                 document.getElementById('id_confidence').disabled = false;
-                // TODO make empty?
+
                 document.getElementById('id_min_seq_number').disabled = true;
                 document.getElementById('id_min_seq_number').required = false;
+                document.getElementById('id_min_seq_number').value = '';
 
                 document.getElementById('id_min_group_number').disabled = true;
                 document.getElementById('id_min_group_number').required = false;
+                document.getElementById('id_min_group_number').value = '';
             } else {
                 document.getElementById('div_num_cutoff').style.display = "none";
                 document.getElementById('div_file_cutoff').style.display = "block";
 
                 document.getElementById('id_confidence').disabled = true;
-                // TODO make empty?
+
                 document.getElementById('id_min_seq_number').disabled = false;
                 document.getElementById('id_min_seq_number').required = true;
+                document.getElementById('id_min_seq_number').value = 50;
 
                 document.getElementById('id_min_group_number').disabled = false;
                 document.getElementById('id_min_group_number').required = true;
+                document.getElementById('id_min_group_number').value = 5;
             }
             for (let i = 0; i < cutoff_inputs.length; i++) {
                 cutoff_inputs[i].required = !cutoff_inputs[i].required

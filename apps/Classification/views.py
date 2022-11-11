@@ -5,6 +5,7 @@ from celery.result import AsyncResult
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 import os
+from apps.Cutoff.views import retrieve_input
 
 
 def redirect_classification(self):
@@ -62,10 +63,10 @@ def classification_results_page(request):
 
         # min_probability = request.POST['min_probability']
         min_alignment_length = request.POST['min_alignment_length']
-        confidence = request.POST['confidence']
-        min_group_number = request.POST['min_group_number']
-        min_seq_number = request.POST['min_seq_number']
-        rank = request.POST['rank']
+        confidence = retrieve_input('confidence', request.POST)
+        min_group_number = retrieve_input('min_group_number', request.POST)
+        min_seq_number = retrieve_input('min_seq_number', request.POST)
+        rank = retrieve_input('rank', request.POST)
         # max_seq_number = request.POST['max_seq_number']
 
         task = classify_blast.delay(input_sequences_path, reference_path,

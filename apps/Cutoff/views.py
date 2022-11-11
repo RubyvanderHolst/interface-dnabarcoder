@@ -37,9 +37,10 @@ def cutoff_results_page(request):
             sim_file_path = os.path.join(input_dir, sim_file.name)
         min_alignment_length = request.POST['min_alignment_length']
         rank = request.POST['rank']
-        higher_rank = None
-        if 'higher_rank' in request.POST:
-            higher_rank = request.POST['higher_rank']
+        higher_rank = retrieve_input('higher_rank', request.POST)
+        # higher_rank = None
+        # if 'higher_rank' in request.POST:
+        #     higher_rank = request.POST['higher_rank']
         starting_threshold = request.POST['starting_threshold']
         end_threshold = request.POST['end_threshold']
         step = request.POST['step']
@@ -47,10 +48,9 @@ def cutoff_results_page(request):
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
 
+        threshold = None
         if 'remove_comp' in request.POST:
             threshold = request.POST['cutoff_remove']
-        else:
-            threshold = None
 
         task = calculate_cutoff.delay(dnabarcoder_path, input_file_path,
                              sim_file_path, min_alignment_length, rank,
@@ -66,6 +66,14 @@ def cutoff_results_page(request):
             'media_dir': 'cutoff',
             'task_id': task_id,
             })
+
+
+def retrieve_input(post_key, request_POST):
+    if post_key in request_POST:
+        return request_POST[post_key]
+    else:
+        return None
+
 
 def load_progress(request, task_id):
     result = AsyncResult(task_id)
