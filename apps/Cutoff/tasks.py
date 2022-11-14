@@ -9,35 +9,30 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
                      min_seq_number, max_seq_number, threshold, prefix,
                      output_dir):
 
-    rem_comp_1 = "no"
-    if threshold == "1":
-        rem_comp_1 = "yes"
-    elif threshold is not None:
+    if threshold is not None:
         remove_complexes(dnabarcoder_path, input_file_path, threshold,
-                         min_alignment_length, rank, output_dir,
-                         sim_file_path)
-
+                         min_alignment_length, rank, output_dir, sim_file_path)
         input_file_path = os.path.join(output_dir,
                                        input_file_path.split('/')[-1].replace('fasta', 'diff.fasta'))
-        # input_file_path = output_dir + "/" + input_file_path.split('/')[-1].\
-        #     replace('fasta', 'diff.fasta')
 
     command = f"python {dnabarcoder_path} " \
               f"predict " \
               f"--input {input_file_path} " \
-              f"--simfilename {sim_file_path} " \
               f"--minalignmentlength {min_alignment_length} " \
               f"-rank {rank} " \
-              f"-higherrank {higher_rank} " \
               f"--startingthreshold {starting_threshold} " \
               f"--endthreshold {end_threshold} " \
               f"--step {step} " \
               f"-mingroupno {min_group_number} " \
               f"-minseqno {min_seq_number} " \
               f"-maxseqno {max_seq_number} " \
-              f"-removecomplexes {rem_comp_1} " \
               f"-prefix {prefix} " \
               f"--out {output_dir} "
+
+    if higher_rank is not None:
+        command += f"-higherrank {higher_rank} "
+    if sim_file_path is not None:
+        command += f"--simfilename {sim_file_path} "
 
     os.system(command)
 
