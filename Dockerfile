@@ -46,7 +46,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 #RUN rm 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
 #ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
 
-# Downloads version 2.11.0 (two version behind newest)
+# Downloads version 2.11.0 (two version behind newest) (on 14-11-22)
 # (wget download doesn't save after build)
 RUN apt-get install -y ncbi-blast+
 

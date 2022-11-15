@@ -1,6 +1,6 @@
 export {get_data}
 
-function get_data(task_id, media_dir, bool_show_image) {
+function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
           $.ajax({
                url: task_id,
                type: "GET",
@@ -12,7 +12,11 @@ function get_data(task_id, media_dir, bool_show_image) {
                         document.getElementById('data-box').classList.remove('hidden');
 
                          // Create html for table files
+                        let has_similar_file = false;
                          for (const [file_name, file_size] of Object.entries(data.files)) {
+                             if (bool_show_complex && file_name.endsWith('.similar')){
+                                 has_similar_file = true
+                             }
                               let tr = "<tr>";
                               tr += `<td>
                                         ${file_name}
@@ -60,9 +64,14 @@ function get_data(task_id, media_dir, bool_show_image) {
                             }
                         }
 
+                        // Create html for same complexes
+                        if (bool_show_complex && has_similar_file) {
+
+                        }
+                    // data.state !== 'SUCCESS'
                     } else {
                          setTimeout(function(){
-                              get_data(task_id, media_dir, bool_show_image);
+                              get_data(task_id, media_dir, bool_show_image, bool_show_complex);
                               }, 1000) // Wait 1 second until reload
                     }
                     },
@@ -71,7 +80,7 @@ function get_data(task_id, media_dir, bool_show_image) {
                     console.log('error', error)
                     document.getElementById('data-box').innerHTML = 'An error has occurred'
                     setTimeout(function(){
-                         get_data(task_id, media_dir, bool_show_image);
+                         get_data(task_id, media_dir, bool_show_image, bool_show_complex);
                          }, 1000) // Wait 1 seconds
                     }
                })

@@ -1,4 +1,6 @@
 from celery import shared_task
+import pandas as pd
+from Bio import SeqIO
 import os
 
 
@@ -9,11 +11,13 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
                      min_seq_number, max_seq_number, threshold, prefix,
                      output_dir):
 
+    dict_similar = None
     if threshold is not None:
         remove_complexes(dnabarcoder_path, input_file_path, threshold,
                          min_alignment_length, rank, output_dir, sim_file_path)
         input_file_path = os.path.join(output_dir,
                                        input_file_path.split('/')[-1].replace('fasta', 'diff.fasta'))
+        dict_similar = get_removed_complexes(prefix, output_dir)
 
     command = f"python {dnabarcoder_path} " \
               f"predict " \
@@ -35,6 +39,9 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
         command += f"--simfilename {sim_file_path} "
 
     os.system(command)
+    for key in dict_similar:
+        print(f"{key}: {len(dict_similar[key]['representing'])}, {len(dict_similar[key]['removed'])}")
+    # print(dict_similar)
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
@@ -59,6 +66,43 @@ def remove_complexes(dnabarcoder_path, input_file_path, threshold,
     os.system("cd /home/app/ && "
               "rm db.n*")
 
+
+def get_removed_complexes(prefix, output_dir):
+    # return dict: {num_cluster: {'representing': [list of id's],
+    #                             'removed': [list of id's]}}
+    similar_file = None
+    diff_fasta_file = None
+    for file_name in os.listdir(output_dir):
+        if file_name.endswith('.similar'):
+            similar_file = os.path.join(output_dir, prefix + '.similar')
+        elif file_name.endswith('.diff.fasta'):
+            diff_fasta_file = os.path.join(output_dir, prefix + '.diff.fasta')
+    data_similar = pd.read_csv(similar_file, sep='\t')
+    df_similar = pd.DataFrame(data_similar)
+
+    diff_fasta = SeqIO.parse(open(diff_fasta_file), 'fasta')
+    ids_in_fasta = [fasta.id for fasta in diff_fasta]
+
+    dict_similar = {}
+    for index, row in df_similar.iterrows():
+        cluster = row['ClusterID']
+        full_id = row['SequenceID']
+        simple_id = full_id.split(' ')[0]
+        if cluster not in dict_similar.keys():
+            dict_similar[cluster] = {'representing': [],
+                                     'removed': []}
+        if simple_id in ids_in_fasta:
+            dict_similar[cluster]['representing'].append(full_id)
+        else:
+            dict_similar[cluster]['removed'].append(full_id)
+
+    final_dict_similar = {}
+    for cluster in dict_similar.keys():
+        if len(dict_similar[cluster]['removed']) != 0:
+            final_dict_similar[cluster] = dict_similar[cluster]
+
+    return final_dict_similar
+    
 
 def get_file_sizes(dir_path):
     # Get the sizes of all files in a directory
