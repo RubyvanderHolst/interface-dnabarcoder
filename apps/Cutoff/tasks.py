@@ -39,13 +39,12 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
         command += f"--simfilename {sim_file_path} "
 
     os.system(command)
-    for key in dict_similar:
-        print(f"{key}: {len(dict_similar[key]['representing'])}, {len(dict_similar[key]['removed'])}")
-    # print(dict_similar)
+    # for key in dict_similar:
+    #     print(f"{key}: {len(dict_similar[key]['representing'])}, {len(dict_similar[key]['removed'])}")
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
-    return dict_files, dict_images
+    return dict_files, dict_images, dict_similar
 
 
 def remove_complexes(dnabarcoder_path, input_file_path, threshold,
@@ -87,15 +86,17 @@ def get_removed_complexes(prefix, output_dir):
     for index, row in df_similar.iterrows():
         cluster = row['ClusterID']
         full_id = row['SequenceID']
+        classification = row['Classification']
         simple_id = full_id.split(' ')[0]
         if cluster not in dict_similar.keys():
             dict_similar[cluster] = {'representing': [],
                                      'removed': []}
         if simple_id in ids_in_fasta:
-            dict_similar[cluster]['representing'].append(full_id)
+            dict_similar[cluster]['representing'].append(f"{simple_id} {classification}")
         else:
-            dict_similar[cluster]['removed'].append(full_id)
+            dict_similar[cluster]['removed'].append(f"{simple_id} {classification}")
 
+    # Remove clusters with no removed sequences
     final_dict_similar = {}
     for cluster in dict_similar.keys():
         if len(dict_similar[cluster]['removed']) != 0:

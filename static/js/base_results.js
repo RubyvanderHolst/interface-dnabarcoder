@@ -12,11 +12,7 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                         document.getElementById('data-box').classList.remove('hidden');
 
                          // Create html for table files
-                        let has_similar_file = false;
                          for (const [file_name, file_size] of Object.entries(data.files)) {
-                             if (bool_show_complex && file_name.endsWith('.similar')){
-                                 has_similar_file = true
-                             }
                               let tr = "<tr>";
                               tr += `<td>
                                         ${file_name}
@@ -31,7 +27,7 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                                             </a>
                                         </button>
                                      </td></tr>`
-                             document.getElementById('tbody-base').innerHTML += tr;
+                             document.getElementById('tbody_files').innerHTML += tr;
                          }
 
                         // Create html for images
@@ -65,9 +61,56 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                         }
 
                         // Create html for same complexes
-                        if (bool_show_complex && has_similar_file) {
+                        if (bool_show_complex) {
+                            document.getElementById('complexes_div').innerHTML = `<h4>Removed similar sequences</h4>`
+                            let list_complexes =  Object.entries(data.similar)
+                            for (const [cluster, obj_ids] of list_complexes) {
+                                let html_table =
+                                    `
+                                    <h5>Cluster ${cluster}</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-success w-50p" scope="col">Preserved sequences</th>
+                                                <th class="table-danger w-50p" scope="col">Removed sequences</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                    `
+
+                                const array_representing = obj_ids['representing']
+                                const array_removed = obj_ids['removed']
+                                const max_len = Math.max(array_representing.length, array_removed.length)
+                                for (let row=0; row<max_len; row++) {
+                                    html_table += `<tr>`
+                                    if (row < array_representing.length) {
+                                        html_table +=
+                                            `
+                                            <td>
+                                                ${array_representing[row]}
+                                            </td>
+                                            `
+                                    } else {
+                                        html_table += `<td></td>`
+                                    }
+                                    if (row < array_removed.length) {
+                                        html_table +=
+                                            `
+                                            <td>
+                                                ${array_removed[row]}
+                                            </td>
+                                            `
+                                    } else {
+                                        html_table += '<td></td>'
+                                    }
+                                    html_table += `</tr>`
+                                }
+                                html_table += '</tbody></table>'
+                                document.getElementById('complexes_div').innerHTML += html_table;
+                            }
 
                         }
+
                     // data.state !== 'SUCCESS'
                     } else {
                          setTimeout(function(){
