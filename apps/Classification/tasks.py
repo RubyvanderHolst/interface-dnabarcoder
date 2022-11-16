@@ -1,9 +1,10 @@
+from apps.Cutoff.tasks import bytes_to_larger
+from django.conf import settings
 from celery import shared_task
 import os
-import sys
-if sys.version_info[0] >= 3:
-   unicode = str
-from apps.Cutoff.tasks import bytes_to_larger
+
+base_dir = settings.BASE_DIR
+dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
 
 
 @shared_task
@@ -13,8 +14,8 @@ def classify_blast(input_sequences_path, reference_path,
                    min_seq_number, rank, output_dir):
     # calculate best matches
     prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
-                        os.path.basename(reference_path).split('.')[0]
-    command_search = f"python /home/tool/dnabarcoder.py search " \
+             os.path.basename(reference_path).split('.')[0]
+    command_search = f"python {dnabarcoder_path} search " \
                      f"--input {input_sequences_path} " \
                      f"--reference {reference_path} " \
                      f"--minalignmentlength {min_alignment_length} " \
@@ -23,7 +24,7 @@ def classify_blast(input_sequences_path, reference_path,
 
     # classify based on the best matches
     classify_input = os.path.join(output_dir, prefix + '_BLAST.bestmatch')
-    command_classify = f"python /home/tool/dnabarcoder.py classify " \
+    command_classify = f"python {dnabarcoder_path} classify " \
                        f"--input {classify_input} " \
                        f"--reference {reference_path} " \
                        f"-prefix {prefix} " \
@@ -60,11 +61,7 @@ def get_file_sizes(dir_path):
     dict_files = {}
     for name in file_list:
         if name[0] != '.':
-            size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
+            size = bytes_to_larger(
+                os.stat(os.path.join(dir_path, name)).st_size)
             dict_files[name] = size
     return dict_files
-
-
-def convert_to_unicode():
-    pass
-
