@@ -1,5 +1,8 @@
 from celery import shared_task
 import os
+import sys
+if sys.version_info[0] >= 3:
+   unicode = str
 from apps.Cutoff.tasks import bytes_to_larger
 
 
@@ -60,3 +63,8 @@ def get_file_sizes(dir_path):
             size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
             dict_files[name] = size
     return dict_files
+
+
+def convert_to_unicode():
+    pass
+

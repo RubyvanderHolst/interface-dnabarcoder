@@ -77,15 +77,17 @@ def retrieve_input(post_key, request_POST):
 
 def load_progress(request, task_id):
     result = AsyncResult(task_id)
+    files = None
+    images = None
+    similar = None
     if result.state == 'SUCCESS':
         files  =  result.info[0]
         images = result.info[1]
-    else:
-        files = None
-        images = None
+        similar = result.info[2]
     return JsonResponse({
         'task_id': task_id,
         'state': result.state,
         'files': files,
         'images': images,
+        'similar': similar,
     })
