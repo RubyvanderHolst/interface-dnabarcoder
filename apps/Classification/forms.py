@@ -1,6 +1,11 @@
 from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.conf import settings
 import os
+
+
+base_dir = settings.BASE_DIR
+
 
 class ClassificationForm(forms.Form):
     file_input_sequences = forms.FileField(
@@ -30,7 +35,7 @@ TCTTTTAAATTTGATCTGAAATCAGG
         })
     )
 
-    path = "/home/app/reference_files"
+    path = os.path.join(base_dir, "reference_files")
     list_files = os.listdir(path)
     reference_choices = [('', 'Use own file')]
     for file in list_files:

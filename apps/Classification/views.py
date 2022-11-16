@@ -1,11 +1,17 @@
-from django.shortcuts import render, redirect
 from .forms import ClassificationForm
 from .tasks import classify_blast
-from celery.result import AsyncResult
+from apps.Cutoff.views import retrieve_input
+
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.conf import settings
+
+from celery.result import AsyncResult
 import os
-from apps.Cutoff.views import retrieve_input
+
+
+media_root = settings.MEDIA_ROOT
 
 
 def redirect_classification(self):
@@ -22,11 +28,11 @@ def classification_page(request):
 def classification_results_page(request):
     if request.method == 'POST':
         # Retrieve data from request
-        input_dir = "media/uploaded"
+        input_dir = os.path.join(media_root, "uploaded")
         fs = FileSystemStorage(input_dir)
-        output_dir = "media/classification"
-        os.system(f"rm /home/app/{input_dir}/* &&"
-                  f"rm /home/app/{output_dir}/*")
+        output_dir = os.path.join(media_root, "classification")
+        os.system(f"rm {input_dir}/* &&"
+                  f"rm {output_dir}/*")
 
         if 'file_input_sequences' in request.FILES:
             file_input_sequences = request.FILES['file_input_sequences']

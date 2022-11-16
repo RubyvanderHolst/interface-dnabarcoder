@@ -1,10 +1,16 @@
-from django.shortcuts import render, redirect
 from .forms import CutoffForm
 from .tasks import calculate_cutoff
-from celery.result import AsyncResult
+
+from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from django.conf import settings
+
+from celery.result import AsyncResult
 import os
+
+
+media_root = settings.MEDIA_ROOT
 
 
 def cutoff_page(request):
@@ -17,14 +23,12 @@ def cutoff_page(request):
 def cutoff_results_page(request):
     if request.method == 'POST':
         # Retrieve data from request
-        input_dir = "media/uploaded"
+        input_dir = os.path.join(media_root, "uploaded")
         fs = FileSystemStorage(input_dir)
-        output_dir = "media/cutoff"
-        os.system(f"rm /home/app/{input_dir}/* &&"
-                  f"rm /home/app/{output_dir}/*")
+        output_dir = os.path.join(media_root, "cutoff")
+        os.system(f"rm {input_dir}/* &&"
+                  f"rm {output_dir}/*")
 
-
-        dnabarcoder_path = "/home/tool/dnabarcoder.py"
         input_file = request.FILES['input_file']
         fs.save(input_file.name, input_file)
         input_file_path = os.path.join(input_dir, input_file.name)
@@ -38,9 +42,6 @@ def cutoff_results_page(request):
         min_alignment_length = request.POST['min_alignment_length']
         rank = request.POST['rank']
         higher_rank = retrieve_input('higher_rank', request.POST)
-        # higher_rank = None
-        # if 'higher_rank' in request.POST:
-        #     higher_rank = request.POST['higher_rank']
         starting_threshold = request.POST['starting_threshold']
         end_threshold = request.POST['end_threshold']
         step = request.POST['step']
@@ -52,7 +53,7 @@ def cutoff_results_page(request):
         if 'remove_comp' in request.POST:
             threshold = request.POST['cutoff_remove']
 
-        task = calculate_cutoff.delay(dnabarcoder_path, input_file_path,
+        task = calculate_cutoff.delay(input_file_path,
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
                              step, min_group_number, min_seq_number,

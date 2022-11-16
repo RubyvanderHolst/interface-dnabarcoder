@@ -1,11 +1,17 @@
+from django.conf import settings
+
 from celery import shared_task
 import pandas as pd
 from Bio import SeqIO
 import os
 
 
+base_dir = settings.BASE_DIR
+dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
+
+
 @shared_task
-def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
+def calculate_cutoff(input_file_path, sim_file_path,
                      min_alignment_length, rank, higher_rank,
                      starting_threshold, end_threshold, step, min_group_number,
                      min_seq_number, max_seq_number, threshold, prefix,
@@ -39,8 +45,6 @@ def calculate_cutoff(dnabarcoder_path, input_file_path, sim_file_path,
         command += f"--simfilename {sim_file_path} "
 
     os.system(command)
-    # for key in dict_similar:
-    #     print(f"{key}: {len(dict_similar[key]['representing'])}, {len(dict_similar[key]['removed'])}")
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
@@ -62,7 +66,7 @@ def remove_complexes(dnabarcoder_path, input_file_path, threshold,
 
     os.system(command)
 
-    os.system("cd /home/app/ && "
+    os.system(f"cd {base_dir} && "
               "rm db.n*")
 
 
