@@ -1,4 +1,3 @@
-//TODO change display change to class change
 document.addEventListener('DOMContentLoaded', function() {
     // empty file or textarea input when other is filled in (seq input)
     let seq_file_input = document.getElementById('id_file_input_sequences')
@@ -14,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let reference_dropdown = document.getElementById('id_reference_options')
     reference_dropdown.addEventListener('change', function() {
         if (reference_dropdown.value === "") {
-            document.getElementById('div_file_input_reference').style.display = "block";
+            document.getElementById('div_file_input_reference').classList.remove('hidden');
             document.getElementById('id_input_reference').required = true;
         } else {
-            document.getElementById('div_file_input_reference').style.display = "none";
+            document.getElementById('div_file_input_reference').classList.add('hidden');
             document.getElementById('id_input_reference').required = false;
             document.getElementById('id_input_reference').value = '';
         }
@@ -35,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
         radiobutton.addEventListener('click', function () {
             let button_checked = document.querySelector('input[name=cutoff_type]:checked').value;
             if (button_checked === "global") {
-                document.getElementById('div_num_cutoff').style.display = "block";
-                document.getElementById('div_file_cutoff').style.display = "none";
+                document.getElementById('div_num_cutoff').classList.remove('hidden');
+                document.getElementById('div_file_cutoff').classList.add('hidden');
                 document.getElementById('id_file_cutoff').value = '';
 
                 document.getElementById('id_confidence').disabled = false;
@@ -49,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('id_min_group_number').required = false;
                 document.getElementById('id_min_group_number').value = '';
             } else {
-                document.getElementById('div_num_cutoff').style.display = "none";
-                document.getElementById('div_file_cutoff').style.display = "block";
+                document.getElementById('div_num_cutoff').classList.add('hidden');
+                document.getElementById('div_file_cutoff').classList.remove('hidden');
 
                 document.getElementById('id_confidence').disabled = true;
 
