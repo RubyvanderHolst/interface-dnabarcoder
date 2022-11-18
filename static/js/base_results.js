@@ -61,15 +61,23 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                         }
 
                         // Create html for same complexes
-                        if (bool_show_complex) {
+                        if (bool_show_complex && data.similar) {
                             document.getElementById('complexes_div').innerHTML = `<h4>Removed similar sequences</h4>`
                             let list_complexes =  Object.entries(data.similar)
+                            console.log(Object.entries(data.similar).length, (list_complexes.length === 0))
+                            if (list_complexes.length === 0) {
+                                document.getElementById('complexes_div').innerHTML +=
+                                    `<div class="alert alert-secondary" role="alert">
+                                        No similar sequences were found
+                                    </div>`
+                            }
+
                             for (const [cluster, obj_ids] of list_complexes) {
                                 let html_table =
                                     `
-                                    <h5>Cluster ${cluster}</h5>
                                     <table class="table table-bordered">
                                         <thead>
+                                            <tr><th class="text-center table-dark" colspan="2">Cluster ${cluster}</th></tr>
                                             <tr>
                                                 <th class="table-success w-50p" scope="col">Preserved sequences</th>
                                                 <th class="table-danger w-50p" scope="col">Removed sequences</th>
