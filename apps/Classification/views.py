@@ -91,7 +91,6 @@ def classification_results_page(request):
 def load_progress(request, task_id):
     result = AsyncResult(task_id)
     if result.state == 'SUCCESS':
-        print(result.info)
         files = result.info
     else:
         files = None
