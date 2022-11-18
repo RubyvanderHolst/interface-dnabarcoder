@@ -1,6 +1,6 @@
 export {get_data}
 
-function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
+function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time = 0) {
           $.ajax({
                url: task_id,
                type: "GET",
@@ -31,9 +31,26 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                             show_similar_seq(data.similar)
                         }
                     } else if (data.state === 'PENDING') {
-                         setTimeout(function(){
-                              get_data(task_id, media_dir, bool_show_image, bool_show_complex);
-                              }, 1000) // Wait 1 second until reload
+                        let reload_time = 1
+                        let reload_text = 'millisecond'
+                        if (loading_time < 10 * 10**3) {
+                            reload_time = 10**3
+                            reload_text = 'second'
+                        } else if (loading_time < 60 * 10**3) {
+                            reload_time = 10 * 10**3
+                            reload_text = '10 seconds'
+                        } else if (loading_time < 5*60 * 10**3) {
+                            reload_time = 60 * 10**3
+                            reload_text = 'minute'
+                        } else {
+                            reload_time = 5 * 60 * 10**3
+                            reload_text = '5 minutes'
+                        }
+
+                        document.getElementById('reload_time').innerText = reload_text
+                        setTimeout(function(){
+                            get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time += reload_time);
+                        }, reload_time)
                     }
                },
                error: (error) => {
