@@ -81,14 +81,17 @@ def load_progress(request, task_id):
     files = None
     images = None
     similar = None
+    has_results = None
     if result.state == 'SUCCESS':
         files  =  result.info[0]
         images = result.info[1]
         similar = result.info[2]
+        has_results = result.info[3]
     return JsonResponse({
         'task_id': task_id,
         'state': result.state,
         'files': files,
         'images': images,
         'similar': similar,
+        'has_results': has_results,
     })

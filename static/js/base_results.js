@@ -12,9 +12,25 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                         document.getElementById('data-box').classList.remove('hidden');
 
                          // Create html for table files
-                         for (const [file_name, file_size] of Object.entries(data.files)) {
-                              let tr = "<tr>";
-                              tr += `<td>
+                        if (Object.entries(data.files).length !== 0 ){
+                            document.getElementById('data-box').innerHTML +=
+                                `
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="table-success">
+                                            <th scope="col">File name</th>
+                                            <th scope="col">File size</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_files">
+                                    </tbody>
+                                </table>
+                                `
+                        }
+                        for (const [file_name, file_size] of Object.entries(data.files)) {
+                            let tr = "<tr>";
+                            tr += `  <td>
                                         ${file_name}
                                      </td>
                                      <td>
@@ -27,18 +43,20 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                                             </a>
                                         </button>
                                      </td></tr>`
-                             document.getElementById('tbody_files').innerHTML += tr;
-                         }
+                            document.getElementById('tbody_files').innerHTML += tr;
+                        }
+
+                        if (!data.has_results) {
+                            document.getElementById('div_alert').innerHTML =
+                                    `<div class="alert alert-danger" role="alert">
+                                        No results could be generated, please change the settings!
+                                    </div>`
+                        }
+
 
                         // Create html for images
                         if (bool_show_image) {
                             let list_images = Object.entries(data.images)
-                            if (list_images.length === 0){
-                                document.getElementById('images_div').innerHTML =
-                                    `<div class="alert alert-danger" role="alert">
-                                        No results could be generated, please change the settings!
-                                    </div>`
-                            } else {
                                 for (const [image_name, image_size] of list_images) {
                                     let image_card =
                                         `<div class="card mx-auto w-50">
@@ -57,7 +75,6 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex) {
                                         </div>`
                                     document.getElementById('images_div').innerHTML += image_card
                                 }
-                            }
                         }
 
                         // Create html for same complexes
