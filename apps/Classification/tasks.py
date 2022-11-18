@@ -1,5 +1,8 @@
 from apps.Cutoff.tasks import bytes_to_larger
+from apps.Cutoff.tasks import check_results_generated
+
 from django.conf import settings
+
 from celery import shared_task
 import os
 
@@ -51,7 +54,21 @@ def classify_blast(input_sequences_path, reference_path,
     # Remove blast db files
     os.system(f"cd {'/'.join(reference_path.split('/')[:-1])} && "
               f"find -type f -name '*.blastdb.*' -delete")
-    return get_file_sizes(output_dir)
+
+    dict_files = get_file_sizes(output_dir)
+
+    result_file = None
+    for file in dict_files.keys():
+        if file.endswith('.classification'):
+            result_file = file
+
+    if result_file is not None:
+        has_results = check_results_generated(os.path.join(output_dir,
+                                                           result_file))
+    else:
+        has_results = False
+
+    return dict_files, has_results
 
 
 def get_file_sizes(dir_path):

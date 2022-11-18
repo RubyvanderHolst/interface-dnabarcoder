@@ -90,12 +90,14 @@ def classification_results_page(request):
 
 def load_progress(request, task_id):
     result = AsyncResult(task_id)
+    files = None
+    has_results = None
     if result.state == 'SUCCESS':
-        files = result.info
-    else:
-        files = None
+        files = result.info[0]
+        has_results = result.info[1]
     return JsonResponse({
         'task_id': task_id,
         'state': result.state,
         'files': files,
+        'has_results': has_results,
     })

@@ -48,7 +48,17 @@ def calculate_cutoff(input_file_path, sim_file_path,
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
-    return dict_files, dict_images, dict_similar
+    result_file = None
+    for file in dict_files.keys():
+        if file.endswith('.cutoffs.json.txt'):
+            result_file = file
+    if result_file is not None:
+        has_results = check_results_generated(os.path.join(output_dir,
+                                                           result_file))
+    else:
+        has_results = False
+
+    return dict_files, dict_images, dict_similar, has_results
 
 
 def remove_complexes(dnabarcoder_path, input_file_path, threshold,
@@ -133,3 +143,13 @@ def bytes_to_larger(size_b):
             return f"{int(size_b / x)} {size}"
         else:
             x *= 10**-3
+
+
+def check_results_generated(result_file):
+    file = open(result_file, 'r')
+    has_results = True
+    print()
+    if len(file.readlines()) < 2:
+        has_results = False
+    file.close()
+    return has_results
