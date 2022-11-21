@@ -85,18 +85,17 @@ function show_file_table (files, media_dir) {
         </table>
         `
     for (const [file_name, file_size] of Object.entries(files)) {
+        console.log(file_name)
         let tr = "<tr>";
         tr +=
             `
             <td>${file_name}</td>
             <td>${file_size}</td>
             <td>
-                <button type='button' class='btn btn-success w-100'>
-                    <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
-                        Download
-                        </a>
-                    </button>
-                </td></tr>`
+                <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
+                    <button type='button' class='btn btn-success w-100'>Download</button>
+                </a>
+            </td></tr>`
             document.getElementById('tbody_files').innerHTML += tr;
     }
 }
@@ -110,13 +109,9 @@ function show_images(images, media_dir) {
                 <h5 class="card-header text-center">${image_name} (${image_size})</h5>
                 <div class="card-body text-center">
                     <img src="/media/${media_dir}/${image_name}" class="img-fluid">
-                        <button type="button" class="btn btn-success">
-                            <a href="/media/${media_dir}/${image_name}"
-                                class="link-light text-decoration-none"
-                                download>
-                                Download
-                            </a>
-                            </button>
+                     <a href="/media/${media_dir}/${image_name}" class="link-light text-decoration-none" download>
+                        <button type="button" class="btn btn-success">Download</button>
+                     </a>
                 </div>
             </div>
             `
