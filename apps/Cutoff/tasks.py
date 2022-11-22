@@ -15,7 +15,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
                      min_alignment_length, rank, higher_rank,
                      starting_threshold, end_threshold, step, min_group_number,
                      min_seq_number, max_seq_number, threshold, prefix,
-                     output_dir):
+                     output_dir, input_dir):
 
     dict_similar = None
     if threshold is not None:
@@ -57,6 +57,8 @@ def calculate_cutoff(input_file_path, sim_file_path,
                                                            result_file))
     else:
         has_results = False
+
+    os.system(f'rm {os.path.join(input_dir, "*")}')
 
     return dict_files, dict_images, dict_similar, has_results
 

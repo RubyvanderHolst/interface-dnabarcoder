@@ -79,7 +79,7 @@ def classification_results_page(request):
                                     num_cutoff, file_cutoff_path,
                                     min_alignment_length, confidence,
                                     min_group_number, min_seq_number, rank,
-                                    output_dir)
+                                    output_dir, input_dir)
         task_id = task.id
 
         return render(request, 'classification_results.html', {

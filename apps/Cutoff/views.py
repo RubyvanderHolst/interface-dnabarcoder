@@ -57,7 +57,7 @@ def cutoff_results_page(request):
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
                              step, min_group_number, min_seq_number,
-                             max_seq_number, threshold, prefix, output_dir)
+                             max_seq_number, threshold, prefix, output_dir, input_dir)
 
         task_id = task.id
 

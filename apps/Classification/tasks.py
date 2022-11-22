@@ -14,7 +14,7 @@ dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n
 def classify_blast(input_sequences_path, reference_path,
                    num_cutoff, file_cutoff_path,
                    min_alignment_length, confidence, min_group_number,
-                   min_seq_number, rank, output_dir):
+                   min_seq_number, rank, output_dir, input_dir):
     # calculate best matches
     prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
              os.path.basename(reference_path).split('.')[0]
@@ -67,6 +67,8 @@ def classify_blast(input_sequences_path, reference_path,
                                                            result_file))
     else:
         has_results = False
+
+    os.system(f'rm {os.path.join(input_dir, "*")}')
 
     return dict_files, has_results
 
