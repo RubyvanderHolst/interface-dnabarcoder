@@ -26,8 +26,7 @@ def cutoff_results_page(request):
         input_dir = os.path.join(media_root, "uploaded")
         fs = FileSystemStorage(input_dir)
         output_dir = os.path.join(media_root, "cutoff")
-        os.system(f"rm {input_dir}/* &&"
-                  f"rm {output_dir}/*")
+        os.system(f"rm {output_dir}/*")
 
         input_file = request.FILES['input_file']
         fs.save(input_file.name, input_file)

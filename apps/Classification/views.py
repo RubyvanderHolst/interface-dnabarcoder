@@ -31,8 +31,7 @@ def classification_results_page(request):
         input_dir = os.path.join(media_root, "uploaded")
         fs = FileSystemStorage(input_dir)
         output_dir = os.path.join(media_root, "classification")
-        os.system(f"rm {input_dir}/* &&"
-                  f"rm {output_dir}/*")
+        os.system(f"rm {output_dir}/*")
 
         if 'file_input_sequences' in request.FILES:
             file_input_sequences = request.FILES['file_input_sequences']

@@ -1,8 +1,8 @@
 Django==4.1.2
-numpy>=1.16.2,<1.23.4
-scipy>=1.2.1,<1.9.3
-scikit-learn>=1.0.2,<1.1.2
-matplotlib>=3.5.3,<3.6.1
+numpy==1.23.5
+scipy==1.9.3
+scikit-learn==1.1.2
+matplotlib==3.6.1
 #keras==2.10.0
 #Theano==1.0.5
 Biopython==1.79
