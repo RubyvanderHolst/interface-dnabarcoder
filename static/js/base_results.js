@@ -19,7 +19,9 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loadin
                 // Show alert if no results were generated
                 if (!data.has_results) {
                     document.getElementById('div_alert').innerHTML =
-                        `No results could be generated, please change the settings!`
+                        `<div class="alert alert-danger" role="alert">
+                            No results could be generated, please change the settings!
+                        </div>`
                 }
                 // Create html for table files
                 if (Object.entries(data.files).length !== 0 ) {
@@ -67,7 +69,9 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loadin
             document.getElementById('data-box').classList.remove('hidden');
 
             document.getElementById('div_alert').innerHTML =
-                `An error has occurred!`
+                 `<div class="alert alert-danger" role="alert">
+                    An error has occurred!
+                 </div>`
         }
     })
 }
