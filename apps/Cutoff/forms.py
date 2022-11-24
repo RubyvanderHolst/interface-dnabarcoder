@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+# Form for cutoff input
 class CutoffForm(forms.Form):
     input_file = forms.FileField(
         label='Select a FASTA file',

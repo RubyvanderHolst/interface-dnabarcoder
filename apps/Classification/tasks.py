@@ -15,6 +15,8 @@ def classify_blast(input_sequences_path, reference_path,
                    num_cutoff, file_cutoff_path,
                    min_alignment_length, confidence, min_group_number,
                    min_seq_number, rank, output_dir, input_dir):
+    # Celery task for classification with BLAST
+
     # calculate best matches
     prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
              os.path.basename(reference_path).split('.')[0]
@@ -57,11 +59,11 @@ def classify_blast(input_sequences_path, reference_path,
 
     dict_files = get_file_sizes(output_dir)
 
+    # Check if results file has result
     result_file = None
     for file in dict_files.keys():
         if file.endswith('.classification'):
             result_file = file
-
     if result_file is not None:
         has_results = check_results_generated(os.path.join(output_dir,
                                                            result_file))

@@ -14,6 +14,7 @@ media_root = settings.MEDIA_ROOT
 
 
 def cutoff_page(request):
+    # View for cutoff input page
     form = CutoffForm
     return render(request, 'cutoff.html', {
         'form': form,
@@ -21,6 +22,7 @@ def cutoff_page(request):
 
 
 def cutoff_results_page(request):
+    # View for cutoff results page
     if request.method == 'POST':
         # Retrieve data from request
         input_dir = os.path.join(media_root, "uploaded")
@@ -52,6 +54,7 @@ def cutoff_results_page(request):
         if 'remove_comp' in request.POST:
             threshold = request.POST['cutoff_remove']
 
+        # Start celery task
         task = calculate_cutoff.delay(input_file_path,
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
@@ -60,15 +63,15 @@ def cutoff_results_page(request):
 
         task_id = task.id
 
-    # result = AsyncResult(task_id)
     return render(request, 'cutoff_results.html', {
-            # 'output': result,
             'media_dir': 'cutoff',
             'task_id': task_id,
             })
 
 
 def retrieve_input(post_key, request_POST):
+    # Checks if input exist and returns this
+    # If it does not exist, None is returned
     if post_key in request_POST:
         return request_POST[post_key]
     else:
@@ -76,6 +79,7 @@ def retrieve_input(post_key, request_POST):
 
 
 def load_progress(request, task_id):
+    # Checks state of celery task and returns results if task is done
     result = AsyncResult(task_id)
     files = None
     images = None
