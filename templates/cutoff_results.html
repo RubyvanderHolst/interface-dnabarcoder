@@ -1,3 +1,5 @@
+{# Cutoff results page #}
+
 {% extends 'base_templates/base.html' %}
 
 {% block title %}| Cutoff calculation | Results{% endblock %}
@@ -10,7 +12,9 @@
     </head>
     <div class="container">
         {% include 'base_templates/base_results.html' %}
+        {# Image cards are put here with JS #}
         <div id="images_div"></div>
+        {# Tables of removed sequences are put here with JS #}
         <div id="complexes_div" class="mt-30"></div>
     </div>
 {% endblock %}

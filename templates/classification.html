@@ -1,3 +1,4 @@
+{# Classification input page #}
 {% extends 'base_templates/base.html' %}
 
 {% block title %}| Classification{% endblock %}
@@ -9,11 +10,8 @@
         <script src="{% static 'js/classification.js' %}"></script>
     </head>
 
-{#    Tabs #}
-    {% block container_classification %}
     {% include 'base_templates/base_tabs.html' %}
     {% load crispy_forms_filters %}
-{#    Container #}
     <div class="container">
         <form action="/classification/results" method="post" id="id_form"
               enctype="multipart/form-data" target="_blank">
@@ -103,5 +101,4 @@
         </form>
 
     </div>
-    {% endblock %}
 {% endblock %}

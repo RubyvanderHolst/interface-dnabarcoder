@@ -1,3 +1,5 @@
+{# Cutoff input page #}
+
 {% extends 'base_templates/base.html' %}
 
 {% block title %}| Cutoff prediction{% endblock %}
@@ -8,7 +10,6 @@
         {% load static %}
         <script src="{% static 'js/cutoff.js' %}"></script>
     </head>
-    {% block container_cutoff %}
     {% include 'base_templates/base_tabs.html' %}
     {% load crispy_forms_filters %}
         <div class="container">
@@ -100,6 +101,4 @@
             </div>
         </form>
         </div>
-    {% endblock %}
-
 {% endblock %}

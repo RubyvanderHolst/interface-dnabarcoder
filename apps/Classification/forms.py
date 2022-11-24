@@ -7,6 +7,7 @@ import os
 base_dir = settings.BASE_DIR
 
 
+# Form for classification input
 class ClassificationForm(forms.Form):
     file_input_sequences = forms.FileField(
         label='Select a FASTA file',

@@ -1,4 +1,5 @@
 function switch_home_settings(button) {
+    // Switches between "Home" and "Settings" tab
     if (button.id === "home_button") {
         if (check_settings()){
             button.classList.add("active");
@@ -18,8 +19,8 @@ function switch_home_settings(button) {
     }
 }
 
-// Checks if settings have correct input
 function check_settings(){
+    // Checks if settings have correct input
     let number_inputs = document.querySelectorAll('#div_settings input')
     for (let i = 0; i < number_inputs.length; i++) {
         let correct = number_inputs[i].checkValidity()

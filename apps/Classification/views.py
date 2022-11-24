@@ -15,10 +15,12 @@ media_root = settings.MEDIA_ROOT
 
 
 def redirect_classification(self):
+    # Redirect to classification page
     return redirect('/classification')
 
 
 def classification_page(request):
+    # View for classification input page
     form = ClassificationForm
     return render(request, 'classification.html', {
         'form': form,
@@ -26,6 +28,7 @@ def classification_page(request):
 
 
 def classification_results_page(request):
+    # View for classification results page
     if request.method == 'POST':
         # Retrieve data from request
         input_dir = os.path.join(media_root, "uploaded")
@@ -74,6 +77,7 @@ def classification_results_page(request):
         rank = retrieve_input('rank', request.POST)
         # max_seq_number = request.POST['max_seq_number']
 
+        # start celery task
         task = classify_blast.delay(input_sequences_path, reference_path,
                                     num_cutoff, file_cutoff_path,
                                     min_alignment_length, confidence,
@@ -88,6 +92,7 @@ def classification_results_page(request):
 
 
 def load_progress(request, task_id):
+    # Checks state of celery task and returns results if task is done
     result = AsyncResult(task_id)
     files = None
     has_results = None

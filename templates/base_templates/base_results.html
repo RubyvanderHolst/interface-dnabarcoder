@@ -1,17 +1,23 @@
 {% load static %}
 
+{# Loading screen #}
 <div id="spinner-box" class="text-center">
+    {# Loading animation #}
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
+    {# Status information #}
     <p>
         Task "<span id="task_id">{{ task_id }}</span>" status:
         <span id="task_status"></span>
     </p>
+    {# Reload time information #}
     <p>Status is retrieved every <span id="reload_time"></span></p>
 </div>
 
+{# Results screen #}
 <div id="data-box" class="hidden">
+    {# Div for alert (no results generated) #}
     <div id="div_alert"></div>
 </div>
 

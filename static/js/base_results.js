@@ -1,75 +1,86 @@
 export {get_data}
 
+// This function contains an AJAX function. It calls a URL which equals
+// the task ID. This URL is connected to the view "load_progress", which
+// returns a JsonResponse. This JsonResponse is processed by the AJAX function.
 function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time = 0) {
-          $.ajax({
-               url: task_id,
-               type: "GET",
-               dataType: "json",
-               success: (data) => {
-                    document.getElementById('task_status').innerHTML = data.state
-                    if (data.state === 'SUCCESS'){
-                        document.getElementById('spinner-box').classList.add('hidden');
-                        document.getElementById('data-box').classList.remove('hidden');
+    $.ajax({
+        url: task_id,
+        type: "GET",
+        dataType: "json",
+        // Response generated without error
+        success: (data) => {
+            document.getElementById('task_status').innerHTML = data.state
+            // Task has successfully finished
+            if (data.state === 'SUCCESS'){
+                document.getElementById('spinner-box').classList.add('hidden');
+                document.getElementById('data-box').classList.remove('hidden');
 
-                        // Show alert if no results were generated
-                        if (!data.has_results) {
-                            document.getElementById('div_alert').innerHTML =
-                                    `<div class="alert alert-danger" role="alert">
-                                        No results could be generated, please change the settings!
-                                    </div>`
-                        }
-                        // Create html for table files
-                        if (Object.entries(data.files).length !== 0 ) {
-                            show_file_table(data.files, media_dir)
-                        }
-                        // Create html for images
-                        if (bool_show_image) {
-                            show_images(data.images, media_dir)
-                        }
-                        // Create html for same complexes
-                        if (bool_show_complex && data.similar) {
-                            show_similar_seq(data.similar)
-                        }
-                    } else if (data.state === 'PENDING') {
-                        let reload_time = 1
-                        let reload_text = 'millisecond'
-                        if (loading_time < 10 * 10**3) {
-                            reload_time = 10**3
-                            reload_text = 'second'
-                        } else if (loading_time < 60 * 10**3) {
-                            reload_time = 10 * 10**3
-                            reload_text = '10 seconds'
-                        } else if (loading_time < 5*60 * 10**3) {
-                            reload_time = 60 * 10**3
-                            reload_text = 'minute'
-                        } else {
-                            reload_time = 5 * 60 * 10**3
-                            reload_text = '5 minutes'
-                        }
+                // Show alert if no results were generated
+                if (!data.has_results) {
+                    document.getElementById('div_alert').innerHTML =
+                        `<div class="alert alert-danger" role="alert">
+                            No results could be generated, please change the settings!
+                        </div>`
+                }
+                // Create html for table files
+                if (Object.entries(data.files).length !== 0 ) {
+                    show_file_table(data.files, media_dir)
+                }
+                // Create html for images
+                if (bool_show_image) {
+                    show_images(data.images, media_dir)
+                }
+                // Create html for same complexes
+                if (bool_show_complex && data.similar) {
+                    show_similar_seq(data.similar)
+                }
 
-                        document.getElementById('reload_time').innerText = reload_text
-                        setTimeout(function(){
-                            get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time += reload_time);
-                        }, reload_time)
-                    }
-               },
-               error: (error) => {
-                    console.error('error', error)
+            // Task is still being processed
+            } else if (data.state === 'PENDING') {
+                let reload_time = 1
+                let reload_text = 'millisecond'
+                if (loading_time < 10 * 10**3) {
+                    reload_time = 10**3
+                    reload_text = 'second'
+                } else if (loading_time < 60 * 10**3) {
+                    reload_time = 10 * 10**3
+                    reload_text = '10 seconds'
+                } else if (loading_time < 5*60 * 10**3) {
+                    reload_time = 60 * 10**3
+                    reload_text = 'minute'
+                } else {
+                    reload_time = 5 * 60 * 10**3
+                    reload_text = '5 minutes'
+                }
 
-                    document.getElementById('spinner-box').classList.add('hidden');
-                    document.getElementById('data-box').classList.remove('hidden');
+                // Recall get_data (current AJAX function) after delay
+                document.getElementById('reload_time').innerText = reload_text
+                setTimeout(function(){
+                    get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time += reload_time);
+                    }, reload_time)
+            }
+        },
+        // Response generated with error
+        error: (error) => {
+            console.error('error', error)
 
-                    document.getElementById('data-box').innerHTML =
-                        `
-                        <div class="alert alert-danger" role="alert">
-                            An error has occurred!
-                        </div>
-                        `
-               }
-          })
+            document.getElementById('spinner-box').classList.add('hidden');
+            document.getElementById('data-box').classList.remove('hidden');
+
+            document.getElementById('div_alert').innerHTML =
+                 `<div class="alert alert-danger" role="alert">
+                    An error has occurred!
+                 </div>`
+        }
+    })
 }
 
 function show_file_table (files, media_dir) {
+    // Creates a table of results files
+    // parameters:
+    // - files: Object with format {file_name: file_size}
+    // - media_dir: Directory in media directory where results are stored
     document.getElementById('data-box').innerHTML +=
         `
         <table class="table table-bordered">
@@ -101,6 +112,10 @@ function show_file_table (files, media_dir) {
 }
 
 function show_images(images, media_dir) {
+    // Creates cards with all images in results files
+    // parameters:
+    // - images: Object with format {file_name: file_size}
+    // - media_dir: Directory in media directory where results are stored
     let list_images = Object.entries(images)
     for (const [image_name, image_size] of list_images) {
         let image_card =
@@ -120,6 +135,8 @@ function show_images(images, media_dir) {
 }
 
 function show_similar_seq(similar) {
+    // Creates table of similar sequences and removed sequences
+    // parameter similar: Object with format {cluster_number: ['representing': array_ids, 'removed': array_ids]}
     document.getElementById('complexes_div').innerHTML = `<h4>Removed similar sequences</h4>`
     let list_complexes =  Object.entries(similar)
     if (list_complexes.length === 0) {

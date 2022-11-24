@@ -16,7 +16,9 @@ def calculate_cutoff(input_file_path, sim_file_path,
                      starting_threshold, end_threshold, step, min_group_number,
                      min_seq_number, max_seq_number, threshold, prefix,
                      output_dir, input_dir):
+    # Celery task for cutoff calculation
 
+    # Removal of similar sequences
     dict_similar = None
     if threshold is not None:
         remove_complexes(dnabarcoder_path, input_file_path, threshold,
@@ -39,8 +41,10 @@ def calculate_cutoff(input_file_path, sim_file_path,
               f"-prefix {prefix} " \
               f"--out {output_dir} "
 
+    # Local cutoff calculation
     if higher_rank is not None:
         command += f"-higherrank {higher_rank} "
+    # If user gives similarity matrix
     if sim_file_path is not None:
         command += f"--simfilename {sim_file_path} "
 
@@ -48,10 +52,12 @@ def calculate_cutoff(input_file_path, sim_file_path,
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
+    # Check if results have been generated
     result_file = None
     for file in dict_files.keys():
         if file.endswith('.cutoffs.json.txt'):
             result_file = file
+            break
     if result_file is not None:
         has_results = check_results_generated(os.path.join(output_dir,
                                                            result_file))
@@ -65,6 +71,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
 
 def remove_complexes(dnabarcoder_path, input_file_path, threshold,
                      min_alignment_length, rank, output_dir, sim_file_path):
+    # Removal of similar sequences
     command = f"python {dnabarcoder_path} "\
               f"remove "\
               f"--input {input_file_path} "\
@@ -83,8 +90,9 @@ def remove_complexes(dnabarcoder_path, input_file_path, threshold,
 
 
 def get_removed_complexes(prefix, output_dir):
-    # return dict: {num_cluster: {'representing': [list of id's],
-    #                             'removed': [list of id's]}}
+    # Makes a dictionary of the removed/preserved sequences
+    # return dict: {num_cluster: {'representing': [list of ids from fasta],
+    #                             'removed': [list of ids from fasta]}}
     similar_file = None
     diff_fasta_file = None
     for file_name in os.listdir(output_dir):
@@ -138,6 +146,8 @@ def get_file_sizes(dir_path):
 
 
 def bytes_to_larger(size_b):
+    # Convert byte sizes to larger sizes
+    # Returns a string of the size
     sizes = ['TB', 'GB', 'MB', 'KB', 'B']
     x = 10**((len(sizes) - 1) * 3)
     for size in sizes:
@@ -148,6 +158,8 @@ def bytes_to_larger(size_b):
 
 
 def check_results_generated(result_file):
+    # Checks if a file has more than one line
+    # Return a boolean
     file = open(result_file, 'r')
     has_results = True
     print()
