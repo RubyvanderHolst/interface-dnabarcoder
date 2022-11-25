@@ -3,6 +3,10 @@ h2 {
     padding: 10px;
 }
 
+h3 {
+    padding: 10px;
+}
+
 textarea {
     font-family: Consolas, monospace;
     font-size: 12px !important;
@@ -35,6 +39,10 @@ textarea {
 
 .mt-30 {
     margin-top: 30px;
+}
+
+.mt-50 {
+    margin-top: 50px;
 }
 
 .w-475 {
