@@ -37,12 +37,21 @@ textarea {
     background-color: #e3f2fd;
 }
 
+.large-spinner {
+    width: 100px;
+    height: 100px;
+}
+
 .mt-30 {
     margin-top: 30px;
 }
 
 .mt-50 {
     margin-top: 50px;
+}
+
+.mt-10p {
+    margin-top: 10%;
 }
 
 .w-475 {

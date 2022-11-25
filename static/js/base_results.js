@@ -10,7 +10,7 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loadin
         dataType: "json",
         // Response generated without error
         success: (data) => {
-            document.getElementById('task_status').innerHTML = data.state
+            document.getElementById('task_status').innerHTML = data.state.toLowerCase();
             // Task has successfully finished
             if (data.state === 'SUCCESS'){
                 document.getElementById('spinner-box').classList.add('hidden');
@@ -59,6 +59,14 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loadin
                 setTimeout(function(){
                     get_data(task_id, media_dir, bool_show_image, bool_show_complex, loading_time += reload_time);
                     }, reload_time)
+
+            } else if (data.state === 'FAILURE') {
+                document.getElementById('spinner-box').classList.add('hidden');
+                document.getElementById('data-box').classList.remove('hidden');
+                document.getElementById('div_alert').innerHTML =
+                        `<div class="alert alert-danger" role="alert">
+                            The task resulted in a failure. Please look at your input or report the issue.
+                        </div>`
             }
         },
         // Response generated with error
@@ -96,7 +104,6 @@ function show_file_table (files, media_dir) {
         </table>
         `
     for (const [file_name, file_size] of Object.entries(files)) {
-        console.log(file_name)
         let tr = "<tr>";
         tr +=
             `
