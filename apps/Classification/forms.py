@@ -18,8 +18,7 @@ class ClassificationForm(forms.Form):
     text_input_sequences = forms.CharField(
         label='Or paste the sequences',
         widget=forms.Textarea(attrs={
-            'placeholder': """>MH854572 k__Fungi;p__Mucoromycota;c__Mucoromycetes;o__Mucorales;
-f__Mucoraceae;g__Mucor;s__Mucor_plumbeus
+            'placeholder': """>ID_12345
 TTAAATAATCAATAATCTTGGCTTGTCCATTATTATCTATTTACTGTGAACTGTATTATT
 ATTTGACGTTTGAGGGATGTTCCAATGTTATAAGGATAGACATTGGAAATGTTAACCGAG
 TCATAATCAGGTTTAGGCCTGGTATCCTATTATTATTTACCAAATGAATTCAGAATTAAT

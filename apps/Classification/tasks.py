@@ -93,7 +93,6 @@ def check_results_generated(result_file):
     # Return a boolean
     data_results = pd.read_csv(result_file, sep='\t')
     df_results = pd.DataFrame(data_results, columns=['Prediction'])
-    print(df_results)
     if df_results['Prediction'].isnull().all():
         return False
     else:
