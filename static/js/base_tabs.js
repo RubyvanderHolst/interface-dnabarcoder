@@ -5,17 +5,19 @@ function switch_home_settings(button) {
             button.classList.add("active");
             document.getElementById("settings_button").classList.remove("active");
 
-            document.getElementById("div_home").style.display = "block";
-            document.getElementById("div_settings").style.display = "none";
+            document.getElementById("div_home").classList.remove('hidden');
+            document.getElementById("div_settings").classList.add('hidden');
+            document.getElementById("div_explanation").classList.remove('hidden');
         } else {
             document.getElementById('id_form').reportValidity()
         }
     } else if (button.id === "settings_button") {
-        document.getElementById("home_button").classList.remove("active");
         button.classList.add("active");
+        document.getElementById("home_button").classList.remove("active");
 
-        document.getElementById("div_home").style.display = "none";
-        document.getElementById("div_settings").style.display = "block";
+        document.getElementById("div_home").classList.add('hidden');
+        document.getElementById("div_settings").classList.remove('hidden');
+        document.getElementById("div_explanation").classList.add('hidden');
     }
 }
 
