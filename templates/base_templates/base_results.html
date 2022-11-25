@@ -1,18 +1,19 @@
 {% load static %}
 
 {# Loading screen #}
-<div id="spinner-box" class="text-center">
+<div id="spinner-box" class="text-center align-items-center">
     {# Loading animation #}
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-primary large-spinner mt-10p" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
     {# Status information #}
-    <p>
+    <p class="mt-30">
         Task "<span id="task_id">{{ task_id }}</span>" status:
         <span id="task_status"></span>
     </p>
     {# Reload time information #}
     <p>Status is retrieved every <span id="reload_time"></span></p>
+    <p>Depending on the size of your input, this might take a while...</p>
 </div>
 
 {# Results screen #}
