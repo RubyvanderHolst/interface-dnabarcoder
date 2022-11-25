@@ -19,44 +19,44 @@
             <div id="div_home">
                 <h2 class="bg-light border text-center">Classification</h2>
                 <div class="row">
-                <div class="col">
-                    <div class="card h-100">
-                        <h5 class="card-header">Unidentified sequences input</h5>
-                        <div class="card-body">
-                            {{ form.file_input_sequences|as_crispy_field }}
-                            {{ form.text_input_sequences|as_crispy_field }}
+                    <div class="col">
+                        <div class="card h-100">
+                            <h5 class="card-header">Unidentified sequences input</h5>
+                            <div class="card-body">
+                                {{ form.file_input_sequences|as_crispy_field }}
+                                {{ form.text_input_sequences|as_crispy_field }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col">
-                    <div class="card h-100">
-                        <h5 class="card-header">Reference data input</h5>
-                        {#        reference dataset#}
-                        <div class="card-body">
-                            {{ form.reference_options|as_crispy_field }}
-                            <div id="div_file_input_reference">
-                                {{ form.input_reference|as_crispy_field }}
+                    <div class="col">
+                        <div class="card h-100">
+                            <h5 class="card-header">Reference data input</h5>
+                            {#        reference dataset#}
+                            <div class="card-body">
+                                {{ form.reference_options|as_crispy_field }}
+                                <div id="div_file_input_reference">
+                                    {{ form.input_reference|as_crispy_field }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col">
-                    <div class="card h-100">
-                        <h5 class="card-header">Similarity cut-off</h5>
-                        <div class="card-body">
-                            {{ form.cutoff_type|as_crispy_field }}
-                            <div id="div_num_cutoff" class="hidden">
-                                {{ form.num_cutoff|as_crispy_field }}
-                            </div>
-                            <div id="div_file_cutoff">
-                                {{ form.file_cutoff|as_crispy_field }}
+                    <div class="col">
+                        <div class="card h-100">
+                            <h5 class="card-header">Similarity cut-off</h5>
+                            <div class="card-body">
+                                {{ form.cutoff_type|as_crispy_field }}
+                                <div id="div_num_cutoff" class="hidden">
+                                    {{ form.num_cutoff|as_crispy_field }}
+                                </div>
+                                <div id="div_file_cutoff">
+                                    {{ form.file_cutoff|as_crispy_field }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
                 <div class="d-grid gap-3 col-2 mx-auto mt-30">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -99,6 +99,50 @@
             </div>
 
         </form>
+        <div id="div_explanation">
+            <h3 class="bg-light border text-center mt-50">How to use this page</h3>
+            <p class="mt-30">
+                Welcome to DNA barcoder and thank you for choosing this application for your metabarcoding classification!<br>
+                Interested in how this application is different from the others?
+                Go to the <a href="{% url 'about' %}">about</a> page!
+            </p>
 
+            <h4>Unidentified sequences input</h4>
+            <p>
+                In this section the sequences that need to be identified are filled in.
+                This can be done via a FASTA file or you can fill in the sequence
+                in the text area. Make sure this follows the FASTA format.
+            </p>
+
+            <h4>Reference data input</h4>
+            <p>
+                The reference dataset can be given as a file with FASTA format. A standard reference file can also be chosen:<br>
+                <ul>
+                    <li>CBS_ITS.fasta: Data of ITS sequences produced Westerdijk.</li>
+                </ul>
+
+                When using your own dataset make sure the description lines of the FASTA file have the following format:<br>
+                <code>>ID_NAME k__kingdom;p__phylum;c__class;o__order;f__family;s__species</code><br>
+                Example:<br>
+                <code>>MH854570 k__Fungi;p__Ascomycota;c__Sordariomycetes;o__Hypocreales;f__Nectriaceae;g__Fusarium;s__Fusarium_equiseti</code>
+            </p>
+
+            <h4>Similarity cutoff</h4>
+            <p>
+                The similarity cutoff is a percentage at which an unidentified sequence and a reference sequence have to minimally coincide.
+                This can be given as a global value or local values. A global similarity cutoff is representative for the whole dataset.
+                Local similarity cutoffs are given per taxon. Local similarity cutoff wills generally give
+                more accurate results (see the <a href="{% url 'about' %}">about</a> page).<br>
+                Similarity cutoffs can be calculated on the <a href="{% url 'cutoff' %}">Calculate cutoff</a> page.
+            </p>
+
+            <h4>Settings</h4>
+            <p>
+                <strong>Note for the <i>Minimum sequence alignment length</i> setting:</strong><br>
+                The default for this setting is 400. It is however recommended
+                lowering this when working with smaller barcodes.<br>
+                When using ITS sequences it is recommended to use 50.
+            </p>
+        </div>
     </div>
 {% endblock %}
