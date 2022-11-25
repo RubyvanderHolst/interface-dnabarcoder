@@ -1,9 +1,9 @@
 from apps.Cutoff.tasks import bytes_to_larger
-from apps.Cutoff.tasks import check_results_generated
 
 from django.conf import settings
 
 from celery import shared_task
+import pandas as pd
 import os
 
 base_dir = settings.BASE_DIR
@@ -62,7 +62,7 @@ def classify_blast(input_sequences_path, reference_path,
     # Check if results file has result
     result_file = None
     for file in dict_files.keys():
-        if file.endswith('.classification'):
+        if file.endswith('.classified'):
             result_file = file
     if result_file is not None:
         has_results = check_results_generated(os.path.join(output_dir,
@@ -86,3 +86,15 @@ def get_file_sizes(dir_path):
                 os.stat(os.path.join(dir_path, name)).st_size)
             dict_files[name] = size
     return dict_files
+
+
+def check_results_generated(result_file):
+    # Checks if column "Prediction" in a tab seperated file is empty
+    # Return a boolean
+    data_results = pd.read_csv(result_file, sep='\t')
+    df_results = pd.DataFrame(data_results, columns=['Prediction'])
+    print(df_results)
+    if df_results['Prediction'].isnull().all():
+        return False
+    else:
+        return True
