@@ -20,7 +20,7 @@ function get_data(task_id, media_dir, bool_show_image, bool_show_complex, loadin
                 if (!data.has_results) {
                     document.getElementById('div_alert').innerHTML =
                         `<div class="alert alert-danger" role="alert">
-                            No results could be generated!
+                            No results could be generated! Please look at the input and settings.
                         </div>`
                 }
                 // Create html for table files
