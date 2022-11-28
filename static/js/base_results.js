@@ -91,9 +91,10 @@ function show_file_table (files, media_dir) {
     // - media_dir: Directory in media directory where results are stored
     document.getElementById('data-box').innerHTML +=
         `
-        <table class="table table-bordered">
+        <h4 class="rounded-2 text-center light-blue-background">Results</h4>
+        <table class="table table-striped table-hover">
             <thead>
-                <tr class="table-success">
+                <tr class="light-blue-background">
                     <th scope="col">File name</th>
                     <th scope="col">File size</th>
                     <th scope="col"></th>
@@ -109,9 +110,9 @@ function show_file_table (files, media_dir) {
             `
             <td>${file_name}</td>
             <td>${file_size}</td>
-            <td>
+            <td class="text-end">
                 <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
-                    <button type='button' class='btn btn-success w-100'>Download</button>
+                    <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
                 </a>
             </td></tr>`
             document.getElementById('tbody_files').innerHTML += tr;
@@ -123,17 +124,23 @@ function show_images(images, media_dir) {
     // parameters:
     // - images: Object with format {file_name: file_size}
     // - media_dir: Directory in media directory where results are stored
+    document.getElementById('images_div').innerHTML =
+        `<h4 class="rounded-2 text-center light-blue-background">Images</h4>`
     let list_images = Object.entries(images)
     for (const [image_name, image_size] of list_images) {
         let image_card =
             `
-            <div class="card mx-auto w-50">
+            <div class="card mx-auto w-50 bg-light border-dark">
                 <h5 class="card-header text-center">${image_name} (${image_size})</h5>
                 <div class="card-body text-center">
-                    <img src="/media/${media_dir}/${image_name}" class="img-fluid">
-                     <a href="/media/${media_dir}/${image_name}" class="link-light text-decoration-none" download>
-                        <button type="button" class="btn btn-success">Download</button>
-                     </a>
+                    <div class="row">
+                        <img src="/media/${media_dir}/${image_name}" class="border">
+                    </div>
+                    <div class="row">
+                        <a href="/media/${media_dir}/${image_name}" class="link-light text-decoration-none" download>
+                            <button type='button' class='btn btn-primary'><i class="bi bi-download"></i> Download</button>
+                        </a>
+                    </div>
                 </div>
             </div>
             `
@@ -144,7 +151,8 @@ function show_images(images, media_dir) {
 function show_similar_seq(similar) {
     // Creates table of similar sequences and removed sequences
     // parameter similar: Object with format {cluster_number: ['representing': array_ids, 'removed': array_ids]}
-    document.getElementById('complexes_div').innerHTML = `<h4>Removed similar sequences</h4>`
+    document.getElementById('complexes_div').innerHTML =
+        `<h4 class="rounded-2 text-center light-blue-background">Removed similar sequences</h4>`
     let list_complexes =  Object.entries(similar)
     if (list_complexes.length === 0) {
         document.getElementById('complexes_div').innerHTML +=
