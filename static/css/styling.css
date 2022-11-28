@@ -3,7 +3,7 @@ h2 {
     padding: 10px;
 }
 
-h3 {
+h4 {
     padding: 10px;
 }
 
@@ -12,6 +12,9 @@ textarea {
     font-size: 12px !important;
 }
 
+img {
+    padding: 0 !important;
+}
 
 /* Bootstrap classes */
 .active {
@@ -43,7 +46,7 @@ textarea {
 }
 
 .mt-30 {
-    margin-top: 30px;
+    margin-top: 30px !important;
 }
 
 .mt-50 {
