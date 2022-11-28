@@ -44,7 +44,7 @@ def classification_results_page(request):
         else:
             sequences = request.POST['text_input_sequences']
             input_sequences_path = os.path.join(input_dir,
-                                                'input.fasta')
+                                                'text_input.fasta')
             file = open(input_sequences_path, 'w')
             file.write(sequences)
             file.close()
