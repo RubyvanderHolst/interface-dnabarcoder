@@ -27,19 +27,18 @@ def cutoff_results_page(request):
         # Retrieve data from request
         input_dir = os.path.join(media_root, "uploaded")
         fs = FileSystemStorage(input_dir)
-        output_dir = os.path.join(media_root, "cutoff")
-        os.system(f"rm {output_dir}/*")
+        output_dir = os.path.join(media_root, "results")
 
         input_file = request.FILES['input_file']
-        fs.save(input_file.name, input_file)
-        input_file_path = os.path.join(input_dir, input_file.name)
+        input_file_fs = fs.save(input_file.name, input_file)
+        input_file_path = fs.path(input_file_fs)
         prefix = input_file.name.split('.')[0]
 
         sim_file_path = None
         if 'sim_file' in request.FILES:
             sim_file = request.FILES['sim_file']
-            fs.save(sim_file.name, sim_file)
-            sim_file_path = os.path.join(input_dir, sim_file.name)
+            sim_file_fs = fs.save(sim_file.name, sim_file)
+            sim_file_path = fs.path(sim_file_fs)
         min_alignment_length = request.POST['min_alignment_length']
         rank = request.POST['rank']
         higher_rank = retrieve_input('higher_rank', request.POST)
@@ -59,12 +58,11 @@ def cutoff_results_page(request):
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
                              step, min_group_number, min_seq_number,
-                             max_seq_number, threshold, prefix, output_dir, input_dir)
+                             max_seq_number, threshold, prefix, output_dir)
 
         task_id = task.id
 
     return render(request, 'cutoff_results.html', {
-            'media_dir': 'cutoff',
             'task_id': task_id,
             })
 

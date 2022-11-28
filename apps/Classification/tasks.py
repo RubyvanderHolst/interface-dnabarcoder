@@ -17,6 +17,10 @@ def classify_blast(input_sequences_path, reference_path,
                    min_seq_number, rank, output_dir, input_dir):
     # Celery task for classification with BLAST
 
+    task_id = classify_blast.request.id
+    os.system(f'cd {output_dir} && mkdir {task_id}')
+    output_dir = os.path.join(output_dir, task_id)
+
     # calculate best matches
     prefix = os.path.basename(input_sequences_path).split('.')[0] + "." + \
              os.path.basename(reference_path).split('.')[0]
@@ -70,7 +74,9 @@ def classify_blast(input_sequences_path, reference_path,
     else:
         has_results = False
 
-    os.system(f'rm {os.path.join(input_dir, "*")}')
+    os.system(f'rm {input_sequences_path}')
+    # TODO remove reference input file if exists
+    # TODO remove local cutoff file if exists
 
     return dict_files, has_results
 
