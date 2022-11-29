@@ -32,8 +32,7 @@ class CutoffForm(forms.Form):
     higher_rank = forms.CharField(
         label='Higher rank',
         widget=forms.Select(
-            choices=[('species', 'Species'),
-                     ('genus', 'Genus'),
+            choices=[('genus', 'Genus'),
                      ('family', 'Family'),
                      ('order', 'Order'),
                      ('class', 'Class'),
