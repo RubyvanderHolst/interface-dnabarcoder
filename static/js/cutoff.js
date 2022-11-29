@@ -1,24 +1,35 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Enable/disable higher rank
-        let rank_dropdown = document.getElementById('id_rank')
+    let rank_dropdown = document.getElementById('id_rank')
     let higher_rank_dropdown = document.getElementById('id_higher_rank')
     let all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
-
     let cutoff_radio = Array.from(
         document.querySelectorAll('input[name="cutoff_type"]')
     )
+    // Hide Kingdom rank for initial local selection
+    rank_dropdown[rank_dropdown.length-1].hidden = true
 
     for (let i = 0; i < cutoff_radio.length; i++) {
         let radiobutton = cutoff_radio[i]
         radiobutton.addEventListener('click', function () {
             if (radiobutton.value === 'local') {
                 higher_rank_dropdown.disabled = false;
-                higher_rank_dropdown[higher_rank_dropdown.length-1].hidden = true
+
+                // Hide highest rank (kingdom)
+                rank_dropdown[rank_dropdown.length-1].hidden = true
+                // If highest rank selected, select second-highest rank (phylum)
+                if (rank_dropdown.value === all_rank[all_rank.length-1]) {
+                    rank_dropdown.value = all_rank[all_rank.length-2]
+                }
+
                 set_higher(rank_dropdown, higher_rank_dropdown, all_rank)
             } else if (radiobutton.value === 'global') {
                 higher_rank_dropdown.disabled = true;
-                higher_rank_dropdown[higher_rank_dropdown.length-1].hidden = false
+
+                // Show Kingdom rank
+                rank_dropdown[rank_dropdown.length-1].hidden = false
+
                 higher_rank_dropdown.value = 'all';
             }
         })
