@@ -99,8 +99,8 @@ class CutoffForm(forms.Form):
         initial=0.001,
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'min': 0,
-            'max': 1,
+            'min': 0.00001,
+            'max': 0.1,
         })
     )
 
