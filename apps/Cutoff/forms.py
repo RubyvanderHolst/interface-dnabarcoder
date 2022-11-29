@@ -26,14 +26,14 @@ class CutoffForm(forms.Form):
                      ('order', 'Order'),
                      ('class', 'Class'),
                      ('phylum', 'Phylum'),
-                     ('kingdom', 'Kingdom')]
+                     ('kingdom', 'Kingdom'),
+                     ('all', 'All')]
         )
     )
     higher_rank = forms.CharField(
         label='Higher rank',
         widget=forms.Select(
-            choices=[('species', 'Species'),
-                     ('genus', 'Genus'),
+            choices=[('genus', 'Genus'),
                      ('family', 'Family'),
                      ('order', 'Order'),
                      ('class', 'Class'),
@@ -99,8 +99,8 @@ class CutoffForm(forms.Form):
         initial=0.001,
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'min': 0,
-            'max': 1,
+            'min': 0.00001,
+            'max': 0.1,
         })
     )
 

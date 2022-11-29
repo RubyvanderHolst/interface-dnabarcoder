@@ -11,6 +11,7 @@ import os
 
 
 media_root = settings.MEDIA_ROOT
+all_rank = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom']
 
 
 def cutoff_page(request):
@@ -41,7 +42,12 @@ def cutoff_results_page(request):
             sim_file_path = fs.path(sim_file_fs)
         min_alignment_length = request.POST['min_alignment_length']
         rank = request.POST['rank']
+        if rank == 'all':
+            rank = ','.join(all_rank)
         higher_rank = retrieve_input('higher_rank', request.POST)
+        if higher_rank == 'all':
+            i_rank = all_rank.index(rank)
+            higher_rank = ','.join(all_rank[i_rank+1:])
         starting_threshold = request.POST['starting_threshold']
         end_threshold = request.POST['end_threshold']
         step = request.POST['step']
