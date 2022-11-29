@@ -14,7 +14,7 @@ dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n
 def classify_blast(input_sequences_path, reference_path,
                    num_cutoff, file_cutoff_path,
                    min_alignment_length, confidence, min_group_number,
-                   min_seq_number, rank, output_dir, input_dir):
+                   min_seq_number, rank, output_dir):
     # Celery task for classification with BLAST
 
     task_id = classify_blast.request.id
@@ -32,7 +32,11 @@ def classify_blast(input_sequences_path, reference_path,
     os.system(command_search)
 
     # classify based on the best matches
-    classify_input = os.path.join(output_dir, prefix + '_BLAST.bestmatch')
+    classify_input = None
+    for file in os.listdir(output_dir):
+        if file.endswith(".bestmatch"):
+            classify_input = os.path.join(output_dir, file)
+            break
     command_classify = f"python {dnabarcoder_path} classify " \
                        f"--input {classify_input} " \
                        f"--reference {reference_path} " \
@@ -74,9 +78,12 @@ def classify_blast(input_sequences_path, reference_path,
     else:
         has_results = False
 
-    os.system(f'rm {input_sequences_path}')
-    # TODO remove reference input file if exists
-    # TODO remove local cutoff file if exists
+    os.remove(input_sequences_path)
+    if 'media/uploaded' in reference_path:
+        os.remove(reference_path)
+
+    if file_cutoff_path is not None:
+        os.remove(file_cutoff_path)
 
     return dict_files, has_results
 

@@ -70,11 +70,12 @@ def calculate_cutoff(input_file_path, sim_file_path,
         has_results = False
 
     try:
-        os.system(f'rm {original_input_file_path}')
+        os.remove(original_input_file_path)
     except:
-        os.system(f'rm {input_file_path}')
+        os.remove(input_file_path)
 
-    # TODO remove sim file if exists
+    if sim_file_path is not None:
+        os.remove(sim_file_path)
 
     return dict_files, dict_images, dict_similar, has_results
 

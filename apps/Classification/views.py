@@ -78,7 +78,7 @@ def classification_results_page(request):
                                     num_cutoff, file_cutoff_path,
                                     min_alignment_length, confidence,
                                     min_group_number, min_seq_number, rank,
-                                    output_dir, input_dir)
+                                    output_dir)
         task_id = task.id
 
         return render(request, 'classification_results.html', {
@@ -87,6 +87,10 @@ def classification_results_page(request):
 
 
 def random_file_name(prefix, extension, n_numbers, dir):
+    # Generates a random file name with the following format:
+    # {prefix}{number}.{extension}
+    # The number randomly generated. The function also checks if the
+    # generated file already exists and if so calls this function again
     random_int = randint(10**(n_numbers - 1), 10**n_numbers)
     file_name = f"{prefix}{random_int}.{extension}"
     list_dir = os.listdir(dir)
