@@ -42,6 +42,8 @@ def cutoff_results_page(request):
             sim_file_path = fs.path(sim_file_fs)
         min_alignment_length = request.POST['min_alignment_length']
         rank = request.POST['rank']
+        if rank == 'all':
+            rank = ','.join(all_rank)
         higher_rank = retrieve_input('higher_rank', request.POST)
         if higher_rank == 'all':
             i_rank = all_rank.index(rank)

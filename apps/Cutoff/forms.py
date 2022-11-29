@@ -26,7 +26,8 @@ class CutoffForm(forms.Form):
                      ('order', 'Order'),
                      ('class', 'Class'),
                      ('phylum', 'Phylum'),
-                     ('kingdom', 'Kingdom')]
+                     ('kingdom', 'Kingdom'),
+                     ('all', 'All')]
         )
     )
     higher_rank = forms.CharField(

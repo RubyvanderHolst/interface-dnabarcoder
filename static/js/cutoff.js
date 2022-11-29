@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let cutoff_radio = Array.from(
         document.querySelectorAll('input[name="cutoff_type"]')
     )
-    // Hide Kingdom rank for initial local selection
+    // Hide highest rank (Kingdom) (hidden for local cutoff)
+    rank_dropdown[rank_dropdown.length-2].hidden = true
+
+    // Hide All option rank (hidden for local cutoff)
     rank_dropdown[rank_dropdown.length-1].hidden = true
 
     for (let i = 0; i < cutoff_radio.length; i++) {
@@ -17,9 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 higher_rank_dropdown.disabled = false;
 
                 // Hide highest rank (kingdom)
+                rank_dropdown[rank_dropdown.length-2].hidden = true
+                // Hide All option rank
                 rank_dropdown[rank_dropdown.length-1].hidden = true
                 // If highest rank selected, select second-highest rank (phylum)
-                if (rank_dropdown.value === all_rank[all_rank.length-1]) {
+                if (rank_dropdown.value === all_rank[all_rank.length-1] ||
+                        rank_dropdown.value === 'all') {
                     rank_dropdown.value = all_rank[all_rank.length-2]
                 }
 
@@ -28,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 higher_rank_dropdown.disabled = true;
 
                 // Show Kingdom rank
+                rank_dropdown[rank_dropdown.length-2].hidden = false
+                // Show All option rank
                 rank_dropdown[rank_dropdown.length-1].hidden = false
 
                 higher_rank_dropdown.value = 'all';
