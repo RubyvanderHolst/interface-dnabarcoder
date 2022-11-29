@@ -15,14 +15,19 @@ def calculate_cutoff(input_file_path, sim_file_path,
                      min_alignment_length, rank, higher_rank,
                      starting_threshold, end_threshold, step, min_group_number,
                      min_seq_number, max_seq_number, threshold, prefix,
-                     output_dir, input_dir):
+                     output_dir):
     # Celery task for cutoff calculation
+
+    task_id = calculate_cutoff.request.id
+    os.system(f'cd {output_dir} && mkdir {task_id}')
+    output_dir = os.path.join(output_dir, task_id)
 
     # Removal of similar sequences
     dict_similar = None
     if threshold is not None:
         remove_complexes(dnabarcoder_path, input_file_path, threshold,
                          min_alignment_length, rank, output_dir, sim_file_path)
+        original_input_file_path = f"{input_file_path}"
         input_file_path = os.path.join(output_dir,
                                        input_file_path.split('/')[-1].replace('fasta', 'diff.fasta'))
         dict_similar = get_removed_complexes(prefix, output_dir)
@@ -64,7 +69,13 @@ def calculate_cutoff(input_file_path, sim_file_path,
     else:
         has_results = False
 
-    os.system(f'rm {os.path.join(input_dir, "*")}')
+    try:
+        os.remove(original_input_file_path)
+    except:
+        os.remove(input_file_path)
+
+    if sim_file_path is not None:
+        os.remove(sim_file_path)
 
     return dict_files, dict_images, dict_similar, has_results
 
@@ -127,7 +138,7 @@ def get_removed_complexes(prefix, output_dir):
             final_dict_similar[cluster] = dict_similar[cluster]
 
     return final_dict_similar
-    
+
 
 def get_file_sizes(dir_path):
     # Get the sizes of all files in a directory
