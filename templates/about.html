@@ -4,5 +4,48 @@
 {% block nav-about %}active{% endblock %}
 
 {% block container %}
-    <h1>This is the about page</h1>
+    <div class="container">
+        <h2 class="rounded-2 text-center light-blue-background">About page</h2>
+
+        <h3>Dnabarcoder</h3>
+        <p>
+            This website is based on the dnabarcoder package created by Duong Vu.
+            Dnabarcoder is an open-source software package mainly for predicting
+            DNA sequence similarity cutoffs and classification for DNA barcodes.
+            It also has other components such as analysis, visualization and
+            verification. More information and installation instructions can be
+            found on the
+            <a href="https://github.com/vuthuyduong/dnabarcoder">GitHub page</a>.
+            The software was created and tested for
+            fungal data, specifically full-length ITS, ITS1 and ITS2. It can
+            however also be used for other data such as bacterial data.
+        </p>
+
+        <h3>Global vs Local similarity cutoff</h3>
+        <p>
+            Most studies and metabarcoding pipelines use a singular global
+            similarity cutoff value for sequence identification.
+            It is however not realistic to use a singular value for all taxa,
+            as similarity cutoffs can vary significantly between clades and
+            taxonomy levels. This is why dnabarcoder and this website were created.
+            Multiple local similarity cutoffs for different clades and taxonomy
+            levels can be calculated for a reference dataset. A global cutoff for
+            the whole dataset can also be calculated. These similarity cutoffs can
+            then be used for classification of DNA sequences against said reference
+            dataset.
+            <a href="https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13651">
+                [source]
+            </a>
+        </p>
+        <p>
+            The cutoff values can be calculated on the
+            <a href="{% url 'cutoff' %}">calculate cutoff page</a>
+            .
+            The classification can be done on the
+            <a href="{% url 'classification' %}">classify page</a>
+            . More information
+            on how to go about using these pages can be found on the pages
+            themselves.
+        </p>
+    </div>
 {% endblock %}
