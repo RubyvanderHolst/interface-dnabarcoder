@@ -119,13 +119,3 @@ class CutoffForm(forms.Form):
         }),
         required=False,
     )
-    cutoff_remove = forms.FloatField(
-        label='Similarity cut-off for removal',
-        widget=forms.NumberInput(attrs={
-            'min': 0,
-            'max': 1,
-        }),
-        initial=1,
-        disabled=True,
-        required=False,
-    )

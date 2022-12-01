@@ -93,11 +93,8 @@
                     <div class="col">
                         <div class="card bg-light">
                             <div class="card-body">
-                                <label class="form-label">Thresholds and step size of prediction:</label>
-                                <div class="input-group d-flex flex-nowrap">
-                                        {{ form.starting_threshold|as_crispy_field }}
-                                        {{ form.end_threshold|as_crispy_field }}
-                                        {{ form.step|as_crispy_field }}
+                                <div class="form-check form-switch mb-0">
+                                    {{ form.remove_comp|as_crispy_field }}
                                 </div>
                             </div>
                         </div>
@@ -105,10 +102,12 @@
                     <div class="col">
                         <div class="card bg-light">
                             <div class="card-body">
-                                <div class="form-check form-switch mb-0">
-                                    {{ form.remove_comp|as_crispy_field }}
+                                <label class="form-label">Thresholds and step size of prediction:</label>
+                                <div class="input-group d-flex flex-nowrap">
+                                        {{ form.starting_threshold|as_crispy_field }}
+                                        {{ form.end_threshold|as_crispy_field }}
+                                        {{ form.step|as_crispy_field }}
                                 </div>
-                                {{ form.cutoff_remove|as_crispy_field }}
                             </div>
                         </div>
                     </div>

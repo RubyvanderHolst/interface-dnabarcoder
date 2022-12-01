@@ -55,16 +55,16 @@ def cutoff_results_page(request):
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
 
-        threshold = None
+        remove_comp = 'no'
         if 'remove_comp' in request.POST:
-            threshold = request.POST['cutoff_remove']
+            remove_comp = 'yes'
 
         # Start celery task
         task = calculate_cutoff.delay(input_file_path,
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
                              step, min_group_number, min_seq_number,
-                             max_seq_number, threshold, prefix, output_dir)
+                             max_seq_number, remove_comp, prefix, output_dir)
 
         task_id = task.id
 
@@ -87,18 +87,18 @@ def load_progress(request, task_id):
     result = AsyncResult(task_id)
     files = None
     images = None
-    similar = None
+    # similar = None
     has_results = None
     if result.state == 'SUCCESS':
         files  =  result.info[0]
         images = result.info[1]
-        similar = result.info[2]
-        has_results = result.info[3]
+        # similar = result.info[2]
+        has_results = result.info[2]
     return JsonResponse({
         'task_id': task_id,
         'state': result.state,
         'files': files,
         'images': images,
-        'similar': similar,
+        # 'similar': similar,
         'has_results': has_results,
     })
