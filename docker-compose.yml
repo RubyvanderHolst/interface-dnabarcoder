@@ -10,6 +10,8 @@ services:
       - .:/home/app
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
 
   redis:
     image: redis:7-alpine
@@ -19,6 +21,18 @@ services:
       context: ../
       dockerfile: interface-dnabarcoder/Dockerfile
     command: celery -A interface-dnabarcoder worker -l INFO
+    volumes:
+      - .:/home/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery-beat:
+    build:
+      context: ../
+      dockerfile: interface-dnabarcoder/Dockerfile
+    command: celery -A interface-dnabarcoder beat -l INFO
     volumes:
       - .:/home/app
     env_file:

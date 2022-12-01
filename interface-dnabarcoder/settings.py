@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from celery.schedules import crontab
+import apps.Periodic_Tasks.tasks
 import os
 
 load_dotenv()
@@ -150,3 +152,16 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Celery
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
+
+
+# Celery-beat
+# CELERY_ENABLE_UTC = False
+CELERY_TIMEZONE = 'Europe/Amsterdam'
+
+# Set schedule periodic tasks
+CELERY_BEAT_SCHEDULE = {
+    "delete_results": {
+        "task": "apps.Periodic_Tasks.tasks.delete_results",
+        "schedule": crontab(minute='*/1'),
+    },
+}
