@@ -19,8 +19,8 @@ def delete_results():
         result_dir = os.path.join(root, dir)
         age_s = time.time() - os.path.getmtime(result_dir)
 
-        # The dir is removed if it's older than an hour
-        if age_s > 60 * 60:
+        # The dir is removed if it's older than a day
+        if age_s > 60 * 60 * 24:
             try:
                 shutil.rmtree(result_dir)
             except:
