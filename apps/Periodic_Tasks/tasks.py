@@ -2,20 +2,27 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
 import shutil
+import time
 import os
+
 
 logger = get_task_logger(__name__)
 
 
 @shared_task
 def delete_results():
-    logger.info("The task is called right now")
+    logger.info("Files are being removed")
+    walk_tuple = next(os.walk(os.path.join(settings.MEDIA_ROOT, 'results')))
+    root = walk_tuple[0]
+    dirs = walk_tuple[1]
+    for dir in dirs:
+        result_dir = os.path.join(root, dir)
+        age_s = time.time() - os.path.getmtime(result_dir)
 
-    # todo change loop (look at comment below)
-    # os.walk geeft ('/home/app/media/results', ['5a51f714-923c-4792-b027-c34904756202', 'ec040ef5-f7c9-4532-b4df-05c82113683e'], ['.gitkeep'])
-    for result_dir in os.walk(os.path.join(settings.MEDIA_ROOT, 'results')):
-        logger.info(result_dir)
-        try:
-            shutil.rmtree(result_dir)
-        except:
-            print('ERROR: results could not be removed')
+        # The dir is removed if it's older than an hour
+        if age_s > 60 * 60:
+            try:
+                shutil.rmtree(result_dir)
+            except:
+                logger.info(f'ERROR: results directory {result_dir} could not be removed. '
+                            f'File age: {age_s} seconds')

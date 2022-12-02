@@ -10,4 +10,7 @@ media/results/*
 media/uploaded/*
 !media/uploaded/.gitkeep
 
+# Celery
+celerybeat-schedule
+
 #.env

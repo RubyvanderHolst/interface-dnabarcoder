@@ -162,6 +162,6 @@ CELERY_TIMEZONE = 'Europe/Amsterdam'
 CELERY_BEAT_SCHEDULE = {
     "delete_results": {
         "task": "apps.Periodic_Tasks.tasks.delete_results",
-        "schedule": crontab(minute='*/1'),
+        "schedule": crontab(hour=16, minute=00),
     },
 }
