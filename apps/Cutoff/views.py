@@ -22,7 +22,7 @@ def cutoff_page(request):
     })
 
 
-def cutoff_results_page(request):
+def cutoff_results_page(request, task_id=None):
     # View for cutoff results page
     if request.method == 'POST':
         # Retrieve data from request

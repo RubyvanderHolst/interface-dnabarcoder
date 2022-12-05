@@ -28,7 +28,7 @@ def classification_page(request):
     })
 
 
-def classification_results_page(request):
+def classification_results_page(request, task_id=None):
     # View for classification results page
     if request.method == 'POST':
         # Retrieve data from request
@@ -81,7 +81,7 @@ def classification_results_page(request):
                                     output_dir)
         task_id = task.id
 
-        return render(request, 'classification_results.html', {
+    return render(request, 'classification_results.html', {
             'task_id': task_id,
         })
 
