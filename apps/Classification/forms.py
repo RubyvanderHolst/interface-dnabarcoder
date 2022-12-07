@@ -135,3 +135,10 @@ TCTTTTAAATTTGATCTGAAATCAGG
     #     }),
     #     required=False,
     # )
+
+    email = forms.EmailField(
+        label='Send email when finished:',
+        min_length=5,
+        max_length=200,
+        required=False,
+    )

@@ -14,7 +14,7 @@ dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n
 def classify_blast(input_sequences_path, reference_path,
                    num_cutoff, file_cutoff_path,
                    min_alignment_length, confidence, min_group_number,
-                   min_seq_number, rank, output_dir):
+                   min_seq_number, rank, output_dir, email):
     # Celery task for classification with BLAST
 
     task_id = classify_blast.request.id

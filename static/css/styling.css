@@ -45,6 +45,10 @@ img {
     height: 100px;
 }
 
+.mt-0 {
+    margin-top: 0 !important;
+}
+
 .mt-30 {
     margin-top: 30px !important;
 }

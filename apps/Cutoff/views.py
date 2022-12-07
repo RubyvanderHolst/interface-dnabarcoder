@@ -54,6 +54,7 @@ def cutoff_results_page(request, task_id=None):
         min_group_number = request.POST['min_group_number']
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
+        email = retrieve_input('email', request.POST)
 
         remove_comp = 'no'
         if 'remove_comp' in request.POST:
@@ -64,7 +65,8 @@ def cutoff_results_page(request, task_id=None):
                              sim_file_path, min_alignment_length, rank,
                              higher_rank, starting_threshold, end_threshold,
                              step, min_group_number, min_seq_number,
-                             max_seq_number, remove_comp, prefix, output_dir)
+                             max_seq_number, remove_comp, prefix, output_dir,
+                             email)
 
         task_id = task.id
 

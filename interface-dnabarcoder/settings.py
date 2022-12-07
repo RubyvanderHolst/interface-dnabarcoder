@@ -165,3 +165,12 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=16, minute=00),
     },
 }
+
+
+# Email configurations
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST =
+# EMAIL_USE_TLS = True
+# EMAIL_PORT =
+# EMAIL_HOST_USER =
+# EMAIL_HOST_PASSWORD =

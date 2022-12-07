@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.mail import send_mail
 
 from celery import shared_task
 import pandas as pd
@@ -15,7 +16,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
                      min_alignment_length, rank, higher_rank,
                      starting_threshold, end_threshold, step, min_group_number,
                      min_seq_number, max_seq_number, remove_comp, prefix,
-                     output_dir):
+                     output_dir, email):
     # Celery task for cutoff calculation
 
     task_id = calculate_cutoff.request.id
@@ -77,6 +78,19 @@ def calculate_cutoff(input_file_path, sim_file_path,
 
     if sim_file_path is not None:
         os.remove(sim_file_path)
+
+    # if email is not None:
+    #     # try:
+    #     print(f'Logging in with {settings.EMAIL_HOST_USER} and {settings.EMAIL_HOST_PASSWORD}')
+    #     send_mail(
+    #             subject='test subject',
+    #             message='this is the message',
+    #             from_email=settings.EMAIL_HOST_USER,
+    #             recipient_list=[email],
+    #             fail_silently=False,
+    #         )
+        # except:
+        #     print("ERROR: EMAIL COULD NOT BE SEND!!!")
 
     return dict_files, dict_images, has_results
 
