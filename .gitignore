@@ -13,4 +13,6 @@ media/uploaded/*
 # Celery
 celerybeat-schedule
 
+docker-data
+
 #.env
