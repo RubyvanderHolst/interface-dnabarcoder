@@ -13,4 +13,4 @@ media/uploaded/*
 # Celery
 celerybeat-schedule
 
-#.env
+.env
