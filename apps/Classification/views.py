@@ -28,7 +28,7 @@ def classification_page(request):
     })
 
 
-def classification_results_page(request):
+def classification_results_page(request, task_id=None):
     # View for classification results page
     if request.method == 'POST':
         # Retrieve data from request
@@ -72,16 +72,17 @@ def classification_results_page(request):
         min_seq_number = retrieve_input('min_seq_number', request.POST)
         rank = retrieve_input('rank', request.POST)
         # max_seq_number = request.POST['max_seq_number']
+        email = retrieve_input('email', request.POST)
 
         # start celery task
         task = classify_blast.delay(input_sequences_path, reference_path,
                                     num_cutoff, file_cutoff_path,
                                     min_alignment_length, confidence,
                                     min_group_number, min_seq_number, rank,
-                                    output_dir)
+                                    output_dir, email)
         task_id = task.id
 
-        return render(request, 'classification_results.html', {
+    return render(request, 'classification_results.html', {
             'task_id': task_id,
         })
 

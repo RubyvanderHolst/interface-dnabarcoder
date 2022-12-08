@@ -44,7 +44,7 @@
 
                     <div class="col">
                         <div class="card h-100 bg-light border-dark">
-                            <h5 class="card-header">Similarity cut-off</h5>
+                            <h5 class="card-header">Similarity cutoff</h5>
                             <div class="card-body">
                                 {{ form.cutoff_type|as_crispy_field }}
                                 <div id="div_num_cutoff" class="hidden">
@@ -57,8 +57,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-grid gap-3 col-2 mx-auto mt-30">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="col-5 mx-auto mt-30">
+                    <div class="card bg-light border-dark">
+                        <div class="card-body">
+                            <div class="row align-items-center mt-0">
+                                <div class="col-7">
+                                    {{ form.email|as_crispy_field }}
+                                </div>
+                                <div class="col-5 d-grid">
+                                    <button type="submit" class="btn btn-primary btn-large">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

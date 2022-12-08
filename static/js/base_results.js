@@ -5,7 +5,7 @@ export {get_data}
 // returns a JsonResponse. This JsonResponse is processed by the AJAX function.
 function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
     $.ajax({
-        url: task_id,
+        url: "results/" + task_id,
         type: "GET",
         dataType: "json",
         // Response generated without error

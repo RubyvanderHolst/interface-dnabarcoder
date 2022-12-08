@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    {# Navigation bar at top of page #}
+    <h1 style="background-color: #e3f2fd; text-align: center; padding: 10px;">
+        <a style="text-decoration: none; color: black;" href={{ link_to_website }}>
+            DNA barcoder
+        </a>
+    </h1>
+    <p>Dear User,</p>
+    <p>
+        Your {{ task_type }} task has finished running. Thank you for using DNA barcoder!
+    </p>
+    <div style="text-align: center;">
+        <button style="border-radius: 4px; font-size: 20px; background-color: #81bfef;">
+            <a style="text-decoration: none; color: black;" href={{ link_to_results }}>
+            See your results
+            </a>
+        </button>
+    </div>
+    <br>
+    <p>
+        Copy this link if the button doesn't work:
+        <a href={{ link_to_results }}>{{ link_to_results }}</a>
+    </p>
+
+</body>
+</html>
