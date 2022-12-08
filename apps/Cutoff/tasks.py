@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from celery import shared_task
 import pandas as pd
@@ -79,18 +80,8 @@ def calculate_cutoff(input_file_path, sim_file_path,
     if sim_file_path is not None:
         os.remove(sim_file_path)
 
-    # if email is not None:
-    #     # try:
-    #     print(f'Logging in with {settings.EMAIL_HOST_USER} and {settings.EMAIL_HOST_PASSWORD}')
-    #     send_mail(
-    #             subject='test subject',
-    #             message='this is the message',
-    #             from_email=settings.EMAIL_HOST_USER,
-    #             recipient_list=[email],
-    #             fail_silently=False,
-    #         )
-        # except:
-        #     print("ERROR: EMAIL COULD NOT BE SEND!!!")
+    if email is not None:
+        send_results_email('http://localhost:8000', 'cutoff', task_id, email)
 
     return dict_files, dict_images, has_results
 
@@ -133,6 +124,28 @@ def check_results_generated(result_file):
         has_results = False
     file.close()
     return has_results
+
+
+def send_results_email(website_url, page, task_id, email):
+    results_link = os.path.join(website_url, page, task_id)
+    plain_message = 'Dear User,\n\n' \
+                    'Your task has finished running.\n' \
+                    f'Click the link to see your results: {results_link}'
+    html_message = render_to_string('email_template.html', {
+        'link_to_results': results_link,
+        'link_to_website': website_url,
+        'task_type': page,
+    })
+    if email is not None:
+        print(f'Send email from {settings.EMAIL_HOST_USER} to {email}')
+        send_mail(
+            subject='DNAbarcoder task has finished',
+            message=plain_message,
+            html_message=html_message,
+            from_email='r.holst@wi.knaw.nl',
+            recipient_list=[email],
+            fail_silently=False,
+        )
 
 
 # def remove_complexes(dnabarcoder_path, input_file_path, threshold,

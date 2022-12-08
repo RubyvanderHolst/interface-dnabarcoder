@@ -168,9 +168,9 @@ CELERY_BEAT_SCHEDULE = {
 
 
 # Email configurations
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST =
-# EMAIL_USE_TLS = True
-# EMAIL_PORT =
-# EMAIL_HOST_USER =
-# EMAIL_HOST_PASSWORD =
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'r.holst@wi.knaw.nl'
+EMAIL_HOST_PASSWORD = 'GTLBIqrntYN02KaU'

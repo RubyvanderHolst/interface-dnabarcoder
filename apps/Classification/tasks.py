@@ -1,4 +1,4 @@
-from apps.Cutoff.tasks import bytes_to_larger
+from apps.Cutoff.tasks import bytes_to_larger, send_results_email
 
 from django.conf import settings
 
@@ -84,6 +84,9 @@ def classify_blast(input_sequences_path, reference_path,
 
     if file_cutoff_path is not None:
         os.remove(file_cutoff_path)
+
+    if email is not None:
+        send_results_email('http://localhost:8000', 'classification', task_id, email)
 
     return dict_files, has_results
 
