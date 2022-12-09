@@ -1,10 +1,12 @@
 from apps.Cutoff.tasks import bytes_to_larger, send_results_email
+from .models import TaskIdentification
 
 from django.conf import settings
 
 from celery import shared_task
 import pandas as pd
 import os
+import secrets
 
 base_dir = settings.BASE_DIR
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
@@ -85,8 +87,10 @@ def classify_blast(input_sequences_path, reference_path,
     if file_cutoff_path is not None:
         os.remove(file_cutoff_path)
 
+    password = add_task_to_db(task_id)
     if email is not None:
-        send_results_email('http://localhost:8000', 'classification', task_id, email)
+        send_results_email('http://localhost:8000', 'classification', task_id,
+                           email, password)
 
     return dict_files, has_results
 
@@ -113,3 +117,14 @@ def check_results_generated(result_file):
         return False
     else:
         return True
+
+
+def add_task_to_db(task_id):
+    password = secrets.token_urlsafe(10)
+
+    task_instance = TaskIdentification(
+        task_id=task_id,
+        password=password,
+    )
+    task_instance.save()
+    return password
