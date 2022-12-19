@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apps.Authentication',
     'apps.Classification',
     'apps.Cutoff',
     'apps.Other',

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User
 
 from .models import TaskIdentification
 
@@ -84,6 +85,14 @@ def calculate_cutoff(input_file_path, sim_file_path,
         os.remove(sim_file_path)
 
     password = add_task_to_db(task_id)
+    # todo choose which option of two to use
+    user = User.objects.create_user(
+        username=task_id,
+        email=email,
+        password=password,
+    )
+    user.save()
+
     if email is not None:
         send_results_email('http://localhost:8000', 'cutoff', task_id, email,
                            password)
