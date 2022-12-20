@@ -27,6 +27,14 @@
 {#                <a class="nav-item nav-link {% block nav-visualize %}{% endblock %}" href="{% url 'visualization' %}">Visualize</a>#}
                 <a class="nav-item nav-link {% block nav-about %}{% endblock %}" href="{% url 'about' %}">About</a>
             </div>
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated and user.is_superuser %}
+                    <a class="nav-item nav-link" href="/admin">Admin</a>
+                    <a class="nav-item nav-link" href="logout">Log out</a>
+                {% else %}
+                    <a class="nav-item nav-link {% block nav-login %}{% endblock %}" href="login">Log in</a>
+                {% endif %}
+            </div>
         </div>
     </div>
     </nav>

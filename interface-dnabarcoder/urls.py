@@ -49,6 +49,8 @@ urlpatterns = [
          name='about'),
     path('login', auth_views.login_page,
          name='login'),
+    path('logout', auth_views.logout_redirect,
+         name='logout'),
 ]
 
 # only in development
