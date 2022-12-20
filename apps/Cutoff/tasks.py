@@ -1,11 +1,15 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User
+
+from apps.Authentication.models import TaskInfo
 
 from celery import shared_task
 import pandas as pd
 from Bio import SeqIO
 import os
+import secrets
 
 
 base_dir = settings.BASE_DIR
@@ -80,8 +84,10 @@ def calculate_cutoff(input_file_path, sim_file_path,
     if sim_file_path is not None:
         os.remove(sim_file_path)
 
-    if email is not None:
-        send_results_email('http://localhost:8000', 'cutoff', task_id, email)
+    if email is not None and email != '':
+        password = add_task_to_db(task_id, 'cutoff', email)
+        send_results_email('http://localhost:8000', 'cutoff', task_id, email,
+                           password)
 
     return dict_files, dict_images, has_results
 
@@ -126,15 +132,20 @@ def check_results_generated(result_file):
     return has_results
 
 
-def send_results_email(website_url, page, task_id, email):
-    results_link = os.path.join(website_url, page, task_id)
+def send_results_email(website_url, page, task_id, email, password):
+    # Send an email with log in instructions
+    results_link = os.path.join(website_url, 'login')
     plain_message = 'Dear User,\n\n' \
                     'Your task has finished running.\n' \
-                    f'Click the link to see your results: {results_link}'
+                    f'Log in to see your results: {results_link}.\n' \
+                    f'Your task ID is {task_id} \n' \
+                    f'The password to this task is {password}'
     html_message = render_to_string('email_template.html', {
         'link_to_results': results_link,
         'link_to_website': website_url,
         'task_type': page,
+        'task_id': task_id,
+        'password': password,
     })
     if email is not None:
         print(f'Send email from {settings.EMAIL_HOST_USER} to {email}')
@@ -146,6 +157,25 @@ def send_results_email(website_url, page, task_id, email):
             recipient_list=[email],
             fail_silently=False,
         )
+
+
+def add_task_to_db(task_id, task_type, email):
+    # Add records for User and TaskInfo tables based on given info
+    password = secrets.token_urlsafe(10)
+
+    user = User.objects.create_user(
+        username=task_id,
+        email=email,
+        password=password,
+    )
+    user.save()
+
+    task_instance = TaskInfo(
+        user=user,
+        task_type=task_type,
+    )
+    task_instance.save()
+    return password
 
 
 # def remove_complexes(dnabarcoder_path, input_file_path, threshold,

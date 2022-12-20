@@ -21,6 +21,7 @@ import apps.Cutoff.views as cutoff_views
 import apps.Classification.views as class_views
 import apps.Visualization.views as vis_views
 import apps.Other.views as other_views
+import apps.Authentication.views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,7 +46,9 @@ urlpatterns = [
     path('visualization', vis_views.visualization_page,
          name='visualization'),
     path('about', other_views.about_page,
-         name='about')
+         name='about'),
+    path('login', auth_views.login_page,
+         name='login'),
 ]
 
 # only in development

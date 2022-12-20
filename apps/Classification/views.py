@@ -82,6 +82,10 @@ def classification_results_page(request, task_id=None):
                                     output_dir, email)
         task_id = task.id
 
+    else:
+        if not request.user.is_authenticated:
+            return redirect('login')
+
     return render(request, 'classification_results.html', {
             'task_id': task_id,
         })

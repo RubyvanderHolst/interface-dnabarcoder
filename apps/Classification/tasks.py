@@ -1,10 +1,13 @@
-from apps.Cutoff.tasks import bytes_to_larger, send_results_email
+from apps.Cutoff.tasks import bytes_to_larger, send_results_email, add_task_to_db
+from apps.Authentication.models import TaskInfo
 
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from celery import shared_task
 import pandas as pd
 import os
+import secrets
 
 base_dir = settings.BASE_DIR
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
@@ -85,8 +88,10 @@ def classify_blast(input_sequences_path, reference_path,
     if file_cutoff_path is not None:
         os.remove(file_cutoff_path)
 
-    if email is not None:
-        send_results_email('http://localhost:8000', 'classification', task_id, email)
+    if email is not None and email != '':
+        password = add_task_to_db(task_id, 'classification', email)
+        send_results_email('http://localhost:8000', 'classification', task_id,
+                           email, password)
 
     return dict_files, has_results
 

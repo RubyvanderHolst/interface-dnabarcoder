@@ -24,6 +24,8 @@ def cutoff_page(request):
 
 def cutoff_results_page(request, task_id=None):
     # View for cutoff results page
+
+    # if is redirected from input page
     if request.method == 'POST':
         # Retrieve data from request
         input_dir = os.path.join(media_root, "uploaded")
@@ -54,7 +56,7 @@ def cutoff_results_page(request, task_id=None):
         min_group_number = request.POST['min_group_number']
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
-        email = retrieve_input('email', request.POST)
+        email = request.POST['email']
 
         remove_comp = 'no'
         if 'remove_comp' in request.POST:
@@ -70,9 +72,14 @@ def cutoff_results_page(request, task_id=None):
 
         task_id = task.id
 
+    # if is redirected from link (email)
+    else:
+        if not request.user.is_authenticated:
+            return redirect('login')
+
     return render(request, 'cutoff_results.html', {
             'task_id': task_id,
-            })
+    })
 
 
 def retrieve_input(post_key, request_POST):

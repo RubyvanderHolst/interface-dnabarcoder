@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CutoffConfig(AppConfig):
+class AuthenticationConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "apps.Cutoff"
+    name = "apps.Authentication"
