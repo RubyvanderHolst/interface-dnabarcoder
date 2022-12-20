@@ -9,8 +9,13 @@
         <div class="card w-50">
             <h5 class="card-header text-center">Log in for results</h5>
             <div class="card-body">
-                <form action="{{ task_id }}" method="post" enctype="multipart/form-data">
-{#                    todo change action #}
+                {% if error_message %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error_message }}
+                    </div>
+                {% endif %}
+
+                <form action="login" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <div class="text-center">

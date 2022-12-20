@@ -56,7 +56,7 @@ def cutoff_results_page(request, task_id=None):
         min_group_number = request.POST['min_group_number']
         min_seq_number = request.POST['min_seq_number']
         max_seq_number = request.POST['max_seq_number']
-        email = retrieve_input('email', request.POST)
+        email = request.POST['email']
 
         remove_comp = 'no'
         if 'remove_comp' in request.POST:
@@ -75,11 +75,7 @@ def cutoff_results_page(request, task_id=None):
     # if is redirected from link (email)
     else:
         if not request.user.is_authenticated:
-            pass
-            # todo redirect
-            # return render(request, 'login.html', {
-            #     'form': LoginForm,
-            # })
+            return redirect('login')
 
     return render(request, 'cutoff_results.html', {
             'task_id': task_id,

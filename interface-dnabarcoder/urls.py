@@ -48,7 +48,7 @@ urlpatterns = [
     path('about', other_views.about_page,
          name='about'),
     path('login', auth_views.login_page,
-         ),
+         name='login'),
 ]
 
 # only in development

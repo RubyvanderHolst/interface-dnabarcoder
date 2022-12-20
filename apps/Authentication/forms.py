@@ -8,6 +8,3 @@ class LoginForm(forms.Form):
         max_length=100,
     )
     password = forms.CharField(widget=forms.PasswordInput())
-
-    # class Meta:
-    #     model = User

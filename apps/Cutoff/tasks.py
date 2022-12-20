@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 
-from .models import TaskIdentification
+from apps.Authentication.models import TaskInfo
 
 from celery import shared_task
 import pandas as pd
@@ -84,16 +84,8 @@ def calculate_cutoff(input_file_path, sim_file_path,
     if sim_file_path is not None:
         os.remove(sim_file_path)
 
-    password = add_task_to_db(task_id)
-    # todo choose which option of two to use
-    user = User.objects.create_user(
-        username=task_id,
-        email=email,
-        password=password,
-    )
-    user.save()
-
-    if email is not None:
+    if email is not None and email != '':
+        password = add_task_to_db(task_id, 'cutoff', email)
         send_results_email('http://localhost:8000', 'cutoff', task_id, email,
                            password)
 
@@ -141,15 +133,18 @@ def check_results_generated(result_file):
 
 
 def send_results_email(website_url, page, task_id, email, password):
-    results_link = os.path.join(website_url, page, task_id)
+    # Send an email with log in instructions
+    results_link = os.path.join(website_url, 'login')
     plain_message = 'Dear User,\n\n' \
                     'Your task has finished running.\n' \
-                    f'Click the link to see your results: {results_link}.\n' \
+                    f'Log in to see your results: {results_link}.\n' \
+                    f'Your task ID is {task_id} \n' \
                     f'The password to this task is {password}'
     html_message = render_to_string('email_template.html', {
         'link_to_results': results_link,
         'link_to_website': website_url,
         'task_type': page,
+        'task_id': task_id,
         'password': password,
     })
     if email is not None:
@@ -164,12 +159,20 @@ def send_results_email(website_url, page, task_id, email, password):
         )
 
 
-def add_task_to_db(task_id):
+def add_task_to_db(task_id, task_type, email):
+    # Add records for User and TaskInfo tables based on given info
     password = secrets.token_urlsafe(10)
 
-    task_instance = TaskIdentification(
-        task_id=task_id,
+    user = User.objects.create_user(
+        username=task_id,
+        email=email,
         password=password,
+    )
+    user.save()
+
+    task_instance = TaskInfo(
+        user=user,
+        task_type=task_type,
     )
     task_instance.save()
     return password

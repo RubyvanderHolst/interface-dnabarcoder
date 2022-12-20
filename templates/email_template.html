@@ -15,6 +15,9 @@
         Your {{ task_type }} task has finished running.
         Thank you for using DNA barcoder!
     </p>
+    <p>
+        Log in to see your results:
+    </p>
     <div style="text-align: center;">
         <button style="border-radius: 4px; font-size: 20px; background-color: #81bfef;">
             <a style="text-decoration: none; color: black;" href={{ link_to_results }}>
@@ -23,6 +26,7 @@
         </button>
     </div>
     <p>
+        Your task ID is: <i>{{ task_id }}</i><br>
         Your password is: <i>{{ password }}</i>
     </p>
 
