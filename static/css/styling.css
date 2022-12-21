@@ -16,6 +16,11 @@ img {
     padding: 0 !important;
 }
 
+thead {
+    background-color: #e3f2fd;
+}
+
+
 /* Bootstrap classes */
 .active {
     font-weight: 500;

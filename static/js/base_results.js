@@ -3,7 +3,8 @@ export {get_data}
 // This function contains an AJAX function. It calls a URL which equals
 // the task ID. This URL is connected to the view "load_progress", which
 // returns a JsonResponse. This JsonResponse is processed by the AJAX function.
-function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
+function get_data(task_id, media_dir, bool_show_image,
+                  bool_show_classification, loading_time = 0) {
     $.ajax({
         url: "results/" + task_id,
         type: "GET",
@@ -31,6 +32,12 @@ function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
                 if (bool_show_image) {
                     show_images(data.images, media_dir)
                 }
+
+                if (bool_show_classification) {
+                    document.getElementById('classification_results_table').innerHTML =
+                        data.classification_table
+                }
+
                 // Create html for same complexes
                 // if (bool_show_complex && data.similar) {
                 //     show_similar_seq(data.similar)
@@ -94,7 +101,7 @@ function show_file_table (files, media_dir) {
         <h4 class="rounded-2 text-center light-blue-background">Results</h4>
         <table class="table table-striped table-hover">
             <thead>
-                <tr class="light-blue-background">
+                <tr>
                     <th scope="col">File name</th>
                     <th scope="col">File size</th>
                     <th scope="col"></th>
