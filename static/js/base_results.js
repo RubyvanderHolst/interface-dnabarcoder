@@ -120,13 +120,16 @@ function show_file_table (files, media_dir) {
 }
 
 function show_images(images, media_dir) {
-    // Creates cards with all images in results files
+    // Create cards with all images in results files
     // parameters:
     // - images: Object with format {file_name: file_size}
     // - media_dir: Directory in media directory where results are stored
-    document.getElementById('images_div').innerHTML =
-        `<h4 class="rounded-2 text-center light-blue-background">Images</h4>`
     let list_images = Object.entries(images)
+    if (list_images.length > 0){
+        document.getElementById('images_div').innerHTML =
+            `<h4 class="rounded-2 text-center light-blue-background">Images</h4>`
+    }
+
     for (const [image_name, image_size] of list_images) {
         let image_card =
             `
