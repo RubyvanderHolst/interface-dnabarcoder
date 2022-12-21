@@ -8,6 +8,7 @@ from celery import shared_task
 import pandas as pd
 import os
 import secrets
+import subprocess
 
 base_dir = settings.BASE_DIR
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
@@ -21,7 +22,7 @@ def classify_blast(input_sequences_path, reference_path,
     # Celery task for classification with BLAST
 
     task_id = classify_blast.request.id
-    os.system(f'cd {output_dir} && mkdir {task_id}')
+    subprocess.run(f'cd {output_dir} && mkdir {task_id}', shell=True, stdout=subprocess.DEVNULL)
     output_dir = os.path.join(output_dir, task_id)
 
     # calculate best matches
@@ -32,7 +33,7 @@ def classify_blast(input_sequences_path, reference_path,
                      f"--reference {reference_path} " \
                      f"--minalignmentlength {min_alignment_length} " \
                      f"--out {output_dir} "
-    os.system(command_search)
+    subprocess.run(command_search, shell=True, stdout=subprocess.DEVNULL)
 
     # classify based on the best matches
     classify_input = None
@@ -62,11 +63,12 @@ def classify_blast(input_sequences_path, reference_path,
                             f"-minseqno {min_seq_number} " \
                             f"-mingroupno {min_group_number} "
 
-    os.system(command_classify)
+    subprocess.run(command_classify, shell=True, stdout=subprocess.DEVNULL)
 
     # Remove blast db files
-    os.system(f"cd {'/'.join(reference_path.split('/')[:-1])} && "
-              f"find -type f -name '*.blastdb.*' -delete")
+    subprocess.run(f"cd {'/'.join(reference_path.split('/')[:-1])} && "
+                   f"find -type f -name '*.blastdb.*' -delete",
+                   shell=True, stdout=subprocess.DEVNULL)
 
     dict_files = get_file_sizes(output_dir)
 

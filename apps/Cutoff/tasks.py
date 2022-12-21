@@ -10,6 +10,7 @@ import pandas as pd
 from Bio import SeqIO
 import os
 import secrets
+import subprocess
 
 
 base_dir = settings.BASE_DIR
@@ -25,7 +26,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
     # Celery task for cutoff calculation
 
     task_id = calculate_cutoff.request.id
-    os.system(f'cd {output_dir} && mkdir {task_id}')
+    subprocess.run(f'cd {output_dir} && mkdir {task_id}', shell=True, stdout=subprocess.DEVNULL)
     output_dir = os.path.join(output_dir, task_id)
 
     # Removal of similar sequences
@@ -60,7 +61,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
     if sim_file_path is not None:
         command += f"--simfilename {sim_file_path} "
 
-    os.system(command)
+    subprocess.run(command, shell=True, stdout=subprocess.DEVNULL)
 
     dict_files, dict_images = get_file_sizes(output_dir)
 
