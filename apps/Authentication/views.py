@@ -14,7 +14,7 @@ def login_page(request):
         task_id = request.POST['task_id']
         password = request.POST['password']
         user = authenticate(username=task_id, password=password)
-        # if user (a.k.a. task_id) exists in database
+        # if user / task_id exists in database
         if user is not None:
             login(request, user)
             try:
