@@ -40,11 +40,6 @@ function get_data(task_id, media_dir, bool_show_image,
                     show_classification(data.classification_table, data.table_file_path)
                 }
 
-                // Create html for same complexes
-                // if (bool_show_complex && data.similar) {
-                //     show_similar_seq(data.similar)
-                // }
-
             // Task is still being processed
             } else if (data.state === 'PENDING') {
                 let reload_time = 1
@@ -103,34 +98,6 @@ function show_file_table (files) {
         <h4 class="rounded-2 text-center light-blue-background">Result files</h4>
         `
     document.getElementById('data-box').innerHTML += files
-    // document.getElementById('data-box').innerHTML +=
-    //     `
-    //     <h4 class="rounded-2 text-center light-blue-background">Results</h4>
-    //     <table class="table table-striped table-hover">
-    //         <thead>
-    //             <tr>
-    //                 <th scope="col">File name</th>
-    //                 <th scope="col">File size</th>
-    //                 <th scope="col"></th>
-    //             </tr>
-    //         </thead>
-    //         <tbody id="tbody_files">
-    //         </tbody>
-    //     </table>
-    //     `
-    // for (const [file_name, file_size] of Object.entries(files)) {
-    //     let tr = "<tr>";
-    //     tr +=
-    //         `
-    //         <td>${file_name}</td>
-    //         <td>${file_size}</td>
-    //         <td class="text-end">
-    //             <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
-    //                 <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
-    //             </a>
-    //         </td></tr>`
-    //         document.getElementById('tbody_files').innerHTML += tr;
-    // }
 }
 
 function show_images(images, media_dir) {
@@ -177,56 +144,3 @@ function show_classification(table, file_path) {
     document.getElementById('classification_results_table').innerHTML +=
         table
 }
-
-// function show_similar_seq(similar) {
-//     // Creates table of similar sequences and removed sequences
-//     // parameter similar: Object with format {cluster_number: ['representing': array_ids, 'removed': array_ids]}
-//     document.getElementById('complexes_div').innerHTML =
-//         `<h4 class="rounded-2 text-center light-blue-background">Removed similar sequences</h4>`
-//     let list_complexes =  Object.entries(similar)
-//     if (list_complexes.length === 0) {
-//         document.getElementById('complexes_div').innerHTML +=
-//             `
-//             <div class="alert alert-secondary" role="alert">
-//                 No similar sequences were found
-//             </div>
-//             `
-//     }
-//
-//     for (const [cluster, obj_ids] of list_complexes) {
-//         let html_table =
-//             `
-//             <table class="table table-bordered">
-//                 <thead>
-//                     <tr><th class="text-center table-dark" colspan="2">Cluster ${cluster}</th></tr>
-//                     <tr>
-//                         <th class="table-success w-50p" scope="col">Preserved sequences</th>
-//                         <th class="table-danger w-50p" scope="col">Removed sequences</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//             `
-//
-//         const array_representing = obj_ids['representing']
-//         const array_removed = obj_ids['removed']
-//         const max_len = Math.max(array_representing.length, array_removed.length)
-//         for (let row=0; row<max_len; row++) {
-//             html_table += `<tr>`
-//             if (row < array_representing.length) {
-//                 html_table += `<td>${array_representing[row]}</td>`
-//             } else {
-//                 html_table += `<td></td>`
-//             }
-//
-//             if (row < array_removed.length) {
-//                 html_table += `<td>${array_removed[row]}</td>`
-//             } else {
-//                 html_table += '<td></td>'
-//             }
-//
-//             html_table += `</tr>`
-//         }
-//         html_table += '</tbody></table>'
-//         document.getElementById('complexes_div').innerHTML += html_table;
-//     }
-// }

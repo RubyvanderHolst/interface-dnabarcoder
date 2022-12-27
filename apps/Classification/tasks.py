@@ -102,18 +102,6 @@ def classify_blast(input_sequences_path, reference_path,
     return html_files_table, has_results, html_classification_table, table_file_path
 
 
-# def get_file_sizes(dir_path):
-#     # Get the sizes of all files in a directory
-#     # Return dictionary: {file_name: file_size}
-#     file_list = os.listdir(dir_path)
-#     dict_files = {}
-#     for name in file_list:
-#         if name[0] != '.':
-#             size = bytes_to_larger(
-#                 os.stat(os.path.join(dir_path, name)).st_size)
-#             dict_files[name] = size
-#     return dict_files
-
 def get_file_sizes(dir_path, task_id):
     # Create a table of the result files
     # Table columns: file name, file size and download button

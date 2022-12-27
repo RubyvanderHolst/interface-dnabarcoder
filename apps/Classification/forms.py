@@ -75,15 +75,6 @@ TCTTTTAAATTTGATCTGAAATCAGG
             attrs={'accept': ".json"}
         )
     )
-
-    # min_probability = forms.FloatField(
-    #     label='Minimum probability of similarity cutoff',
-    #     widget=forms.NumberInput(attrs={
-    #         'min': 0,
-    #         'max': 1,
-    #     }),
-    #     required=False,
-    # )
     min_alignment_length = forms.IntegerField(
         label='Minimum sequence alignment length',
         widget=forms.NumberInput(attrs={
@@ -128,14 +119,6 @@ TCTTTTAAATTTGATCTGAAATCAGG
         ),
         required=False,
     )
-    # max_seq_number = forms.IntegerField(
-    #     label='Maximum number of sequences per taxon name for best match determination',
-    #     widget=forms.NumberInput(attrs={
-    #         'min': 1,
-    #     }),
-    #     required=False,
-    # )
-
     email = forms.EmailField(
         label='Send email when finished:',
         min_length=5,
