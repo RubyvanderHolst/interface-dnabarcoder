@@ -24,18 +24,20 @@ function get_data(task_id, media_dir, bool_show_image,
                             No results could be generated! Please look at the input and settings.
                         </div>`
                 }
-                // Create html for table files
-                if (Object.entries(data.files).length !== 0 ) {
-                    show_file_table(data.files, media_dir)
+
+                // Show html for table files
+                if (data.files !== null) {
+                    show_file_table(data.files)
                 }
-                // Create html for images
+
+                // Create and show html for images
                 if (bool_show_image) {
                     show_images(data.images, media_dir)
                 }
 
-                if (bool_show_classification) {
-                    document.getElementById('classification_results_table').innerHTML =
-                        data.classification_table
+                // Show classified sequences table
+                if (bool_show_classification && data.classification_table !== null) {
+                    show_classification(data.classification_table, data.table_file_path)
                 }
 
                 // Create html for same complexes
@@ -64,7 +66,7 @@ function get_data(task_id, media_dir, bool_show_image,
                 // Recall get_data (current AJAX function) after delay
                 document.getElementById('reload_time').innerText = reload_text
                 setTimeout(function(){
-                    get_data(task_id, media_dir, bool_show_image, loading_time += reload_time);
+                    get_data(task_id, media_dir, bool_show_image, bool_show_classification, loading_time += reload_time);
                     }, reload_time)
 
             } else if (data.state === 'FAILURE') {
@@ -91,12 +93,15 @@ function get_data(task_id, media_dir, bool_show_image,
     })
 }
 
-function show_file_table (files, media_dir) {
+function show_file_table (files) {
     // Creates a table of results files
     // parameters:
     // - files: Object with format {file_name: file_size}
     // - media_dir: Directory in media directory where results are stored
-    console.log(files)
+    document.getElementById('data-box').innerHTML +=
+        `
+        <h4 class="rounded-2 text-center light-blue-background">Result files</h4>
+        `
     document.getElementById('data-box').innerHTML += files
     // document.getElementById('data-box').innerHTML +=
     //     `
@@ -158,6 +163,19 @@ function show_images(images, media_dir) {
             `
         document.getElementById('images_div').innerHTML += image_card
     }
+}
+
+
+function show_classification(table, file_path) {
+    document.getElementById('classification_results_table').innerHTML +=
+        `
+        <h4 class="rounded-2 text-center light-blue-background">Classified sequences</h4>
+        <a href='${file_path}' class='link-light text-decoration-none'>
+            <button type='button' class='btn btn-light w-100 mb-10'><i class='bi bi-download'></i> Download table</button>
+        </a>
+        `
+    document.getElementById('classification_results_table').innerHTML +=
+        table
 }
 
 // function show_similar_seq(similar) {

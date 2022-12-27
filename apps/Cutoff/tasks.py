@@ -128,13 +128,17 @@ def get_file_sizes(dir_path, task_id):
                 f"<button type='button' class='btn btn-primary w-75'><i class='bi bi-download'></i> Download</button>"
                 f"</a>"
             )
-    html = pd.DataFrame(dict_files).to_html(
-        index=False,
-        justify="left",
-        border=0,
-        classes="table table-striped table-hover",
-    )
-    html = html.replace('&lt;', '<').replace('&gt;', '>')
+
+    if len(dict_files['File name']) == 0:
+        html = None
+    else:
+        html = pd.DataFrame(dict_files).to_html(
+            index=False,
+            justify="left",
+            border=0,
+            classes="table table-striped table-hover",
+        )
+        html = html.replace('&lt;', '<').replace('&gt;', '>')
     return html, dict_files['File name'], dict_images
 
 
