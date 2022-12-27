@@ -32,7 +32,7 @@
                     <a class="nav-item nav-link" href="/admin">Admin</a>
                     <a class="nav-item nav-link" href="logout">Log out</a>
                 {% else %}
-                    <a class="nav-item nav-link {% block nav-login %}{% endblock %}" href="login">Log in</a>
+                    <a class="nav-item nav-link {% block nav-login %}{% endblock %}" href="{% url 'login' %}">Log in</a>
                 {% endif %}
             </div>
         </div>
