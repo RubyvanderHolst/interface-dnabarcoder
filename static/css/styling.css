@@ -16,6 +16,11 @@ img {
     padding: 0 !important;
 }
 
+thead {
+    background-color: #e3f2fd;
+}
+
+
 /* Bootstrap classes */
 .active {
     font-weight: 500;
@@ -67,4 +72,8 @@ img {
 
 .w-50p {
     width: 50%;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
 }

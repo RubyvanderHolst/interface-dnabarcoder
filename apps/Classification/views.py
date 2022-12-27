@@ -110,12 +110,18 @@ def load_progress(request, task_id):
     result = AsyncResult(task_id)
     files = None
     has_results = None
+    classification_table = None
+    table_file_path = None
     if result.state == 'SUCCESS':
         files = result.info[0]
         has_results = result.info[1]
+        classification_table = result.info[2]
+        table_file_path = result.info[3]
     return JsonResponse({
         'task_id': task_id,
         'state': result.state,
         'files': files,
         'has_results': has_results,
+        'classification_table': classification_table,
+        'table_file_path': table_file_path,
     })

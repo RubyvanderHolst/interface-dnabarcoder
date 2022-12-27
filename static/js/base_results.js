@@ -3,7 +3,8 @@ export {get_data}
 // This function contains an AJAX function. It calls a URL which equals
 // the task ID. This URL is connected to the view "load_progress", which
 // returns a JsonResponse. This JsonResponse is processed by the AJAX function.
-function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
+function get_data(task_id, media_dir, bool_show_image,
+                  bool_show_classification, loading_time = 0) {
     $.ajax({
         url: "results/" + task_id,
         type: "GET",
@@ -23,14 +24,22 @@ function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
                             No results could be generated! Please look at the input and settings.
                         </div>`
                 }
-                // Create html for table files
-                if (Object.entries(data.files).length !== 0 ) {
-                    show_file_table(data.files, media_dir)
+
+                // Show html for table files
+                if (data.files !== null) {
+                    show_file_table(data.files)
                 }
-                // Create html for images
+
+                // Create and show html for images
                 if (bool_show_image) {
                     show_images(data.images, media_dir)
                 }
+
+                // Show classified sequences table
+                if (bool_show_classification && data.classification_table !== null) {
+                    show_classification(data.classification_table, data.table_file_path)
+                }
+
                 // Create html for same complexes
                 // if (bool_show_complex && data.similar) {
                 //     show_similar_seq(data.similar)
@@ -57,7 +66,7 @@ function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
                 // Recall get_data (current AJAX function) after delay
                 document.getElementById('reload_time').innerText = reload_text
                 setTimeout(function(){
-                    get_data(task_id, media_dir, bool_show_image, loading_time += reload_time);
+                    get_data(task_id, media_dir, bool_show_image, bool_show_classification, loading_time += reload_time);
                     }, reload_time)
 
             } else if (data.state === 'FAILURE') {
@@ -84,39 +93,44 @@ function get_data(task_id, media_dir, bool_show_image, loading_time = 0) {
     })
 }
 
-function show_file_table (files, media_dir) {
+function show_file_table (files) {
     // Creates a table of results files
     // parameters:
     // - files: Object with format {file_name: file_size}
     // - media_dir: Directory in media directory where results are stored
     document.getElementById('data-box').innerHTML +=
         `
-        <h4 class="rounded-2 text-center light-blue-background">Results</h4>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr class="light-blue-background">
-                    <th scope="col">File name</th>
-                    <th scope="col">File size</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody id="tbody_files">
-            </tbody>
-        </table>
+        <h4 class="rounded-2 text-center light-blue-background">Result files</h4>
         `
-    for (const [file_name, file_size] of Object.entries(files)) {
-        let tr = "<tr>";
-        tr +=
-            `
-            <td>${file_name}</td>
-            <td>${file_size}</td>
-            <td class="text-end">
-                <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
-                    <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
-                </a>
-            </td></tr>`
-            document.getElementById('tbody_files').innerHTML += tr;
-    }
+    document.getElementById('data-box').innerHTML += files
+    // document.getElementById('data-box').innerHTML +=
+    //     `
+    //     <h4 class="rounded-2 text-center light-blue-background">Results</h4>
+    //     <table class="table table-striped table-hover">
+    //         <thead>
+    //             <tr>
+    //                 <th scope="col">File name</th>
+    //                 <th scope="col">File size</th>
+    //                 <th scope="col"></th>
+    //             </tr>
+    //         </thead>
+    //         <tbody id="tbody_files">
+    //         </tbody>
+    //     </table>
+    //     `
+    // for (const [file_name, file_size] of Object.entries(files)) {
+    //     let tr = "<tr>";
+    //     tr +=
+    //         `
+    //         <td>${file_name}</td>
+    //         <td>${file_size}</td>
+    //         <td class="text-end">
+    //             <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
+    //                 <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
+    //             </a>
+    //         </td></tr>`
+    //         document.getElementById('tbody_files').innerHTML += tr;
+    // }
 }
 
 function show_images(images, media_dir) {
@@ -149,6 +163,19 @@ function show_images(images, media_dir) {
             `
         document.getElementById('images_div').innerHTML += image_card
     }
+}
+
+
+function show_classification(table, file_path) {
+    document.getElementById('classification_results_table').innerHTML +=
+        `
+        <h4 class="rounded-2 text-center light-blue-background">Classified sequences</h4>
+        <a href='${file_path}' class='link-light text-decoration-none'>
+            <button type='button' class='btn btn-light w-100 mb-10'><i class='bi bi-download'></i> Download table</button>
+        </a>
+        `
+    document.getElementById('classification_results_table').innerHTML +=
+        table
 }
 
 // function show_similar_seq(similar) {

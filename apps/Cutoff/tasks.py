@@ -14,6 +14,7 @@ import subprocess
 
 
 base_dir = settings.BASE_DIR
+media_url = settings.MEDIA_URL
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
 
 
@@ -63,11 +64,11 @@ def calculate_cutoff(input_file_path, sim_file_path,
 
     subprocess.run(command, shell=True, stdout=subprocess.DEVNULL)
 
-    dict_files, dict_images = get_file_sizes(output_dir)
+    html_files_table, files, dict_images = get_file_sizes(output_dir, task_id)
 
     # Check if results have been generated
     result_file = None
-    for file in dict_files.keys():
+    for file in files:
         if file.endswith('.cutoffs.json.txt'):
             result_file = file
             break
@@ -77,36 +78,68 @@ def calculate_cutoff(input_file_path, sim_file_path,
     else:
         has_results = False
 
-    try:
-        os.remove(original_input_file_path)
-    except:
-        os.remove(input_file_path)
-
+    # Remove input files
+    os.remove(input_file_path)
     if sim_file_path is not None:
         os.remove(sim_file_path)
 
+    # Send email
     if email is not None and email != '':
         password = add_task_to_db(task_id, 'cutoff', email)
         send_results_email('http://localhost:8000', 'cutoff', task_id, email,
                            password)
 
-    return dict_files, dict_images, has_results
+    return html_files_table, dict_images, has_results
 
 
-def get_file_sizes(dir_path):
-    # Get the sizes of all files in a directory
-    # Return two dictionaries: {file_name: file_size}
-    # one for images and one for all other files
+# def get_file_sizes(dir_path):
+#     # Get the sizes of all files in a directory
+#     # Return two dictionaries: {file_name: file_size}
+#     # one for images and one for all other files
+#     file_list = os.listdir(dir_path)
+#     dict_files = {}
+#     dict_images = {}
+#     for name in file_list:
+#         size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
+#         if name[-4:] == '.png':
+#             dict_images[name] = size
+#         elif name[0] != '.':
+#             dict_files[name] = size
+#     return dict_files, dict_images
+
+
+def get_file_sizes(dir_path, task_id):
+    # Create a table of the result files
+    # Table columns: file name, file size and download button
+    # returns HTML table and list of file names
+
     file_list = os.listdir(dir_path)
-    dict_files = {}
+    dict_files = {'File name': [], 'File size': [], 'Download': []}
     dict_images = {}
     for name in file_list:
         size = bytes_to_larger(os.stat(os.path.join(dir_path, name)).st_size)
-        if name[-4:] == '.png':
+        if os.path.splitext(name)[1] == '.png':
             dict_images[name] = size
         elif name[0] != '.':
-            dict_files[name] = size
-    return dict_files, dict_images
+            dict_files['File name'].append(name)
+            dict_files['File size'].append(size)
+            dict_files['Download'].append(
+                f"<a href='{os.path.join(media_url, 'results', task_id, name)}' class='link-light text-decoration-none' download='{name}'>"
+                f"<button type='button' class='btn btn-primary w-75'><i class='bi bi-download'></i> Download</button>"
+                f"</a>"
+            )
+
+    if len(dict_files['File name']) == 0:
+        html = None
+    else:
+        html = pd.DataFrame(dict_files).to_html(
+            index=False,
+            justify="left",
+            border=0,
+            classes="table table-striped table-hover",
+        )
+        html = html.replace('&lt;', '<').replace('&gt;', '>')
+    return html, dict_files['File name'], dict_images
 
 
 def bytes_to_larger(size_b):
@@ -154,7 +187,7 @@ def send_results_email(website_url, page, task_id, email, password):
             subject='DNAbarcoder task has finished',
             message=plain_message,
             html_message=html_message,
-            from_email='r.holst@wi.knaw.nl',
+            from_email=settings.EMAIL_HOST_USER,
             recipient_list=[email],
             fail_silently=False,
         )
