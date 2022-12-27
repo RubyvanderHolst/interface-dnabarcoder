@@ -96,34 +96,36 @@ function show_file_table (files, media_dir) {
     // parameters:
     // - files: Object with format {file_name: file_size}
     // - media_dir: Directory in media directory where results are stored
-    document.getElementById('data-box').innerHTML +=
-        `
-        <h4 class="rounded-2 text-center light-blue-background">Results</h4>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">File name</th>
-                    <th scope="col">File size</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody id="tbody_files">
-            </tbody>
-        </table>
-        `
-    for (const [file_name, file_size] of Object.entries(files)) {
-        let tr = "<tr>";
-        tr +=
-            `
-            <td>${file_name}</td>
-            <td>${file_size}</td>
-            <td class="text-end">
-                <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
-                    <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
-                </a>
-            </td></tr>`
-            document.getElementById('tbody_files').innerHTML += tr;
-    }
+    console.log(files)
+    document.getElementById('data-box').innerHTML += files
+    // document.getElementById('data-box').innerHTML +=
+    //     `
+    //     <h4 class="rounded-2 text-center light-blue-background">Results</h4>
+    //     <table class="table table-striped table-hover">
+    //         <thead>
+    //             <tr>
+    //                 <th scope="col">File name</th>
+    //                 <th scope="col">File size</th>
+    //                 <th scope="col"></th>
+    //             </tr>
+    //         </thead>
+    //         <tbody id="tbody_files">
+    //         </tbody>
+    //     </table>
+    //     `
+    // for (const [file_name, file_size] of Object.entries(files)) {
+    //     let tr = "<tr>";
+    //     tr +=
+    //         `
+    //         <td>${file_name}</td>
+    //         <td>${file_size}</td>
+    //         <td class="text-end">
+    //             <a href='/media/${media_dir}/${file_name}' class='link-light text-decoration-none' download="${file_name}">
+    //                 <button type='button' class='btn btn-primary w-75'><i class="bi bi-download"></i> Download</button>
+    //             </a>
+    //         </td></tr>`
+    //         document.getElementById('tbody_files').innerHTML += tr;
+    // }
 }
 
 function show_images(images, media_dir) {
