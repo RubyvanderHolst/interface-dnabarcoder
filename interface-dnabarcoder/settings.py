@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 from celery.schedules import crontab
-import apps.Periodic_Tasks.tasks
+import apps.Periodic_Tasks
 import os
 
 load_dotenv()
@@ -173,7 +173,11 @@ CELERY_BEAT_SCHEDULE = {
     "delete_uploaded": {
         "task": "apps.Periodic_Tasks.tasks.delete_uploaded",
         "schedule": crontab(hour=21)
-    }
+    },
+    # "clean_db": {
+    #     "task": "apps.Periodic_Tasks.tasks.clean_db",
+    #     "schedule": crontab(hour=15, minute=45)
+    # }
 }
 
 

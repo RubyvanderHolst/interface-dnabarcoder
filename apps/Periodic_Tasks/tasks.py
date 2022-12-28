@@ -1,9 +1,14 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from django.conf import settings
 import shutil
 import time
 import os
+from datetime import datetime, timedelta
+
+from django.conf import settings
+from django.contrib.auth.models import User
+
+from apps.Authentication.models import TaskInfo
 
 
 '''
@@ -29,9 +34,18 @@ def delete_results():
         if age_s > 60 * 60 * 24:
             try:
                 shutil.rmtree(result_dir)
+                remove_account(dir)
             except:
                 logger.info(f'ERROR: results directory {result_dir} could not be removed. '
                             f'File age: {age_s} seconds')
+
+
+def remove_account(task_id):
+    try:
+        user = User.objects.get(username=task_id)
+        user.delete()
+    except User.DoesNotExist:
+        print(f"User {task_id} does not exist, cannot be deleted")
 
 
 @shared_task
@@ -49,3 +63,13 @@ def delete_uploaded():
             except:
                 logger.info(f'ERROR: {full_path} could not be removed')
 
+
+@shared_task
+def clean_db():
+    threshold_1day_old = datetime.now() - timedelta(hours=24)
+
+    old_tasks = TaskInfo.objects.filter(time_creation__lt=threshold_1day_old)
+    if old_tasks.exists():
+        for task in old_tasks.iterator():
+            user = User.objects.get(id=task.user_id)
+            user.delete()
