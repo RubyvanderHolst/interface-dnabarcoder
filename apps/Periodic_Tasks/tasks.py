@@ -34,6 +34,7 @@ def delete_results():
         if age_s > 60 * 60 * 24:
             try:
                 shutil.rmtree(result_dir)
+                remove_account(dir)
             except:
                 logger.info(f'ERROR: results directory {result_dir} could not be removed. '
                             f'File age: {age_s} seconds')
