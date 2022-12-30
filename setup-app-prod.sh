@@ -49,4 +49,5 @@ else
   done
 fi
 
-docker-compose -f dnabarcoder/interface-dnabarcoder/docker-compose.yml up
+sudo docker-compose -f dnabarcoder/interface-dnabarcoder/production/docker-compose-prod.yml up
+
