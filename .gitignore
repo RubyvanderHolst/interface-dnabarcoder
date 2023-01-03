@@ -15,4 +15,4 @@ celerybeat-schedule
 
 # Environment files
 .env
-.env-prod
+production/.env-prod
