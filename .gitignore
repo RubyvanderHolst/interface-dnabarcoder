@@ -13,4 +13,6 @@ media/uploaded/*
 # Celery
 celerybeat-schedule
 
+# Environment files
 .env
+.env-prod
