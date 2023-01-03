@@ -24,16 +24,16 @@ else
   git clone https://github.com/RubyvanderHolst/interface-dnabarcoder.git dnabarcoder/interface-dnabarcoder
 fi
 
-if [ -f dnabarcoder/interface-dnabarcoder/.env ]
+if [[ -f dnabarcoder/interface-dnabarcoder/.env-prod ]]
 then
-  echo "dnabarcoder/interface-dnabarcoder/.env exists"
+  echo "dnabarcoder/interface-dnabarcoder/.env-prod exists"
 else
-  echo "dnabarcoder/interface-dnabarcoder/.env does not exist"
-  echo "Would you like to add an .env file and run the application? "
+  echo "dnabarcoder/interface-dnabarcoder/.env-prod does not exist"
+  echo "Would you like to add an .env-prod file and run the application? "
   select yn in "Yes" "No"; do
     case $yn in
       Yes )
-        echo "What is the path to .env? ";
+        echo "What is the path to .env-prod? ";
         read env_path;
         if [ -f "$env_path" ]
         then
