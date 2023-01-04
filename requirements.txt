@@ -12,3 +12,4 @@ redis==4.3.4
 django-crispy-forms==1.14.0
 crispy-bootstrap5==0.7
 pandas==1.5.1
+gunicorn==20.1.0
