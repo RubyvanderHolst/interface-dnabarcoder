@@ -1,17 +1,18 @@
 version: "3.9"
    
 services:
-  interface:
+  web:
     build:
       context: ../../
       dockerfile: interface-dnabarcoder/Dockerfile
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser --noinput || echo 'super user exists' && gunicorn interface-dnabarcoder.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser --noinput || echo 'super user exists' && python manage.py collectstatic --no-input --clear && gunicorn interface-dnabarcoder.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ../:/home/app
+      - static_volume:/home/app/staticfiles
+    expose:
+      - 8000
     env_file:
       - .env-prod
-    ports:
-      - "8000:8000"
     depends_on:
       - redis
 
@@ -42,3 +43,14 @@ services:
     depends_on:
       - redis
 
+  nginx:
+    image: nginx:1.23.3-alpine
+    volumes:
+      - static_volume:/home/app/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+volumes:
+  static_volume:

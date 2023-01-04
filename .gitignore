@@ -16,3 +16,6 @@ celerybeat-schedule
 # Environment files
 .env
 production/.env-prod
+
+# Directories created for production
+staticfiles

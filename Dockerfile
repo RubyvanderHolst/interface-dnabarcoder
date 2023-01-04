@@ -1,13 +1,34 @@
 # syntax=docker/dockerfile:1
-# REMOVE PACKAGES WHEN NOT NECESSARY!!!
+###########
+# BUILDER #
+###########
 
 # pull base image
-FROM python:3.10
+FROM python:3.10 as builder
+
+# set work directory
+WORKDIR /usr/src/app
 
 # prevents python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE=1
 # keeps python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED=1
+
+# Update packages and install NCBI
+# Downloads version 2.11.0 (two version behind newest) (on 14-11-22)
+# (wget download doesn't save after build)
+RUN apt-get update && apt-get install -y ncbi-blast+
+
+# pip installs
+COPY interface-dnabarcoder/requirements.txt $APP
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+#########
+# FINAL #
+#########
+
+# pull base image
+FROM python:3.10
 
 # create environments
 ENV HOME /home
@@ -17,9 +38,29 @@ ENV TOOL /home/tool
 # set working directory
 RUN mkdir $APP
 RUN mkdir $TOOL
+RUN mkdir $APP/staticfiles
 WORKDIR $APP
 
-RUN apt-get update
+# create app user
+RUN adduser --system --group app
+
+# pip installs
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+# copy interface code to image
+COPY interface-dnabarcoder $APP
+
+# copy dnabarcoder (necessary) code to image
+COPY ./dnabarcoder.py $TOOL
+COPY ./classification $TOOL/classification
+COPY ./prediction $TOOL/prediction
+
+# chown all the file to the app user
+RUN chown -R app:app $HOME
+
+USER app
 
 # conda installs
 # install miniconda
@@ -33,22 +74,6 @@ RUN apt-get update
 #RUN conda install -c bioconda iqtree
 ### krona (optional)
 #RUN conda install -c bioconda krona
-
-# pip installs
-COPY interface-dnabarcoder/requirements.txt $APP
-RUN pip install --no-cache-dir -r requirements.txt
-
-# BLAST install
-# For the latest BLAST version see https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/
-#ARG BLAST_version='2.13.0'
-#RUN wget --quiet 'ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-#RUN tar zxvpf 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-#RUN rm 'ncbi-blast-'${BLAST_version}'+-x64-linux.tar.gz'
-#ENV PATH=./ncbi-blast-${BLAST_version}+/bin:$PATH
-
-# Downloads version 2.11.0 (two version behind newest) (on 14-11-22)
-# (wget download doesn't save after build)
-RUN apt-get install -y ncbi-blast+
 
 ## install gsl (for LARGEVIS, so optional)
 #RUN apt-get install -y libgsl-dev
@@ -72,11 +97,3 @@ RUN apt-get install -y ncbi-blast+
 #RUN git clone https://github.com/NLeSC/DiVE.git && \
 #    cd DiVE && \
 #    npm install connect serve-static
-
-# copy interface code to image
-COPY interface-dnabarcoder $APP
-
-# copy dnabarcoder (necessary) code to image
-COPY ./dnabarcoder.py $TOOL
-COPY ./classification $TOOL/classification
-COPY ./prediction $TOOL/prediction
