@@ -9,8 +9,9 @@ services:
     volumes:
       - ../:/home/app
       - static_volume:/home/app/staticfiles
-    expose:
-      - 8000
+      - media_volume:/home/app/media
+    ports:
+      - "8000:8000"
     env_file:
       - .env-prod
     depends_on:
@@ -35,7 +36,7 @@ services:
     build:
       context: ../../
       dockerfile: interface-dnabarcoder/Dockerfile
-    command: celery -A interface-dnabarcoder beat -l INFO
+    command: celery -A interface-dnabarcoder beat -s /tmp/celerybeat-schedule -l INFO
     volumes:
       - ../:/home/app
     env_file:
@@ -44,13 +45,16 @@ services:
       - redis
 
   nginx:
-    image: nginx:1.23.3-alpine
+    build: ./nginx
     volumes:
       - static_volume:/home/app/staticfiles
+      - media_volume:/home/app/media
     ports:
-      - 1337:80
+      - "443:443"
+      - "80:80"
     depends_on:
       - web
 
 volumes:
-  static_volume:
+  static_volume: {}
+  media_volume: {}
