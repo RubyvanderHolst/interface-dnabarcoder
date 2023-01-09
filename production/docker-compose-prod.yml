@@ -48,7 +48,7 @@ services:
     build: ./nginx
     volumes:
       - static_volume:/home/app/staticfiles
-      - media_volume:/home/app/media
+      - media_volume:/home/app/mediafiles
     ports:
       - "443:443"
       - "80:80"

@@ -39,6 +39,7 @@ ENV TOOL /home/tool
 RUN mkdir $APP
 RUN mkdir $TOOL
 RUN mkdir $APP/staticfiles
+RUN mkdir $APP/mediafiles
 WORKDIR $APP
 
 # create app user
