@@ -14,11 +14,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # keeps python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED=1
 
-# Update packages and install NCBI
-# Downloads version 2.11.0 (two version behind newest) (on 14-11-22)
-# (wget download doesn't save after build)
-RUN apt-get update && apt-get install -y ncbi-blast+
-
 # pip installs
 COPY interface-dnabarcoder/requirements.txt $APP
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
@@ -30,20 +25,25 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull base image
 FROM python:3.10
 
+# Update packages and install NCBI
+# Downloads version 2.11.0 (two version behind newest) (on 14-11-22)
+# (wget download doesn't save after build)
+RUN apt-get update && apt-get install -y ncbi-blast+
+
+# create app user
+RUN useradd --create-home --shell /bin/bash app
+
 # create environments
 ENV HOME /home
 ENV APP /home/app
 ENV TOOL /home/tool
 
 # set working directory
-RUN mkdir $APP
+#RUN mkdir $APP
 RUN mkdir $TOOL
 RUN mkdir $APP/staticfiles
 RUN mkdir $APP/mediafiles
 WORKDIR $APP
-
-# create app user
-RUN adduser --system --group app
 
 # pip installs
 COPY --from=builder /usr/src/app/wheels /wheels
