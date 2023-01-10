@@ -27,6 +27,8 @@ services:
     command: celery -A interface-dnabarcoder worker -l INFO
     volumes:
       - ../:/home/app
+      - static_volume:/home/app/staticfiles
+      - media_volume:/home/app/mediafiles
     env_file:
       - .env-prod
     depends_on:
@@ -39,6 +41,8 @@ services:
     command: celery -A interface-dnabarcoder beat -s /tmp/celerybeat-schedule -l INFO
     volumes:
       - ../:/home/app
+      - static_volume:/home/app/staticfiles
+      - media_volume:/home/app/mediafiles
     env_file:
       - .env-prod
     depends_on:
