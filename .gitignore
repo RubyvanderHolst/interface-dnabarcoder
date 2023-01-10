@@ -18,4 +18,7 @@ celerybeat-schedule
 production/.env-prod
 
 # Directories created for production
-staticfiles
+staticfiles/*
+!staticfiles/.gitkeep
+mediafiles/*
+!mediafiles/.gitkeep
