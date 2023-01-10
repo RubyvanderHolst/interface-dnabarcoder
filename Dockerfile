@@ -41,8 +41,6 @@ ENV TOOL /home/tool
 # set working directory
 #RUN mkdir $APP
 RUN mkdir $TOOL
-RUN mkdir $APP/staticfiles
-RUN mkdir $APP/mediafiles
 WORKDIR $APP
 
 # pip installs

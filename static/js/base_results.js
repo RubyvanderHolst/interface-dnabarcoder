@@ -69,7 +69,7 @@ function get_data(task_id, media_dir, bool_show_image,
                 document.getElementById('data-box').classList.remove('hidden');
                 document.getElementById('div_alert').innerHTML =
                         `<div class="alert alert-danger" role="alert">
-                            The task resulted in a failure. Please look at your input.
+                            The task resulted in a failure. Please look at your input or contact the owner of this website.
                         </div>`
             }
         },
