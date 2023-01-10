@@ -32,6 +32,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = list(os.getenv('DJANGO_ALLOWED_HOSTS'))
+HOST = os.getenv('HOST', default="http://localhost:8000/")
 
 
 # Application definition

@@ -15,6 +15,7 @@ import subprocess
 
 base_dir = settings.BASE_DIR
 media_url = settings.MEDIA_URL
+host = settings.HOST
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
 
 
@@ -76,7 +77,7 @@ def calculate_cutoff(input_file_path, sim_file_path,
     # Send email
     if email is not None and email != '':
         password = add_task_to_db(task_id, 'cutoff', email)
-        send_results_email('http://localhost:8000', 'cutoff', task_id, email,
+        send_results_email(host, 'cutoff', task_id, email,
                            password)
 
     return html_files_table, dict_images, has_results

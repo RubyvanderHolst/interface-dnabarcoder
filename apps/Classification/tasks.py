@@ -12,6 +12,7 @@ import subprocess
 
 base_dir = settings.BASE_DIR
 media_url = settings.MEDIA_URL
+host = settings.HOST
 dnabarcoder_path = os.popen("find /home -name dnabarcoder.py").read().rstrip('\n')
 
 
@@ -96,7 +97,7 @@ def classify_blast(input_sequences_path, reference_path,
     # Send email
     if email is not None and email != '':
         password = add_task_to_db(task_id, 'classification', email)
-        send_results_email('http://localhost:8000', 'classification', task_id,
+        send_results_email(host, 'classification', task_id,
                            email, password)
 
     return html_files_table, has_results, html_classification_table, table_file_path
